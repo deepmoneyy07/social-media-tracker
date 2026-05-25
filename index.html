@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>VC Social Media Dashboard</title>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script src="seed-data.js"></script>
 <style>
   :root {
     --bg: #0c0c16;
@@ -465,14 +466,17 @@
 const KEY='vc_dash_v3';
 let DB={strategies:[],posts:[],reminders:[],exec:{partha:{posts:[],topics:[],schedule:'Mon / Thu',bio:'Co-Founder & President, Vantage Circle'},john:{posts:[],topics:[],schedule:'Tue / Fri',bio:'Chief Business Officer, Vantage Circle'}}};
 
-// Migrate from v2 if exists
+// Load: localStorage > v2 migration > seed data
 function load(){
   try{
     let d=localStorage.getItem(KEY);
-    if(!d){d=localStorage.getItem('vc_dash_v2')} // migrate
-    if(d){DB=JSON.parse(d);
-      // ensure new fields exist on posts
+    if(!d){d=localStorage.getItem('vc_dash_v2')} // migrate from v2
+    if(d){
+      DB=JSON.parse(d);
       DB.posts.forEach(p=>{if(!p.copy)p.copy='';if(!p.caption)p.caption=''});
+    } else if(typeof SEED_DATA!=='undefined'){
+      DB=JSON.parse(JSON.stringify(SEED_DATA)); // deep clone seed
+      save(); // persist so user changes are tracked from here
     }
   }catch(e){}
 }
