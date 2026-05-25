@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VC Social Media Dashboard</title>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --bg: #0c0c16;
+    --sidebar: #111122;
+    --card: #161630;
+    --card2: #1c1c3a;
+    --border: #272752;
+    --accent: #6d5cff;
+    --accent-dim: #3d2f9e;
+    --accent-text: #bdb4ff;
+    --green: #2dd4a8;
+    --green-dim: #163d32;
+    --red: #ef5f5f;
+    --red-dim: #3a1c1c;
+    --yellow: #e9b949;
+    --yellow-dim: #3a2e10;
+    --blue: #5b9ef5;
+    --blue-dim: #162a4a;
+    --orange: #e8873c;
+    --orange-dim: #3a2000;
+    --pink: #d96ca8;
+    --pink-dim: #3a1030;
+    --text: #dde0e7;
+    --text2: #b0b5c3;
+    --muted: #6e7489;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,'Segoe UI',system-ui,Roboto,sans-serif; background:var(--bg); color:var(--text); display:flex; min-height:100vh; font-size:13px; line-height:1.5; }
+
+  /* SVG icon helper */
+  .i { width:16px; height:16px; display:inline-block; flex-shrink:0; }
+  .i svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+
+  /* ─── SIDEBAR ─── */
+  #sidebar { width:220px; min-height:100vh; background:var(--sidebar); border-right:1px solid var(--border); display:flex; flex-direction:column; position:fixed; top:0; left:0; z-index:100; }
+  .logo { padding:20px 18px 14px; border-bottom:1px solid var(--border); }
+  .logo h1 { font-size:15px; font-weight:700; color:var(--text); letter-spacing:0.3px; }
+  .logo span { font-size:10.5px; color:var(--muted); letter-spacing:0.3px; }
+  nav { flex:1; padding:12px 8px; display:flex; flex-direction:column; gap:2px; }
+  .nav-item { display:flex; align-items:center; gap:9px; padding:8px 12px; border-radius:7px; cursor:pointer; font-size:13px; color:var(--text2); transition:all .15s; user-select:none; }
+  .nav-item:hover { background:var(--card); color:var(--text); }
+  .nav-item.active { background:var(--accent-dim); color:#fff; font-weight:600; }
+  .nav-item .ni { width:18px; text-align:center; font-size:13px; color:var(--muted); }
+  .nav-item.active .ni { color:var(--accent-text); }
+  .nav-section { font-size:10px; color:var(--muted); padding:14px 12px 4px; letter-spacing:1.2px; text-transform:uppercase; font-weight:600; }
+  .sidebar-footer { padding:14px 18px; border-top:1px solid var(--border); font-size:11px; color:var(--muted); }
+
+  /* ─── MAIN ─── */
+  #main { margin-left:220px; flex:1; padding:24px 28px; min-height:100vh; }
+  .page { display:none; }
+  .page.active { display:block; animation:fadeIn .2s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+  .page-header { margin-bottom:20px; display:flex; align-items:baseline; gap:12px; }
+  .page-header h2 { font-size:18px; font-weight:700; color:var(--text); }
+  .page-header .sub { font-size:12px; color:var(--muted); }
+
+  /* ─── CARDS ─── */
+  .card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px; }
+  .card-title { font-size:11px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:12px; }
+
+  /* ─── GRID ─── */
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+  .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+
+  /* ─── STAT CARDS ─── */
+  .stat-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px; }
+  .stat-card .stat-dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:6px; }
+  .stat-card .stat-val { font-size:26px; font-weight:700; margin-top:6px; }
+  .stat-card .stat-label { font-size:11px; color:var(--muted); margin-top:2px; font-weight:500; }
+
+  /* ─── BADGES ─── */
+  .badge { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; letter-spacing:0.2px; }
+  .badge-todo { background:#22223a; color:var(--text2); }
+  .badge-progress { background:var(--blue-dim); color:var(--blue); }
+  .badge-done { background:var(--green-dim); color:var(--green); }
+  .badge-draft { background:#22223a; color:var(--text2); }
+  .badge-scheduled { background:#2a1f5a; color:var(--accent-text); }
+  .badge-published { background:var(--green-dim); color:var(--green); }
+  .badge-high { background:var(--red-dim); color:var(--red); }
+  .badge-medium { background:var(--yellow-dim); color:var(--yellow); }
+  .badge-low { background:var(--green-dim); color:var(--green); }
+  .badge-li { background:var(--blue-dim); color:var(--blue); }
+  .badge-reddit { background:var(--orange-dim); color:var(--orange); }
+  .badge-ig { background:var(--pink-dim); color:var(--pink); }
+
+  /* ─── BUTTONS ─── */
+  .btn { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border-radius:6px; border:none; cursor:pointer; font-size:12.5px; font-weight:600; transition:all .15s; font-family:inherit; }
+  .btn-primary { background:var(--accent); color:#fff; }
+  .btn-primary:hover { background:#5c4ee6; }
+  .btn-ghost { background:transparent; color:var(--text2); border:1px solid var(--border); }
+  .btn-ghost:hover { background:var(--card); color:var(--text); }
+  .btn-sm { padding:4px 10px; font-size:11.5px; }
+
+  /* ─── FORMS ─── */
+  input, textarea, select { background:var(--card2); border:1px solid var(--border); border-radius:6px; color:var(--text); padding:8px 10px; font-size:13px; width:100%; outline:none; transition:border-color .15s; font-family:inherit; }
+  input:focus, textarea:focus, select:focus { border-color:var(--accent); }
+  select option { background:var(--card); }
+  label { font-size:11.5px; color:var(--muted); margin-bottom:4px; display:block; font-weight:500; }
+  .form-group { margin-bottom:12px; }
+  textarea { resize:vertical; min-height:72px; }
+
+  /* ─── MODAL ─── */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.65); z-index:999; align-items:center; justify-content:center; }
+  .modal-overlay.open { display:flex; }
+  .modal { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:24px; width:100%; max-width:460px; max-height:90vh; overflow-y:auto; }
+  .modal h3 { font-size:15px; font-weight:700; margin-bottom:18px; color:var(--text); }
+  .modal-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:16px; }
+
+  /* ─── ITEM ROWS ─── */
+  .item-row { display:flex; align-items:flex-start; gap:10px; padding:12px 14px; border-radius:8px; border:1px solid var(--border); background:var(--card2); margin-bottom:8px; transition:border-color .15s; }
+  .item-row:hover { border-color:#3a3a6e; }
+  .item-row .item-body { flex:1; min-width:0; }
+  .item-row .item-title { font-size:13px; font-weight:600; margin-bottom:3px; }
+  .item-row .item-meta { font-size:11.5px; color:var(--muted); display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .item-row .item-actions { display:flex; gap:4px; opacity:0; transition:opacity .15s; }
+  .item-row:hover .item-actions { opacity:1; }
+  .icon-btn { width:26px; height:26px; border-radius:5px; border:none; background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:13px; transition:background .15s; color:var(--muted); font-family:inherit; }
+  .icon-btn:hover { background:var(--border); color:var(--text); }
+  .icon-btn.del:hover { background:var(--red-dim); color:var(--red); }
+
+  /* ─── CHECKBOX ─── */
+  input[type=checkbox] { width:15px; height:15px; accent-color:var(--accent); cursor:pointer; flex-shrink:0; }
+
+  /* ─── TABS ─── */
+  .tabs { display:flex; gap:4px; }
+  .tab { padding:6px 14px; border-radius:6px; border:1px solid var(--border); background:transparent; color:var(--muted); cursor:pointer; font-size:12px; font-weight:600; transition:all .15s; font-family:inherit; }
+  .tab.active { border-color:var(--accent); color:var(--accent-text); background:var(--accent-dim); }
+  .tab-li.active { border-color:#2a5090; color:var(--blue); background:var(--blue-dim); }
+  .tab-reddit.active { border-color:#7a3010; color:var(--orange); background:var(--orange-dim); }
+  .tab-ig.active { border-color:#6e2050; color:var(--pink); background:var(--pink-dim); }
+
+  /* ─── PROGRESS BAR ─── */
+  .prog-bar { background:var(--border); border-radius:99px; height:5px; overflow:hidden; }
+  .prog-fill { height:100%; border-radius:99px; transition:width .4s; }
+
+  /* ─── EXECUTIVE ─── */
+  .exec-header { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+  .exec-avatar { width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:700; color:#fff; }
+  .exec-info h3 { font-size:15px; font-weight:700; }
+  .exec-info span { font-size:11.5px; color:var(--muted); }
+
+  /* ─── DATE CHIP ─── */
+  .date-chip { background:var(--card); border:1px solid var(--border); color:var(--text2); padding:4px 12px; border-radius:6px; font-size:12px; font-weight:500; display:inline-block; margin-bottom:16px; }
+
+  /* ─── EMPTY ─── */
+  .empty { text-align:center; padding:32px 20px; color:var(--muted); }
+  .empty p { font-size:12.5px; }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width:4px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:var(--border); border-radius:99px; }
+
+  /* ─── TOAST ─── */
+  #toast { position:fixed; bottom:20px; right:20px; background:var(--card); color:var(--text); padding:10px 18px; border-radius:8px; font-size:12.5px; border:1px solid var(--border); transform:translateY(80px); opacity:0; transition:all .25s; z-index:9999; font-weight:500; }
+  #toast.show { transform:translateY(0); opacity:1; }
+
+  /* ─── RESPONSIVE ─── */
+  @media(max-width:900px) { #sidebar{width:190px} #main{margin-left:190px;padding:18px 14px} .grid-4{grid-template-columns:repeat(2,1fr)} }
+  @media(max-width:650px) { #sidebar{transform:translateX(-100%)} #main{margin-left:0} .grid-2,.grid-3,.grid-4{grid-template-columns:1fr} }
+
+  .section-actions { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+  .post-notes { font-size:12px; color:var(--muted); margin-top:3px; white-space:pre-wrap; line-height:1.4; }
+  .reminder-done .item-title { text-decoration:line-through; color:var(--muted); }
+  .priority-dot { width:7px; height:7px; border-radius:50%; display:inline-block; flex-shrink:0; }
+  .p-high { background:var(--red); }
+  .p-medium { background:var(--yellow); }
+  .p-low { background:var(--green); }
+  .topic-chip { display:inline-flex; align-items:center; gap:5px; background:var(--accent-dim); color:var(--accent-text); padding:3px 10px; border-radius:4px; font-size:11.5px; margin:3px 3px 0 0; font-weight:500; }
+  .topic-chip .rm { cursor:pointer; color:var(--muted); font-size:10px; margin-left:2px; }
+  .topic-chip .rm:hover { color:var(--red); }
+
+  /* ─── TABLE-LIKE DATE HEADERS ─── */
+  .date-header { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; padding:6px 4px 4px; border-bottom:1px solid var(--border); }
+  .date-group { margin-bottom:18px; }
+
+  /* ─── IMPORT ─── */
+  .import-drop { border:2px dashed var(--border); border-radius:10px; padding:28px 20px; text-align:center; cursor:pointer; transition:all .2s; margin-bottom:16px; }
+  .import-drop:hover, .import-drop.dragover { border-color:var(--accent); background:rgba(109,92,255,.06); }
+  .import-drop p { color:var(--muted); font-size:12.5px; margin-top:6px; }
+  .import-drop .drop-title { color:var(--text2); font-size:13px; font-weight:600; }
+  .import-table { width:100%; border-collapse:collapse; font-size:12px; }
+  .import-table th { text-align:left; padding:6px 8px; border-bottom:2px solid var(--border); color:var(--muted); font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; }
+  .import-table td { padding:6px 8px; border-bottom:1px solid var(--border); color:var(--text2); }
+  .import-table tr:hover td { background:var(--card); }
+  .import-table .row-skip { opacity:0.35; }
+  .import-table input[type=checkbox] { width:14px; height:14px; }
+  .import-stats { display:flex; gap:16px; margin-bottom:14px; font-size:12px; color:var(--muted); }
+  .import-stats strong { color:var(--text); }
+  .modal-wide { max-width:720px; }
+  .col-map { display:grid; grid-template-columns:1fr 1fr; gap:8px 14px; margin-bottom:16px; }
+  .col-map label { font-size:11px; margin-bottom:2px; }
+  .col-map select { font-size:12px; padding:6px 8px; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+  <div class="logo">
+    <h1>VC Social Hub</h1>
+    <span>Vantage Circle</span>
+  </div>
+  <nav>
+    <div class="nav-section">Main</div>
+    <div class="nav-item active" data-page="overview"><span class="ni">O</span> Overview</div>
+    <div class="nav-item" data-page="strategy"><span class="ni">S</span> Strategy & Plans</div>
+    <div class="nav-section">Content</div>
+    <div class="nav-item" data-page="calendar"><span class="ni">C</span> Content Calendar</div>
+    <div class="nav-item" data-page="reminders"><span class="ni">R</span> Reminders</div>
+    <div class="nav-section">Executives</div>
+    <div class="nav-item" data-page="partha"><span class="ni">P</span> Partha's Brand</div>
+    <div class="nav-item" data-page="john"><span class="ni">J</span> John's Brand</div>
+  </nav>
+  <div class="sidebar-footer">Deepmoni Barman &middot; Marketing</div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- OVERVIEW -->
+  <div class="page active" id="page-overview">
+    <div class="page-header">
+      <h2>Overview</h2>
+      <span class="sub">Social media command center</span>
+    </div>
+    <div id="today-chip" class="date-chip"></div>
+    <div class="grid-4" style="margin-bottom:16px" id="stat-cards"></div>
+    <div class="grid-2">
+      <div class="card"><div class="card-title">Upcoming Reminders</div><div id="ov-reminders"></div></div>
+      <div class="card"><div class="card-title">Today's Posts</div><div id="ov-today-posts"></div></div>
+    </div>
+    <div style="margin-top:14px" class="grid-2">
+      <div class="card"><div class="card-title">Active Strategies</div><div id="ov-strategies"></div></div>
+      <div class="card"><div class="card-title">Post Status Breakdown</div><div id="ov-breakdown"></div></div>
+    </div>
+  </div>
+
+  <!-- STRATEGY -->
+  <div class="page" id="page-strategy">
+    <div class="page-header">
+      <h2>Strategy & Plans</h2>
+      <span class="sub">Track marketing strategies and content plans</span>
+    </div>
+    <div class="section-actions">
+      <div class="tabs">
+        <button class="tab active" onclick="filterStrat(this,'all')">All</button>
+        <button class="tab" onclick="filterStrat(this,'todo')">To Do</button>
+        <button class="tab" onclick="filterStrat(this,'progress')">In Progress</button>
+        <button class="tab" onclick="filterStrat(this,'done')">Done</button>
+      </div>
+      <button class="btn btn-primary" onclick="openModal('strat-modal')">+ Add Strategy</button>
+    </div>
+    <div id="strat-list"></div>
+  </div>
+
+  <!-- CALENDAR -->
+  <div class="page" id="page-calendar">
+    <div class="page-header">
+      <h2>Content Calendar</h2>
+      <span class="sub">Day-wise post planning</span>
+    </div>
+    <div class="section-actions">
+      <div class="tabs">
+        <button class="tab tab-li active" onclick="switchPlatform(this,'linkedin')">LinkedIn</button>
+        <button class="tab tab-reddit" onclick="switchPlatform(this,'reddit')">Reddit</button>
+        <button class="tab tab-ig" onclick="switchPlatform(this,'instagram')">Instagram</button>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-ghost" onclick="$('import-file').click()">Import File</button>
+        <button class="btn btn-primary" onclick="openPostModal()">+ Add Post</button>
+      </div>
+      <input type="file" id="import-file" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleFileSelect(this)" />
+    </div>
+    <div id="cal-list"></div>
+  </div>
+
+  <!-- REMINDERS -->
+  <div class="page" id="page-reminders">
+    <div class="page-header">
+      <h2>Reminders</h2>
+      <span class="sub">Deadlines and task alerts</span>
+    </div>
+    <div class="section-actions">
+      <div class="tabs">
+        <button class="tab active" onclick="filterRem(this,'all')">All</button>
+        <button class="tab" onclick="filterRem(this,'pending')">Pending</button>
+        <button class="tab" onclick="filterRem(this,'done')">Done</button>
+      </div>
+      <button class="btn btn-primary" onclick="openModal('rem-modal')">+ Add Reminder</button>
+    </div>
+    <div id="rem-list"></div>
+  </div>
+
+  <!-- PARTHA -->
+  <div class="page" id="page-partha">
+    <div class="page-header">
+      <h2>Partha's Personal Brand</h2>
+      <span class="sub">Executive thought leadership</span>
+    </div>
+    <div id="exec-partha-content"></div>
+  </div>
+
+  <!-- JOHN -->
+  <div class="page" id="page-john">
+    <div class="page-header">
+      <h2>John's Personal Brand</h2>
+      <span class="sub">Executive thought leadership</span>
+    </div>
+    <div id="exec-john-content"></div>
+  </div>
+
+</div>
+
+<!-- ══════════ MODALS ══════════ -->
+
+<!-- Strategy Modal -->
+<div class="modal-overlay" id="strat-modal">
+  <div class="modal">
+    <h3 id="strat-modal-title">Add Strategy</h3>
+    <input type="hidden" id="strat-id" />
+    <div class="form-group"><label>Title *</label><input id="strat-title" placeholder="e.g. Q3 LinkedIn Growth Strategy" /></div>
+    <div class="form-group"><label>Description</label><textarea id="strat-desc" placeholder="Describe the plan in detail..."></textarea></div>
+    <div class="grid-2">
+      <div class="form-group"><label>Status</label><select id="strat-status"><option value="todo">To Do</option><option value="progress">In Progress</option><option value="done">Done</option></select></div>
+      <div class="form-group"><label>Due Date</label><input type="date" id="strat-due" /></div>
+    </div>
+    <div class="form-group"><label>Platform</label><select id="strat-platform"><option value="all">All Platforms</option><option value="linkedin">LinkedIn</option><option value="reddit">Reddit</option><option value="instagram">Instagram</option></select></div>
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('strat-modal')">Cancel</button><button class="btn btn-primary" onclick="saveStrat()">Save</button></div>
+  </div>
+</div>
+
+<!-- Post Modal -->
+<div class="modal-overlay" id="post-modal">
+  <div class="modal">
+    <h3 id="post-modal-title">Add Post</h3>
+    <input type="hidden" id="post-id" />
+    <div class="grid-2">
+      <div class="form-group"><label>Date *</label><input type="date" id="post-date" /></div>
+      <div class="form-group"><label>Platform</label><select id="post-platform"><option value="linkedin">LinkedIn</option><option value="reddit">Reddit</option><option value="instagram">Instagram</option></select></div>
+    </div>
+    <div class="form-group"><label>Post Title / Topic *</label><input id="post-title" placeholder="e.g. 5 Ways Recognition Boosts Retention" /></div>
+    <div class="form-group"><label>Content Notes</label><textarea id="post-notes" placeholder="Key points, angles, CTAs, hashtags..."></textarea></div>
+    <div class="grid-2">
+      <div class="form-group"><label>Status</label><select id="post-status"><option value="draft">Draft</option><option value="scheduled">Scheduled</option><option value="published">Published</option></select></div>
+      <div class="form-group"><label>Post Time</label><input type="time" id="post-time" /></div>
+    </div>
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('post-modal')">Cancel</button><button class="btn btn-primary" onclick="savePost()">Save</button></div>
+  </div>
+</div>
+
+<!-- Reminder Modal -->
+<div class="modal-overlay" id="rem-modal">
+  <div class="modal">
+    <h3 id="rem-modal-title">Add Reminder</h3>
+    <input type="hidden" id="rem-id" />
+    <div class="form-group"><label>Title *</label><input id="rem-title" placeholder="e.g. Submit weekly report" /></div>
+    <div class="form-group"><label>Notes</label><textarea id="rem-notes" placeholder="Any extra details..." style="min-height:56px"></textarea></div>
+    <div class="grid-2">
+      <div class="form-group"><label>Date *</label><input type="date" id="rem-date" /></div>
+      <div class="form-group"><label>Time</label><input type="time" id="rem-time" /></div>
+    </div>
+    <div class="form-group"><label>Priority</label><select id="rem-priority"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select></div>
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('rem-modal')">Cancel</button><button class="btn btn-primary" onclick="saveRem()">Save</button></div>
+  </div>
+</div>
+
+<!-- Exec Post Modal -->
+<div class="modal-overlay" id="exec-post-modal">
+  <div class="modal">
+    <h3 id="exec-post-title">Add LinkedIn Post</h3>
+    <input type="hidden" id="ep-id" /><input type="hidden" id="ep-exec" />
+    <div class="form-group"><label>Post Topic / Title *</label><input id="ep-title" placeholder="e.g. Why Recognition is a Business Imperative" /></div>
+    <div class="form-group"><label>Content Notes / Outline</label><textarea id="ep-notes" placeholder="Key messages, data points, personal story angle..."></textarea></div>
+    <div class="grid-2">
+      <div class="form-group"><label>Planned Date</label><input type="date" id="ep-date" /></div>
+      <div class="form-group"><label>Status</label><select id="ep-status"><option value="draft">Draft</option><option value="scheduled">Scheduled</option><option value="published">Published</option></select></div>
+    </div>
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('exec-post-modal')">Cancel</button><button class="btn btn-primary" onclick="saveExecPost()">Save</button></div>
+  </div>
+</div>
+
+<!-- Topic Modal -->
+<div class="modal-overlay" id="topic-modal">
+  <div class="modal">
+    <h3>Add Thought Leadership Topic</h3>
+    <input type="hidden" id="topic-exec" />
+    <div class="form-group"><label>Topic *</label><input id="topic-text" placeholder="e.g. Future of Employee Recognition" /></div>
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('topic-modal')">Cancel</button><button class="btn btn-primary" onclick="saveTopic()">Add</button></div>
+  </div>
+</div>
+
+<!-- Import Preview Modal -->
+<div class="modal-overlay" id="import-modal">
+  <div class="modal modal-wide">
+    <h3>Import Preview</h3>
+    <div id="import-filename" style="font-size:12px;color:var(--muted);margin-bottom:12px"></div>
+
+    <div id="import-mapping" style="display:none">
+      <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px">Map your columns:</div>
+      <div class="col-map">
+        <div class="form-group"><label>Date column</label><select id="map-date"></select></div>
+        <div class="form-group"><label>Platform column</label><select id="map-platform"></select></div>
+        <div class="form-group"><label>Title column</label><select id="map-title"></select></div>
+        <div class="form-group"><label>Notes column</label><select id="map-notes"></select></div>
+        <div class="form-group"><label>Status column</label><select id="map-status"></select></div>
+        <div class="form-group"><label>Time column (optional)</label><select id="map-time"></select></div>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="applyMapping()" style="margin-bottom:16px">Apply Mapping</button>
+    </div>
+
+    <div id="import-stats" class="import-stats"></div>
+    <div style="max-height:340px;overflow-y:auto;border:1px solid var(--border);border-radius:8px">
+      <table class="import-table">
+        <thead id="import-thead"></thead>
+        <tbody id="import-tbody"></tbody>
+      </table>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('import-modal');importState=null">Cancel</button>
+      <button class="btn btn-primary" id="import-confirm-btn" onclick="confirmImport()">Import Selected</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ═══ DATA ═══
+const KEY='vc_dash_v2';
+let DB={strategies:[],posts:[],reminders:[],exec:{partha:{posts:[],topics:[],schedule:'Mon / Thu',bio:'Co-Founder & President, Vantage Circle'},john:{posts:[],topics:[],schedule:'Tue / Fri',bio:'Chief Business Officer, Vantage Circle'}}};
+function load(){try{const d=localStorage.getItem(KEY);if(d)DB=JSON.parse(d)}catch(e){}}
+function save(){localStorage.setItem(KEY,JSON.stringify(DB))}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+load();
+
+// ═══ NAV ═══
+let curPage='overview',curPlatform='linkedin',stratFilter='all',remFilter='all';
+document.querySelectorAll('.nav-item').forEach(el=>{el.addEventListener('click',()=>{document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));el.classList.add('active');const p=el.dataset.page;document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');curPage=p;render()})});
+
+// ═══ MODALS ═══
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+document.querySelectorAll('.modal-overlay').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')})});
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+
+// ═══ OVERVIEW ═══
+function renderOverview(){
+  const now=new Date(),todayStr=toDateStr(now);
+  document.getElementById('today-chip').textContent=now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const todayPosts=DB.posts.filter(p=>p.date===todayStr);
+  const pending=DB.reminders.filter(r=>!r.done);
+  const published=DB.posts.filter(p=>p.status==='published');
+
+  document.getElementById('stat-cards').innerHTML=`
+    <div class="stat-card"><div class="stat-label"><span class="stat-dot" style="background:var(--blue)"></span>Total Posts</div><div class="stat-val" style="color:var(--blue)">${DB.posts.length}</div></div>
+    <div class="stat-card"><div class="stat-label"><span class="stat-dot" style="background:var(--green)"></span>Published</div><div class="stat-val" style="color:var(--green)">${published.length}</div></div>
+    <div class="stat-card"><div class="stat-label"><span class="stat-dot" style="background:var(--yellow)"></span>Reminders</div><div class="stat-val" style="color:var(--yellow)">${pending.length}</div></div>
+    <div class="stat-card"><div class="stat-label"><span class="stat-dot" style="background:var(--accent-text)"></span>Strategies</div><div class="stat-val" style="color:var(--accent-text)">${DB.strategies.length}</div></div>`;
+
+  const upRem=DB.reminders.filter(r=>!r.done).sort((a,b)=>a.date>b.date?1:-1).slice(0,4);
+  document.getElementById('ov-reminders').innerHTML=upRem.length?upRem.map(r=>`
+    <div class="item-row" style="margin-bottom:6px;padding:8px 10px">
+      <span class="priority-dot p-${r.priority}" style="margin-top:5px"></span>
+      <div class="item-body">
+        <div class="item-title" style="font-size:12.5px">${r.title}</div>
+        <div class="item-meta">${r.date}${r.time?' &middot; '+r.time:''} <span class="badge badge-${r.priority}">${r.priority}</span></div>
+      </div>
+    </div>`).join(''):'<div class="empty"><p>No pending reminders</p></div>';
+
+  document.getElementById('ov-today-posts').innerHTML=todayPosts.length?todayPosts.map(p=>`
+    <div class="item-row" style="margin-bottom:6px;padding:8px 10px">
+      <div class="item-body">
+        <div class="item-title" style="font-size:12.5px">${p.title}</div>
+        <div class="item-meta">${platBadge(p.platform)} <span class="badge badge-${p.status}">${p.status}</span></div>
+      </div>
+    </div>`).join(''):'<div class="empty"><p>No posts scheduled for today</p></div>';
+
+  const actStrats=DB.strategies.filter(s=>s.status!=='done').slice(0,3);
+  document.getElementById('ov-strategies').innerHTML=actStrats.length?actStrats.map(s=>`
+    <div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <span style="font-size:12.5px;font-weight:600">${s.title}</span>
+        <span class="badge badge-${s.status}">${s.status==='progress'?'In Progress':'To Do'}</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${s.status==='progress'?'55':'10'}%;background:var(--accent)"></div></div>
+    </div>`).join(''):'<div class="empty"><p>No active strategies</p></div>';
+
+  const draft=DB.posts.filter(p=>p.status==='draft').length,sched=DB.posts.filter(p=>p.status==='scheduled').length,pub=DB.posts.filter(p=>p.status==='published').length,total=DB.posts.length||1;
+  document.getElementById('ov-breakdown').innerHTML=`
+    <div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Draft</span><span style="color:var(--muted)">${draft}</span></div><div class="prog-bar"><div class="prog-fill" style="width:${(draft/total*100).toFixed(0)}%;background:var(--text2)"></div></div></div>
+    <div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Scheduled</span><span style="color:var(--muted)">${sched}</span></div><div class="prog-bar"><div class="prog-fill" style="width:${(sched/total*100).toFixed(0)}%;background:var(--accent)"></div></div></div>
+    <div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Published</span><span style="color:var(--muted)">${pub}</span></div><div class="prog-bar"><div class="prog-fill" style="width:${(pub/total*100).toFixed(0)}%;background:var(--green)"></div></div></div>`;
+}
+
+// ═══ STRATEGY ═══
+function filterStrat(el,f){stratFilter=f;document.querySelectorAll('#page-strategy .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderStrategy()}
+function renderStrategy(){
+  const list=stratFilter==='all'?DB.strategies:DB.strategies.filter(s=>s.status===stratFilter);
+  const el=document.getElementById('strat-list');
+  if(!list.length){el.innerHTML='<div class="empty"><p>No strategies yet. Add your first plan.</p></div>';return}
+  el.innerHTML=list.map(s=>`
+    <div class="item-row">
+      <div class="item-body">
+        <div class="item-title">${s.title}</div>
+        ${s.desc?`<div class="post-notes">${s.desc}</div>`:''}
+        <div class="item-meta" style="margin-top:5px">
+          <span class="badge badge-${s.status}">${statusLabel(s.status)}</span>
+          ${platBadge(s.platform)}
+          ${s.due?'<span>Due: '+s.due+'</span>':''}
+        </div>
+      </div>
+      <div class="item-actions">
+        <button class="icon-btn" onclick="editStrat('${s.id}')" title="Edit">E</button>
+        <button class="icon-btn del" onclick="deleteStrat('${s.id}')" title="Delete">x</button>
+      </div>
+    </div>`).join('')}
+function openStratModal(){$('strat-id').value='';$('strat-title').value='';$('strat-desc').value='';$('strat-status').value='todo';$('strat-due').value='';$('strat-platform').value='all';$('strat-modal-title').textContent='Add Strategy';openModal('strat-modal')}
+function editStrat(id){const s=DB.strategies.find(x=>x.id===id);if(!s)return;$('strat-id').value=s.id;$('strat-title').value=s.title;$('strat-desc').value=s.desc||'';$('strat-status').value=s.status;$('strat-due').value=s.due||'';$('strat-platform').value=s.platform||'all';$('strat-modal-title').textContent='Edit Strategy';openModal('strat-modal')}
+function saveStrat(){const title=$('strat-title').value.trim();if(!title){alert('Title required');return}const id=$('strat-id').value;const obj={id:id||uid(),title,desc:$('strat-desc').value.trim(),status:$('strat-status').value,due:$('strat-due').value,platform:$('strat-platform').value};if(id){const i=DB.strategies.findIndex(x=>x.id===id);DB.strategies[i]=obj}else DB.strategies.unshift(obj);save();closeModal('strat-modal');renderStrategy();renderOverview();toast('Strategy saved')}
+function deleteStrat(id){if(!confirm('Delete this strategy?'))return;DB.strategies=DB.strategies.filter(x=>x.id!==id);save();renderStrategy();renderOverview();toast('Deleted')}
+
+// ═══ CALENDAR ═══
+function switchPlatform(el,plat){curPlatform=plat;document.querySelectorAll('#page-calendar .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderCalendar()}
+function renderCalendar(){
+  const posts=DB.posts.filter(p=>p.platform===curPlatform).sort((a,b)=>a.date>b.date?1:-1);
+  const el=document.getElementById('cal-list');
+  if(!posts.length){el.innerHTML=`<div class="empty"><p>No posts planned for ${platName(curPlatform)}.</p></div>`;return}
+  const grouped={};posts.forEach(p=>{if(!grouped[p.date])grouped[p.date]=[];grouped[p.date].push(p)});
+  el.innerHTML=Object.keys(grouped).sort().map(date=>`
+    <div class="date-group">
+      <div class="date-header">${formatDate(date)}</div>
+      ${grouped[date].map(p=>`
+        <div class="item-row">
+          <input type="checkbox" ${p.checked?'checked':''} onchange="togglePost('${p.id}',this.checked)" style="margin-top:2px">
+          <div class="item-body">
+            <div class="item-title" style="${p.checked?'text-decoration:line-through;color:var(--muted)':''}">${p.title}</div>
+            ${p.notes?`<div class="post-notes">${p.notes}</div>`:''}
+            <div class="item-meta" style="margin-top:4px">
+              <span class="badge badge-${p.status}">${p.status}</span>
+              ${p.time?'<span>'+p.time+'</span>':''}
+            </div>
+          </div>
+          <div class="item-actions">
+            <button class="icon-btn" onclick="editPost('${p.id}')" title="Edit">E</button>
+            <button class="icon-btn del" onclick="deletePost('${p.id}')" title="Delete">x</button>
+          </div>
+        </div>`).join('')}
+    </div>`).join('')}
+function openPostModal(){$('post-id').value='';$('post-date').value=toDateStr(new Date());$('post-platform').value=curPlatform;$('post-title').value='';$('post-notes').value='';$('post-status').value='draft';$('post-time').value='';$('post-modal-title').textContent='Add Post';openModal('post-modal')}
+function editPost(id){const p=DB.posts.find(x=>x.id===id);if(!p)return;$('post-id').value=p.id;$('post-date').value=p.date;$('post-platform').value=p.platform;$('post-title').value=p.title;$('post-notes').value=p.notes||'';$('post-status').value=p.status;$('post-time').value=p.time||'';$('post-modal-title').textContent='Edit Post';openModal('post-modal')}
+function savePost(){const title=$('post-title').value.trim(),date=$('post-date').value;if(!title||!date){alert('Title and date required');return}const id=$('post-id').value;const obj={id:id||uid(),date,platform:$('post-platform').value,title,notes:$('post-notes').value.trim(),status:$('post-status').value,time:$('post-time').value,checked:false};if(id){const i=DB.posts.findIndex(x=>x.id===id);obj.checked=DB.posts[i].checked;DB.posts[i]=obj}else DB.posts.push(obj);save();closeModal('post-modal');curPlatform=obj.platform;renderCalendar();renderOverview();toast('Post saved')}
+function deletePost(id){if(!confirm('Delete this post?'))return;DB.posts=DB.posts.filter(x=>x.id!==id);save();renderCalendar();renderOverview();toast('Deleted')}
+function togglePost(id,checked){const p=DB.posts.find(x=>x.id===id);if(p){p.checked=checked;save()}}
+
+// ═══ REMINDERS ═══
+function filterRem(el,f){remFilter=f;document.querySelectorAll('#page-reminders .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderReminders()}
+function renderReminders(){
+  let list=remFilter==='all'?DB.reminders:remFilter==='done'?DB.reminders.filter(r=>r.done):DB.reminders.filter(r=>!r.done);
+  list=list.sort((a,b)=>a.date>b.date?1:-1);
+  const el=document.getElementById('rem-list');
+  if(!list.length){el.innerHTML='<div class="empty"><p>No reminders.</p></div>';return}
+  el.innerHTML=list.map(r=>`
+    <div class="item-row ${r.done?'reminder-done':''}">
+      <span class="priority-dot p-${r.priority}" style="margin-top:5px"></span>
+      <div class="item-body">
+        <div class="item-title">${r.title}</div>
+        ${r.notes?`<div class="post-notes">${r.notes}</div>`:''}
+        <div class="item-meta" style="margin-top:3px">
+          <span class="badge badge-${r.priority}">${r.priority}</span>
+          <span>${r.date}${r.time?' &middot; '+r.time:''}</span>
+        </div>
+      </div>
+      <div class="item-actions" style="opacity:1">
+        ${!r.done?`<button class="btn btn-sm" style="background:var(--green-dim);color:var(--green);border:none" onclick="doneRem('${r.id}')">Done</button>`:'<span class="badge badge-done">Done</span>'}
+        <button class="icon-btn" onclick="editRem('${r.id}')" title="Edit">E</button>
+        <button class="icon-btn del" onclick="deleteRem('${r.id}')" title="Delete">x</button>
+      </div>
+    </div>`).join('')}
+function editRem(id){const r=DB.reminders.find(x=>x.id===id);if(!r)return;$('rem-id').value=r.id;$('rem-title').value=r.title;$('rem-notes').value=r.notes||'';$('rem-date').value=r.date;$('rem-time').value=r.time||'';$('rem-priority').value=r.priority;$('rem-modal-title').textContent='Edit Reminder';openModal('rem-modal')}
+function saveRem(){const title=$('rem-title').value.trim(),date=$('rem-date').value;if(!title||!date){alert('Title and date required');return}const id=$('rem-id').value;const obj={id:id||uid(),title,notes:$('rem-notes').value.trim(),date,time:$('rem-time').value,priority:$('rem-priority').value,done:false};if(id){const i=DB.reminders.findIndex(x=>x.id===id);obj.done=DB.reminders[i].done;DB.reminders[i]=obj}else DB.reminders.unshift(obj);save();closeModal('rem-modal');renderReminders();renderOverview();toast('Reminder saved')}
+function deleteRem(id){if(!confirm('Delete this reminder?'))return;DB.reminders=DB.reminders.filter(x=>x.id!==id);save();renderReminders();renderOverview();toast('Deleted')}
+function doneRem(id){const r=DB.reminders.find(x=>x.id===id);if(r){r.done=true;save();renderReminders();renderOverview();toast('Marked as done')}}
+
+// ═══ EXEC BRANDING ═══
+function renderExec(name){
+  const exec=DB.exec[name],color=name==='partha'?'var(--accent)':'var(--green)',initial=name==='partha'?'P':'J';
+  const c=document.getElementById('exec-'+name+'-content');
+  c.innerHTML=`
+    <div class="exec-header">
+      <div class="exec-avatar" style="background:${color}">${initial}</div>
+      <div class="exec-info"><h3>${name==='partha'?'Partha Neog':'John Britto'}</h3><span>${exec.bio}</span></div>
+    </div>
+    <div class="grid-2" style="margin-bottom:18px">
+      <div class="card">
+        <div class="card-title">Posting Schedule</div>
+        <div style="font-size:20px;font-weight:700;color:${color};margin-bottom:4px">${exec.schedule}</div>
+        <div style="font-size:11.5px;color:var(--muted)">Recommended posting days</div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="editSchedule('${name}')">Edit Schedule</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Thought Leadership Topics</div>
+        <div id="topics-${name}">${renderTopics(name)}</div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="openTopicModal('${name}')">+ Add Topic</button>
+      </div>
+    </div>
+    <div>
+      <div class="section-actions">
+        <div style="font-size:13px;font-weight:700;color:var(--text)">LinkedIn Posts</div>
+        <button class="btn btn-primary btn-sm" onclick="openExecPost('${name}')">+ Add Post</button>
+      </div>
+      <div id="exec-posts-${name}">${renderExecPosts(name)}</div>
+    </div>`}
+function renderTopics(name){
+  const t=DB.exec[name].topics;if(!t.length)return'<div style="font-size:12px;color:var(--muted)">No topics yet</div>';
+  return t.map((x,i)=>`<span class="topic-chip">${x}<span class="rm" onclick="removeTopic('${name}',${i})">x</span></span>`).join('')}
+function renderExecPosts(name){
+  const posts=DB.exec[name].posts.sort((a,b)=>a.date>b.date?1:-1);
+  if(!posts.length)return'<div class="empty"><p>No LinkedIn posts yet.</p></div>';
+  return posts.map(p=>`
+    <div class="item-row">
+      <div class="item-body">
+        <div class="item-title">${p.title}</div>
+        ${p.notes?`<div class="post-notes">${p.notes}</div>`:''}
+        <div class="item-meta" style="margin-top:4px">
+          <span class="badge badge-${p.status}">${p.status}</span>
+          ${p.date?'<span>'+p.date+'</span>':''}
+        </div>
+      </div>
+      <div class="item-actions">
+        <button class="icon-btn" onclick="editExecPost('${name}','${p.id}')" title="Edit">E</button>
+        <button class="icon-btn del" onclick="deleteExecPost('${name}','${p.id}')" title="Delete">x</button>
+      </div>
+    </div>`).join('')}
+function openTopicModal(exec){$('topic-exec').value=exec;$('topic-text').value='';openModal('topic-modal')}
+function saveTopic(){const t=$('topic-text').value.trim();if(!t)return;const n=$('topic-exec').value;DB.exec[n].topics.push(t);save();closeModal('topic-modal');renderExec(n);toast('Topic added')}
+function removeTopic(n,i){DB.exec[n].topics.splice(i,1);save();renderExec(n)}
+function editSchedule(n){const s=prompt('Enter posting schedule (e.g. Mon / Thu):',DB.exec[n].schedule);if(s){DB.exec[n].schedule=s;save();renderExec(n)}}
+function openExecPost(exec){$('ep-id').value='';$('ep-exec').value=exec;$('ep-title').value='';$('ep-notes').value='';$('ep-date').value=toDateStr(new Date());$('ep-status').value='draft';$('exec-post-title').textContent=(exec==='partha'?"Partha's":"John's")+' LinkedIn Post';openModal('exec-post-modal')}
+function editExecPost(exec,id){const p=DB.exec[exec].posts.find(x=>x.id===id);if(!p)return;$('ep-id').value=p.id;$('ep-exec').value=exec;$('ep-title').value=p.title;$('ep-notes').value=p.notes||'';$('ep-date').value=p.date||'';$('ep-status').value=p.status;$('exec-post-title').textContent='Edit Post';openModal('exec-post-modal')}
+function saveExecPost(){const title=$('ep-title').value.trim();if(!title){alert('Title required');return}const id=$('ep-id').value,exec=$('ep-exec').value;const obj={id:id||uid(),title,notes:$('ep-notes').value.trim(),date:$('ep-date').value,status:$('ep-status').value};if(id){const i=DB.exec[exec].posts.findIndex(x=>x.id===id);DB.exec[exec].posts[i]=obj}else DB.exec[exec].posts.unshift(obj);save();closeModal('exec-post-modal');renderExec(exec);toast('Post saved')}
+function deleteExecPost(exec,id){if(!confirm('Delete this post?'))return;DB.exec[exec].posts=DB.exec[exec].posts.filter(x=>x.id!==id);save();renderExec(exec);toast('Deleted')}
+
+// ═══ HELPERS ═══
+function $(id){return document.getElementById(id)}
+function toDateStr(d){return d.toISOString().split('T')[0]}
+function formatDate(s){const d=new Date(s+'T00:00:00');return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'})}
+function statusLabel(s){return s==='todo'?'To Do':s==='progress'?'In Progress':'Done'}
+function platName(p){return p==='linkedin'?'LinkedIn':p==='reddit'?'Reddit':'Instagram'}
+function platBadge(p){if(p==='linkedin')return'<span class="badge badge-li">LinkedIn</span>';if(p==='reddit')return'<span class="badge badge-reddit">Reddit</span>';if(p==='instagram')return'<span class="badge badge-ig">Instagram</span>';return'<span class="badge badge-todo">All</span>'}
+
+// ═══ IMPORT ═══
+let importState=null; // {rows:[], headers:[], selected:Set, mapping:{}}
+
+function handleFileSelect(input){
+  const file=input.files[0];if(!file)return;
+  input.value=''; // reset so same file can be re-imported
+  const name=file.name.toLowerCase();
+  if(name.endsWith('.csv')){
+    const reader=new FileReader();
+    reader.onload=e=>parseCSV(e.target.result,file.name);
+    reader.readAsText(file);
+  } else if(name.endsWith('.xlsx')||name.endsWith('.xls')){
+    const reader=new FileReader();
+    reader.onload=e=>parseXLSX(e.target.result,file.name);
+    reader.readAsArrayBuffer(file);
+  } else {
+    alert('Unsupported file format. Use .xlsx, .xls, or .csv');
+  }
+}
+
+function parseCSV(text,filename){
+  const lines=text.split(/\r?\n/).filter(l=>l.trim());
+  if(lines.length<2){alert('File appears empty');return}
+  const headers=parseCSVLine(lines[0]);
+  const rows=[];
+  for(let i=1;i<lines.length;i++){
+    const vals=parseCSVLine(lines[i]);
+    if(vals.length&&vals.some(v=>v.trim()))rows.push(vals);
+  }
+  showImportPreview(headers,rows,filename);
+}
+
+function parseCSVLine(line){
+  const result=[];let cur='',inQ=false;
+  for(let i=0;i<line.length;i++){
+    const c=line[i];
+    if(inQ){if(c==='"'&&line[i+1]==='"'){cur+='"';i++}else if(c==='"')inQ=false;else cur+=c}
+    else{if(c==='"')inQ=true;else if(c===','){result.push(cur.trim());cur=''}else cur+=c}
+  }
+  result.push(cur.trim());return result;
+}
+
+function parseXLSX(buffer,filename){
+  try{
+    const wb=XLSX.read(buffer,{type:'array',cellDates:true});
+    const ws=wb.Sheets[wb.SheetNames[0]];
+    const data=XLSX.utils.sheet_to_json(ws,{header:1,defval:'',raw:false});
+    if(data.length<2){alert('Sheet appears empty');return}
+    const headers=data[0].map(h=>String(h).trim());
+    const rows=data.slice(1).filter(r=>r.some(c=>String(c).trim()));
+    showImportPreview(headers,rows.map(r=>r.map(c=>String(c).trim())),filename);
+  }catch(e){alert('Error reading file: '+e.message)}
+}
+
+function showImportPreview(headers,rows,filename){
+  // Auto-detect column mapping
+  const mapping=autoMapColumns(headers);
+  importState={headers,rows,selected:new Set(rows.map((_,i)=>i)),mapping,filename};
+
+  $('import-filename').textContent=filename+' — '+rows.length+' rows found';
+
+  // Populate mapping dropdowns
+  const fields=['date','platform','title','notes','status','time'];
+  fields.forEach(f=>{
+    const sel=$('map-'+f);
+    sel.innerHTML='<option value="-1">-- skip --</option>'+headers.map((h,i)=>`<option value="${i}" ${mapping[f]===i?'selected':''}>${h}</option>`).join('');
+  });
+  $('import-mapping').style.display='block';
+
+  renderImportTable();
+  openModal('import-modal');
+}
+
+function autoMapColumns(headers){
+  const mapping={date:-1,platform:-1,title:-1,notes:-1,status:-1,time:-1};
+  const lower=headers.map(h=>h.toLowerCase().replace(/[^a-z0-9]/g,''));
+
+  const matchers={
+    date:['date','postdate','scheduleddate','publishdate','day','scheduledfor'],
+    platform:['platform','channel','network','source','media','socialplatform'],
+    title:['title','topic','posttitle','posttopic','subject','headline','content','post'],
+    notes:['notes','contentnotes','description','details','body','copy','caption','text'],
+    status:['status','poststatus','state','stage'],
+    time:['time','posttime','scheduledtime','hour']
+  };
+
+  for(const[field,keywords]of Object.entries(matchers)){
+    for(const kw of keywords){
+      const idx=lower.findIndex(h=>h===kw||h.includes(kw));
+      if(idx!==-1&&!Object.values(mapping).includes(idx)){mapping[field]=idx;break}
+    }
+  }
+  return mapping;
+}
+
+function applyMapping(){
+  const fields=['date','platform','title','notes','status','time'];
+  fields.forEach(f=>{importState.mapping[f]=parseInt($('map-'+f).value)});
+  renderImportTable();
+}
+
+function renderImportTable(){
+  const{rows,mapping,selected}=importState;
+
+  // Stats
+  const validCount=rows.filter((_,i)=>selected.has(i)).length;
+  $('import-stats').innerHTML=`<span><strong>${validCount}</strong> of ${rows.length} rows selected</span>`;
+
+  // Table header
+  $('import-thead').innerHTML=`<tr><th style="width:32px"><input type="checkbox" ${selected.size===rows.length?'checked':''} onchange="toggleAllImport(this.checked)"></th><th>Date</th><th>Platform</th><th>Title</th><th>Notes</th><th>Status</th></tr>`;
+
+  // Table rows
+  $('import-tbody').innerHTML=rows.map((row,i)=>{
+    const d=getVal(row,mapping.date);
+    const p=getVal(row,mapping.platform);
+    const t=getVal(row,mapping.title);
+    const n=getVal(row,mapping.notes);
+    const s=getVal(row,mapping.status);
+    const sel=selected.has(i);
+    return`<tr class="${sel?'':'row-skip'}">
+      <td><input type="checkbox" ${sel?'checked':''} onchange="toggleImportRow(${i},this.checked)"></td>
+      <td>${d||'—'}</td>
+      <td>${p?'<span class=\"badge badge-'+normPlatform(p)+'\">'+normPlatformLabel(p)+'</span>':'—'}</td>
+      <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t||'—'}</td>
+      <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)">${n||'—'}</td>
+      <td>${s?'<span class=\"badge badge-'+normStatus(s)+'\">'+normStatusLabel(s)+'</span>':'draft'}</td>
+    </tr>`}).join('');
+
+  $('import-confirm-btn').textContent='Import '+validCount+' Posts';
+}
+
+function getVal(row,idx){return idx>=0&&idx<row.length?String(row[idx]).trim():''}
+
+function toggleAllImport(checked){
+  if(checked)importState.rows.forEach((_,i)=>importState.selected.add(i));
+  else importState.selected.clear();
+  renderImportTable();
+}
+function toggleImportRow(i,checked){
+  if(checked)importState.selected.add(i);else importState.selected.delete(i);
+  renderImportTable();
+}
+
+function normPlatform(val){
+  const v=val.toLowerCase().replace(/[^a-z]/g,'');
+  if(v.includes('linkedin')||v==='li')return'li';
+  if(v.includes('reddit'))return'reddit';
+  if(v.includes('instagram')||v.includes('insta')||v==='ig')return'ig';
+  return'li'; // default
+}
+function normPlatformVal(val){
+  const v=val.toLowerCase().replace(/[^a-z]/g,'');
+  if(v.includes('linkedin')||v==='li')return'linkedin';
+  if(v.includes('reddit'))return'reddit';
+  if(v.includes('instagram')||v.includes('insta')||v==='ig')return'instagram';
+  return'linkedin';
+}
+function normPlatformLabel(val){
+  const p=normPlatformVal(val);
+  return p==='linkedin'?'LinkedIn':p==='reddit'?'Reddit':'Instagram';
+}
+function normStatus(val){
+  const v=val.toLowerCase().replace(/[^a-z]/g,'');
+  if(v.includes('publish')||v==='live'||v==='posted')return'published';
+  if(v.includes('schedul')||v==='planned'||v==='ready')return'scheduled';
+  return'draft';
+}
+function normStatusLabel(val){
+  const s=normStatus(val);
+  return s==='published'?'published':s==='scheduled'?'scheduled':'draft';
+}
+
+function normDate(val){
+  if(!val)return'';
+  // Try parsing as-is
+  let d=new Date(val);
+  if(!isNaN(d)&&d.getFullYear()>2000)return toDateStr(d);
+  // Try DD/MM/YYYY or DD-MM-YYYY
+  const parts=val.split(/[\/\-\.]/);
+  if(parts.length===3){
+    const[a,b,c]=parts.map(Number);
+    if(c>100){d=new Date(c,b-1,a)}// DD/MM/YYYY
+    else if(a>100){d=new Date(a,b-1,c)}// YYYY/MM/DD
+    else{d=new Date(2000+c,b-1,a)}// DD/MM/YY
+    if(!isNaN(d))return toDateStr(d);
+  }
+  return val; // return as-is if can't parse
+}
+
+function confirmImport(){
+  const{rows,mapping,selected}=importState;
+  let imported=0;
+  rows.forEach((row,i)=>{
+    if(!selected.has(i))return;
+    const title=getVal(row,mapping.title);
+    if(!title)return; // skip rows with no title
+    const dateRaw=getVal(row,mapping.date);
+    const date=normDate(dateRaw)||toDateStr(new Date());
+    const platform=mapping.platform>=0?normPlatformVal(getVal(row,mapping.platform)):'linkedin';
+    const notes=getVal(row,mapping.notes);
+    const status=mapping.status>=0?normStatus(getVal(row,mapping.status)):'draft';
+    const time=getVal(row,mapping.time);
+
+    DB.posts.push({id:uid(),date,platform,title,notes,status,time,checked:false});
+    imported++;
+  });
+
+  save();
+  closeModal('import-modal');
+  importState=null;
+
+  // Switch to calendar and render
+  curPlatform='linkedin';
+  renderCalendar();
+  renderOverview();
+  toast(imported+' posts imported');
+}
+
+// ═══ RENDER ═══
+function render(){
+  if(curPage==='overview')renderOverview();
+  if(curPage==='strategy')renderStrategy();
+  if(curPage==='calendar')renderCalendar();
+  if(curPage==='reminders')renderReminders();
+  if(curPage==='partha')renderExec('partha');
+  if(curPage==='john')renderExec('john');
+}
+document.querySelector('#page-strategy .btn-primary').onclick=openStratModal;
+document.querySelector('#page-reminders .btn-primary').onclick=()=>{$('rem-id').value='';$('rem-title').value='';$('rem-notes').value='';$('rem-date').value=toDateStr(new Date());$('rem-time').value='';$('rem-priority').value='medium';$('rem-modal-title').textContent='Add Reminder';openModal('rem-modal')};
+render();
+</script>
+</body>
+</html>
