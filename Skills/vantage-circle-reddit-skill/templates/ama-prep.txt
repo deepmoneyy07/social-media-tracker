@@ -1,0 +1,432 @@
+AMA PREPARATION GUIDE
+=====================
+
+Reddit Ask Me Anything (AMA) is a powerful lead generation opportunity.
+Use this guide to prepare, execute, and follow up on an effective AMA.
+
+---
+
+## WHAT IS AN AMA?
+
+An AMA (Ask Me Anything) is a discussion thread where you answer community questions in real-time.
+Typically runs 2-4 hours and can generate 50-200 questions + highly engaged leads.
+
+**Why AMA is valuable:**
+- High visibility (pinned/promoted by mods)
+- Direct audience engagement (they're asking YOU)
+- Authority building (real-time expert positioning)
+- Lead generation (high-intent questions = lead signals)
+- Trust building (transparency under scrutiny)
+
+---
+
+## PRE-AMA PLANNING (2-4 weeks before)
+
+### Step 1: Choose Your Angle (3-5 options)
+
+Format: "I'm [credential], and I specialize in [topic]. Ask me anything about [X]."
+
+Examples:
+- "I'm an HR marketing leader who's run peer recognition programs. AMA about building recognition culture."
+- "I've worked with 50+ companies scaling from 50 to 500 people. AMA about retention strategies."
+- "I specialize in employee engagement metrics. AMA about measuring what actually matters."
+
+**Criteria for good AMA angle:**
+☐ Credible (you can speak authoritatively)
+☐ Interesting (people actually want to ask)
+☐ Vantage Circle-adjacent (connects naturally to your expertise, not too promotional)
+☐ Timely (relevant to current HR/culture conversations)
+☐ Specific (not too broad, not too narrow)
+
+### Step 2: Get Mod Approval
+
+Contact r/humanresources mods 2-4 weeks in advance.
+
+Email template:
+```
+Subject: AMA Request - [Your angle]
+
+Hi [Mods],
+
+I'd like to propose an AMA for r/humanresources about [your topic].
+
+My background: [2-3 sentences about relevant experience]
+What I can offer the community: [What makes this valuable to them, not to Vantage Circle]
+Proposed date/time: [Specific date + timezone]
+Proof of expertise: [Link to relevant content or company profile]
+
+Looking forward to discussing. Happy to answer any questions about the format.
+
+Best,
+[Your name]
+```
+
+**Key:** Position value to community, not to yourself.
+
+### Step 3: Prepare Your Intro Post
+
+This is the post that kicks off the AMA. Mods will pin it.
+
+**Structure:**
+```
+Title: "I'm [Name], [Credentials]. I specialize in [Topic]. Ask me anything!"
+
+**Who I am:**
+[1-2 sentences about background]
+
+**What I do:**
+[1-2 sentences about current focus]
+
+**What I can help with:**
+[3-5 bullet points of topics you can answer]
+
+**What I can't help with:**
+[2-3 things outside your expertise or too company-specific]
+
+**Proof:**
+[Link to relevant work, LinkedIn, company bio, etc.]
+
+**Questions:**
+Happy to answer anything. Let's go!
+```
+
+Example:
+```
+I'm Deepmani, social media + lead gen specialist at Vantage Circle.
+I've worked with 50+ companies building peer recognition cultures as they scale.
+
+I specialize in:
+- Employee recognition program strategy and adoption
+- Building engagement culture as companies grow
+- Retention strategies tied to recognition/culture
+- HRMS selection and implementation for mid-market companies
+
+I can't help with:
+- Legal/compliance questions (not my expertise)
+- Salary benchmarking (out of scope)
+- Company-specific HR problems I'm not deeply familiar with
+
+Proof: https://www.linkedin.com/in/deepmani / https://vantage-circle.com
+
+Let's go—ask me anything!
+```
+
+---
+
+## DURING THE AMA (2-4 hours live)
+
+### Pre-AMA Checklist (15 minutes before)
+
+☐ Close Slack/email (no distractions)
+☐ Set timer for AMA length (e.g., "2 hours from now")
+☐ Have reference docs open (your case studies, frameworks, data)
+☐ Prepare 2-3 talking points for common questions
+☐ Set up note-taking system (track leads/insights as questions come in)
+
+### Live Response Strategy
+
+**Golden Rule: Respond to every question.**
+Reddit notices and upvotes comments that show genuine engagement.
+
+**Response timing:**
+- First 30 min: Check every 5 minutes (early questions set tone)
+- Next 60 min: Check every 10 minutes (peak engagement)
+- Final 30 min: Check every 15 minutes (tail off)
+
+**Response quality:**
+- Longer answers perform better in AMA (people upvote depth)
+- 3-5 paragraph responses standard
+- Answer the question directly first, then add nuance
+- Use formatting (bullets, bold) for readability
+
+### Handling Different Question Types
+
+**Type 1: General Question About Your Topic**
+
+Example: "What's the biggest mistake companies make with recognition programs?"
+
+Response strategy:
+1. Answer their question fully (this isn't a pitch)
+2. Share a framework or principle
+3. Optional: Light tie to Vantage Circle if relevant
+4. Invite follow-up or related question
+
+Example response:
+"Great question. The biggest mistake is almost always one of these two:
+
+1. **They treat recognition as an HR program, not a culture thing.** Recognition works when it's peer-driven, daily, and tied to values. When it's managed by HR as a 'program' that managers have to submit to, it feels corporate and adoption dies.
+
+2. **They assume adoption will happen naturally.** It won't. You have to actively build the habit. That usually means: celebrate early recognition publicly, tie it to team meetings, track adoption, celebrate milestones.
+
+I'd say 80% of failure is the company thinking 'launch program, watch magic happen.' The 20% that works approaches it as 'we're building a recognition culture, program is just the enabler.'
+
+Does your organization recognize recognition as a culture thing vs. an HR program? That distinction matters a lot."
+
+---
+
+**Type 2: Specific Problem They're Experiencing**
+
+Example: "We're growing from 80 to 150 people. How do we keep culture intact?"
+
+Response strategy:
+1. Acknowledge the challenge (shows you understand)
+2. Diagnose the likely root cause
+3. Give specific, actionable framework
+4. Share (non-Vantage Circle) example if possible
+5. Ask clarifying question to go deeper
+
+Example response:
+"That's the critical moment—50-150 people is where culture usually breaks.
+
+Usually it's because: At 50 people, culture is 'everyone knows everyone' (informal).
+By 150 people, you need systems to maintain it (formal). Most companies skip this transition.
+
+Here's what actually works:
+- **Codify values explicitly** (write them down, discuss them as a team)
+- **Celebrate culture publicly** (recognition, company meetings, etc.)
+- **Make onboarding ritual matter** (first 30 days set tone for culture fit)
+- **Tie performance discussions to culture** (not just 'did you deliver,' but 'how'd you embody our values?')
+- **Build peer recognition muscle** (people recognizing each other across teams)
+
+Most important: The founders have to model and talk about culture constantly.
+If you're not talking about it, nobody else is either.
+
+What does your current culture look like? And what's your biggest concern about losing during this growth?"
+
+---
+
+**Type 3: Comparison Question**
+
+Example: "How does peer recognition compare to traditional top-down recognition?"
+
+Response strategy:
+1. Give honest comparison (both have value)
+2. Share specific research/data if possible
+3. Context when each works
+4. Tie to their likely situation
+
+Example response:
+"Great question. Both have a role, but peer works better for scale and authenticity.
+
+**Top-down (manager recognition):**
+- Pros: Tied to performance; high credibility; easier to control
+- Cons: Scales only with manager bandwidth (1 manager, 10 reports max); can feel formal
+
+**Peer-to-peer:**
+- Pros: Scales infinitely (10 reports recognize each other); feels authentic; daily/real-time possible
+- Cons: Requires culture; can feel less 'official' to performance evaluation; needs context
+
+**Data:** Research shows peer recognition drives 3x higher engagement than top-down.
+But that's only true if you've built the culture for it.
+
+**What actually works:** Both. Use manager recognition for big milestones/reviews.
+Use peer recognition for day-to-day appreciation and culture building.
+
+Most companies skip peer recognition and wonder why engagement is flat.
+Peer is the lever that scales.
+
+What's your company's current recognition setup?"
+
+---
+
+**Type 4: "Can I Pick Your Brain?" DM Request**
+
+This isn't technically a question in the thread, but you'll get DMs.
+
+Response strategy:
+1. Thank them for interest
+2. Set expectation (you'll read DM, response time, etc.)
+3. Ask them to put their question in the thread (keep convo visible to community)
+4. If they're high-intent lead signal: offer to chat more after AMA
+
+Example: "Thanks for reaching out! I'm keeping DMs secondary to the thread
+to make sure everyone gets good answers. Post your question in the thread and I'll
+respond there so others benefit too. After the AMA, happy to discuss further if helpful."
+
+---
+
+### Tracking Leads During AMA
+
+Create a simple note with these columns:
+
+| Username | Question | Signals | Intent | Follow-up |
+|----------|----------|---------|--------|-----------|
+| user123 | "How do we scale culture?" | Mid-size company, growing | Medium | Framework answer |
+| user456 | "We have 150 people, losing retention" | Explicit problem, timely | High | Direct follow-up offer |
+| user789 | "Is Vantage Circle right for us?" | Direct product question | High | Post-AMA DM |
+
+**High-intent leads:** Decision-maker signals, specific problem, action timeline, or direct product question
+
+---
+
+## AFTER THE AMA (24-48 hours)
+
+### Step 1: Compile Key Questions & Insights
+
+Create a summary:
+```
+AMA Summary: [Date]
+Attendance: X questions, Y responses, Z upvotes
+
+Top themes:
+1. [Common question #1]
+2. [Common question #2]
+3. [Insight #3]
+
+High-intent leads: [Names/usernames flagged during AMA]
+Opportunities for follow-up content: [Topics to build into future posts]
+Misses: [What people asked that you wish you'd answered better]
+```
+
+### Step 2: Follow Up with High-Intent Leads
+
+Within 24 hours, reach out to flagged high-intent leads.
+
+DM template:
+```
+"Thanks for the great question during the AMA about [their topic].
+I've been thinking about your specific situation and thought I'd follow up.
+
+[1-2 sentences connecting to their question]
+
+Happy to chat further if it'd be helpful. No pressure though.
+
+Best,
+[Your name]"
+```
+
+**Key:** Reference their specific question (shows you actually read/remember).
+Don't pitch. Just offer to continue conversation.
+
+### Step 3: Repurpose AMA Content
+
+Turn your AMA answers into:
+- Blog posts (expand on top 3-5 questions)
+- Reddit posts (pull out best standalone answers)
+- LinkedIn content (link back to AMA, share insights)
+- Internal documentation (what did you learn about market?)
+
+### Step 4: Measure Impact
+
+Track:
+- Total questions: X
+- Upvotes on your answers: Average X
+- DMs received: X (flagged X as leads)
+- Follows/profile views: Estimate from Reddit insights
+- Leads that converted to MQLs: Track in follow-up
+
+---
+
+## COMMON AMA QUESTIONS & RESPONSES
+
+### "How do I know if we're ready for a recognition platform?"
+
+Response:
+"Great question. You're ready when:
+1. You have 30+ people (below that, manage recognition informally)
+2. You have a values framework (recognition should tie to values)
+3. You have HR bandwidth (needs 5-10 hours/month to build culture)
+4. You're willing to evangelize (adoption requires leadership buy-in)
+
+If you have all four, a platform accelerates culture building.
+If you're missing one or two, start with culture foundation work first."
+
+---
+
+### "Isn't recognition just participation trophy culture?"
+
+Response:
+"Fair concern. And yes, badly done recognition is participation trophies.
+Difference: Authentic peer recognition (tied to values, specific, peer-driven)
+vs. everyone-gets-a-trophy (indiscriminate, top-down, corporate).
+
+Real recognition works because it's specific and earned.
+'Great job' (generic) vs. 'You fixed the production issue 3 hours before deadline
+despite family emergency—that's the grit we need' (specific).
+
+The specific, peer-driven kind shifts culture. The generic kind is fluff."
+
+---
+
+### "How do you measure recognition ROI?"
+
+Response:
+"Don't measure: 'How many recognitions happened?' (vanity metric)
+Do measure:
+- Engagement score change (target: +1-2 points)
+- Voluntary turnover (target: -2-5 percentage points)
+- Manager satisfaction with team (informal survey)
+- New hire retention (critical: new people feel valued?)
+
+Calculate ROI: If retention improves 5%, what's that worth in hiring/onboarding cost savings?
+Usually 5-8x the platform cost."
+
+---
+
+### "Can this work for remote teams?"
+
+Response:
+"Absolutely. Actually works better for remote in some ways:
+- Asynchronous nature fits remote schedule
+- Written recognition is visible to whole team (not just in-person)
+- Doesn't require real-time interaction
+- Creates artifact of culture (people can scroll and re-read)
+
+Key: Make recognition public and visible (Slack integration helps).
+Otherwise remote teams feel disconnected from culture."
+
+---
+
+### "What's the biggest mistake we can make in implementation?"
+
+Response:
+"Forcing participation. If you mandate recognition, it dies.
+
+Make it optional. Celebrate early adopters. Let it grow organically.
+Adoption typically follows S-curve: 20% early adopters (month 1-2),
+then hockey stick (month 3-4) when people see others doing it.
+
+If you push too hard, you get 100% in week 1 and 5% in week 8.
+If you let it grow, you get 15% week 1 and 65% in month 3.
+
+Patience > force."
+
+---
+
+## AMA DON'Ts
+
+❌ Don't pitch Vantage Circle unless directly asked
+❌ Don't ignore questions (even difficult ones)
+❌ Don't one-liner ("Great question!")
+❌ Don't give boilerplate responses (feels automated)
+❌ Don't argue with skeptics
+❌ Don't go offline without notice (kills engagement)
+❌ Don't self-promote (AMA is about them, not you)
+
+---
+
+## AMA SUCCESS METRICS
+
+Benchmark for "good" AMA:
+- 50+ questions (active community)
+- Your answers average 10-30 upvotes (value signal)
+- 80%+ response rate (you answered most questions)
+- 10+ high-intent lead flags (your expertise translates to prospects)
+- 3-5 follow-up conversations (leads progressed)
+- 1-2 qualified MQLs from AMA (direct revenue signal)
+
+---
+
+## SCHEDULING YOUR FIRST AMA
+
+Recommended timing:
+- **Tuesday-Thursday** (weekday engagement peak)
+- **10am-1pm EST** (office hours for US)
+- **2 hours duration** (sweet spot: long enough for depth, short enough to stay engaged)
+
+Recommended frequency:
+- Q1: First AMA (build authority)
+- Q2: One AMA if first went well
+- Q3-Q4: 1-2 AMAs total for year
+
+**Spacing:** Don't do them back-to-back. Quarterly is healthy frequency.

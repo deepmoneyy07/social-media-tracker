@@ -1,0 +1,330 @@
+COMMENT RESPONSE TEMPLATE
+========================
+
+Use this template to respond to Reddit comments in a way that builds authority,
+generates leads, and respects community norms (not promotional, helpful first).
+
+---
+
+SCENARIO 1: Someone Asks a Question Related to Your Expertise
+
+Example question: "How do we get employees to actually use our recognition program?"
+
+RESPONSE STRUCTURE:
+
+1. ACKNOWLEDGE (1-2 sentences)
+"Great question. This is super common—and fixable."
+
+2. DIAGNOSE (1-2 sentences)
+"The problem is usually one of three things:
+1. [Thing 1] - [explanation]
+2. [Thing 2] - [explanation]
+3. [Thing 3] - [explanation]"
+
+3. FRAMEWORK (3-5 sentences)
+"Here's what typically works:
+[Specific approach]
+The key is [critical insight]."
+
+4. EXAMPLE / EVIDENCE (1-2 sentences)
+"I've seen this shift adoption from 20% to 60% in 90 days."
+
+5. INVITATION FOR MORE INFO (1-2 sentences)
+"What does your current process look like? I'm curious what's not working."
+
+FULL EXAMPLE:
+
+"Great question. This is the most common adoption blocker I see.
+
+The issue is usually one of three things:
+1. **Friction** - Takes too many steps to give recognition (people give up)
+2. **Timing lag** - Recognition comes days/weeks later (emotional impact lost)
+3. **Authenticity** - Feels corporate/mandatory (people don't want to use it)
+
+Here's what works: Make recognition one-click, instant visibility, and completely voluntary.
+Remove the friction. Make it real-time so employees feel immediate connection. Make it feel
+natural, not corporate. That typically shifts adoption from 15-20% to 50-70% in 90 days.
+
+I've seen this work in companies from 50 to 5,000 people.
+
+What's your current recognition process like? Are people giving recognition but low volume,
+or are they just not engaging with it at all?"
+
+---
+
+SCENARIO 2: Someone's Problem Matches Vantage Circle Perfectly
+
+Example: "We're implementing peer-to-peer recognition but adoption is low"
+
+RESPONSE STRUCTURE:
+
+1. ACKNOWLEDGE + EMPATHIZE (1-2 sentences)
+"That's frustrating. And pretty common at the implementation phase."
+
+2. DIAGNOSE THEIR SPECIFIC ISSUE (2-3 sentences)
+"Adoption usually stalls because of:
+[Listen to their situation + diagnose]
+Based on what you said, I'd guess it's [specific issue for them]."
+
+3. SPECIFIC ADVICE (2-4 sentences)
+"To fix that:
+[Concrete steps they can take]
+Timeline: [Realistic expectation]"
+
+4. NATURAL PRODUCT MENTION (if relevant) (1-2 sentences)
+"This is basically what we built Vantage Circle around—instant peer recognition
+with minimal friction. But before I pitch, does that diagnosis resonate?"
+
+5. PERMISSION-BASED NEXT STEP (1-2 sentences)
+"Happy to discuss more if you want. Either in comments or DM."
+
+FULL EXAMPLE:
+
+"That's frustrating. And pretty common at the implementation phase.
+
+Adoption usually stalls because:
+- People don't see immediate impact (recognition posted but not visible to team)
+- Friction in the process (too many steps, required narrative)
+- Not tied to values (feels random/corporate instead of meaningful)
+
+Based on what you said, I'd guess it's the visibility piece. If employees give recognition
+but don't see it celebrated/shared, the habit dies quick.
+
+To fix that:
+- Make recognition visible to entire team immediately
+- Create a weekly digest if you're on Slack (keeps it top-of-mind)
+- Celebrate peer recognition in manager 1:1s and team meetings
+
+Timeline: 2-4 weeks to see adoption shift if you nail the visibility piece.
+
+This is basically what we built Vantage Circle around—instant peer recognition with
+the feedback loop built in. But before I pitch, does that diagnosis resonate with your situation?"
+
+---
+
+SCENARIO 3: Someone Is Comparing Solutions
+
+Example: "Has anyone used Lattice vs. 15Five vs. [other vendor]?"
+
+RESPONSE STRUCTURE:
+
+1. FRAME HONESTLY (1-2 sentences)
+"Great question. All are solid for different reasons."
+
+2. COMPARISON MATRIX (3-5 bullets, each covering one vendor)
+"[Vendor 1] is stronger if you want [their strength]
+[Vendor 2] is stronger if you want [their strength]
+[Your vendor] is stronger if you want [your strength]"
+
+3. DECISION FRAMEWORK (1-2 sentences)
+"I'd choose based on whether your priority is [factor 1] vs. [factor 2]."
+
+4. TRANSPARENCY (1-2 sentences)
+"Obviously I'm biased on Vantage Circle, so take that with context.
+But happy to discuss trade-offs if helpful."
+
+FULL EXAMPLE:
+
+"Great question. All three are solid for different reasons.
+
+**Lattice** is stronger if you want full performance management (reviews + engagement + recognition).
+Not as lightweight, but very comprehensive platform.
+
+**15Five** is stronger if you want check-ins and pulse surveys (real-time feedback loop).
+Lighter on recognition, heavier on insights.
+
+**Vantage Circle** is stronger if you want recognition + culture focus (peer recognition, minimal friction).
+Not as deep on performance management, but simpler/faster adoption.
+
+I'd choose based on your primary need:
+- If you want 'performance management system with recognition', pick Lattice
+- If you want 'feedback + insights', pick 15Five
+- If you want 'recognition-first + culture building', pick Vantage Circle
+
+Obviously I'm biased on VC, so grain of salt. But happy to discuss trade-offs
+if you want to think through what matters most for your org."
+
+---
+
+SCENARIO 4: Someone Is Skeptical / Asking a Tough Question
+
+Example: "Recognition programs are just corporate fluff. Does this actually improve retention?"
+
+RESPONSE STRUCTURE:
+
+1. VALIDATE SKEPTICISM (1-2 sentences)
+"Fair point. A lot of recognition programs ARE corporate fluff."
+
+2. DISTINGUISH (1-2 sentences)
+"But there's a difference between [bad version] and [good version]."
+
+3. EVIDENCE (2-3 sentences)
+"Research shows [credible finding].
+Real-world experience: [concrete example]."
+
+4. HONEST LIMITATION (1-2 sentences)
+"That said, recognition won't fix [X problem].
+But for [Y situation], it's highly effective."
+
+5. INVITE DEEPER DISCUSSION (1-2 sentences)
+"What's your experience been? Have you seen recognition programs work?"
+
+FULL EXAMPLE:
+
+"Fair point. A lot of recognition programs ARE corporate fluff that employees resent.
+
+But there's a difference between 'manager submits annual award' vs. 'peer recognizes peer daily'.
+
+Research shows peer-to-peer recognition improves engagement by 2-3 points (on 10-point scale)
+and reduces voluntary turnover by 15-25% when done authentically. Real-world: I've seen companies
+drop from 18% turnover to 12% within 12 months by implementing peer recognition culture.
+
+That said, recognition won't fix toxic leadership or pay-market issues.
+But for normal, healthy companies trying to improve engagement and retention, it's highly effective.
+
+What's your experience been? Have you seen recognition programs actually work,
+or mostly just corporate theater?"
+
+---
+
+SCENARIO 5: Someone Asks You Directly About Vantage Circle
+
+Example: "Does Vantage Circle do X?" or "What makes Vantage Circle different?"
+
+RESPONSE STRUCTURE:
+
+1. DIRECT ANSWER (1-2 sentences)
+"Yes, we do X." or "We approach it this way [explanation]."
+
+2. CONTEXT (1-2 sentences)
+"The philosophy behind that is [insight]."
+
+3. COMPARISON (1-2 sentences, transparent)
+"Other platforms do this differently. [How others do it]."
+
+4. HONEST TRADE-OFF (1-2 sentences)
+"Trade-off: We're narrower/broader than [competitor], but stronger on [your strength]."
+
+5. RESOURCE OFFER (1-2 sentences, soft)
+"Happy to go deeper if you want. Could also point you to resources if helpful."
+
+FULL EXAMPLE:
+
+"Yes, Vantage Circle has peer recognition, manager recognition, and integration with Slack.
+
+The philosophy: We built peer-to-peer first because it scales better than top-down.
+But managers also use it for recognition tied to performance/values.
+
+Other platforms like Lattice do more comprehensive performance management (reviews + everything else).
+We're lighter, more focused on culture/recognition.
+
+Trade-off: We're narrower (stronger on peer recognition + adoption, lighter on performance management).
+But that focus is intentional—we obsess over making recognition something people actually use,
+not another HR tool collecting dust.
+
+Want me to send over some specifics? Or happy to discuss what matters most for your situation."
+
+---
+
+SCENARIO 6: Someone Mentions a Pain Point You Can Help With
+
+Example: "Our engagement scores have been flat for a year"
+
+RESPONSE STRUCTURE:
+
+1. ACKNOWLEDGE (1 sentence)
+"That's frustrating when you're trying to move the needle."
+
+2. POTENTIAL ROOT CAUSES (2-3 sentences)
+"Usually flat engagement means:
+[Cause 1]
+[Cause 2]
+[Cause 3]"
+
+3. DIAGNOSTIC QUESTION (1-2 sentences)
+"Do you know what employees are saying is missing? Or is it just a flat score?"
+
+4. FRAMEWORK (2-3 sentences)
+"If I were troubleshooting, I'd look at:
+[Element 1] - [Why it matters]
+[Element 2] - [Why it matters]"
+
+5. PERMISSION-BASED OFFER (1-2 sentences)
+"Happy to dig into specifics if helpful. DM me if you want to think through it."
+
+FULL EXAMPLE:
+
+"That's frustrating when you're trying to move the needle.
+
+Flat engagement usually means one of these:
+1. Employees don't feel valued/recognized for contributions
+2. Communication/transparency breakdown (people don't understand direction)
+3. Workload/burnout (people are just tired)
+
+Do you know what employees are saying is missing? Or is it just a flat score without context?
+
+If I were troubleshooting, I'd look at:
+- Recognition/appreciation (does the team feel valued?) - this is the easiest lever
+- Communication cadence (are leaders over-communicating or under?) - check leadership presence
+- Workload/wellness (are people burnt out?) - check if this is a burnout problem vs. engagement
+
+Happy to dig into specifics if you want to think through it. DM me if helpful."
+
+---
+
+RED FLAGS: What NOT to do in comments:
+
+❌ Don't lead with "Try Vantage Circle!"
+❌ Don't ignore their actual question
+❌ Don't one-liner ("Nice post!")
+❌ Don't correct people condescendingly
+❌ Don't drop links without context
+❌ Don't argue with mods
+❌ Don't hide your affiliation if Vantage Circle is relevant
+❌ Don't respond days later (timing is critical)
+
+---
+
+GREEN FLAGS: What DOES work:
+
+✅ Answer their question fully without mentioning product first
+✅ Show you understand their specific situation
+✅ Ask clarifying questions (shows you're listening)
+✅ Share frameworks/principles (teach, don't sell)
+✅ Disclose affiliation transparently
+✅ Respond within 2 hours (timing matters)
+✅ Invite deeper conversation
+✅ Offer soft next steps (DM, further discussion)
+
+---
+
+TIMING & FOLLOW-UP:
+
+1. Respond within 2-4 hours of post (golden window)
+2. If they ask follow-up question: respond within 24 hours
+3. If they respond to your recommendation: follow up within 1 business day
+4. If they go silent: don't chase (respect boundaries)
+5. If they DM you: respond within business day with substance
+
+---
+
+TRACKING LEADS IN COMMENTS:
+
+HIGH-INTENT flags (capture for follow-up):
+- "We're implementing this Q2" → Decision-maker signal
+- "I'm the HR director at..." → Explicit role signal
+- "We tried that and adoption was low" → Specific pain point + willingness to act
+- "How do I convince my CEO this is worth it?" → Scoping/justification phase
+
+MEDIUM-INTENT flags:
+- "What platform would you recommend?" → Early research phase
+- "Has anyone else had this issue?" → Problem awareness but not action phase
+- "How much does something like this cost?" → Budget/scoping questions
+
+LOW-INTENT flags:
+- General opinions without action signal
+- Venting without problem-solving intent
+- "Sounds nice but won't work for us" → Skepticism, not engagement
+
+Best practice: Flag all high-intent comments for Deepmani's MQL outreach queue.
+Format: "Reddit lead from r/[subreddit], [high-intent signal], [suggested approach]"

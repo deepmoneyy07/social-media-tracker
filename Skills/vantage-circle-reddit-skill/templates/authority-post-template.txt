@@ -1,0 +1,178 @@
+AUTHORITY POST TEMPLATE
+======================
+
+Use this template to create high-value thought leadership posts for Reddit.
+Fill in bracketed sections [like this]. Delete optional sections if not needed.
+
+---
+
+TITLE OPTIONS (Pick one, adapt to your topic)
+
+Format A: [Question highlighting pain point]
+"Why do most [X] programs fail (and what actually works)"
+Example: "Why do most recognition programs fail (and what actually works)"
+
+Format B: [Framework with number]
+"Here are [3-5] reasons [X happens] (and how to fix each)"
+Example: "Here are 3 reasons employee recognition doesn't get adopted"
+
+Format C: [Story with insight]
+"We [tried/changed/implemented X]—here's what we learned"
+Example: "We overhauled our recognition program—here's what surprised us"
+
+Format D: [Direct advice]
+"[X strategy] is more powerful than [Y] (here's why)"
+Example: "Peer recognition is more powerful than manager recognition (here's why)"
+
+TITLE: [Pick format above, adapt to your topic]
+
+---
+
+BODY STRUCTURE
+
+Opening Paragraph (30-50 words):
+[Context-setting sentence that shows you understand the problem]
+"[Specific observation about this problem from Reddit or market]"
+[Bridge to why this matters]
+
+Example:
+"Most HR teams launch recognition programs with good intentions. Three months later?
+Adoption drops to 10%. I've talked to dozens of HR leaders who've been here.
+The reason usually isn't what they think."
+
+---
+
+Problem Deep-Dive (75-100 words):
+[What's the actual challenge? Be specific, not generic]
+
+Section 1 - Why it matters:
+"Here's why this problem is critical: [consequence].
+When [specific problem] happens, [business impact]."
+
+Section 2 - Why most approaches fail:
+"Most teams try [common approach], but that doesn't work because [specific reason]."
+
+Section 3 - Root cause:
+"The real issue is usually [root cause]. It's not about [wrong thing],
+it's about [right thing]."
+
+Example:
+"Most teams think the problem is budget or tools. But I've found it's usually two things:
+
+1) Timing lag - Recognition that arrives weeks after the action has lost 80% of its impact.
+If someone does great work Monday and you recognize them in Friday standup, it barely registers.
+
+2) Friction - If your recognition requires 5 clicks and a narrative, adoption dies.
+People won't write essays about why someone's great."
+
+---
+
+Solution Framework (100-150 words):
+[Share the approach that actually works. Be specific but platform-agnostic.]
+
+Framework Section 1 - Foundation:
+"The fix starts with [foundational principle]. This means [what it looks like]."
+
+Framework Section 2 - Implementation:
+"In practice, that looks like [specific approach].
+The key is [critical element]."
+
+Framework Section 3 - Results:
+"When this works, you typically see [outcomes].
+Timeline is usually [expected speed]."
+
+Example:
+"The fix has three parts:
+
+1. Instant recognition - Peer-to-peer, real-time. Not waiting for monthly reviews or awards banquets.
+
+2. Low friction - One click if possible. Optional narrative, but not required.
+If it takes 3+ steps, adoption crashes.
+
+3. Peer-driven, not manager-driven - Not because manager recognition is bad,
+but because there are 10 employees and 1 manager. Peers scale infinitely.
+
+When this works, adoption typically hits 50-60% within 90 days.
+Engagement scores rise 2-3 points. Retention improves within 6 months."
+
+---
+
+Credibility/Evidence Section (50-75 words):
+[Share evidence without sounding promotional. Can be research, experience, data.]
+
+"I've seen this work in [context/company size/industry].
+[Specific metric or observation].
+[Reference to research if applicable, without being too academic]."
+
+Example:
+"I've seen this work in companies from 50 to 5,000 employees.
+In one case, engagement jumped from 6.2 to 7.4 in 6 months.
+Research backs this too—peer recognition outperforms top-down by 3x on engagement."
+
+---
+
+The Honest Limitations (25-50 words):
+[What's NOT true? When doesn't this work? Builds credibility.]
+
+"This doesn't work if [condition]. It also won't fix [other problem].
+But for [specific scenario], it's nearly always effective."
+
+Example:
+"This doesn't work if culture is already toxic—you can't recognition-culture your way out of bad leadership.
+And it won't solve technical retention issues.
+But for normal companies trying to boost engagement and reduce turnover, this is highly effective."
+
+---
+
+Closing Invitation (30-40 words):
+[Invite engagement. Ask a question. Don't pitch.]
+
+"What's been your experience with [topic]?
+[Specific question that prompts genuine response]"
+
+Example:
+"Have you tried peer recognition? What worked for you?
+I'm curious what surprised you most about it."
+
+---
+
+OPTIONAL: Natural Product Mention
+[Only include if it flows naturally from the discussion]
+
+"For context: I work at [company], which focuses on [your angle].
+But the principles above work regardless of platform."
+
+OR
+
+"This is basically what [your company] is built around,
+but the framework works with any tool that enables these three things."
+
+---
+
+POSTING CHECKLIST:
+
+Before you post:
+
+☐ Title is specific (not generic)
+☐ Opening hook is strong (makes people want to read)
+☐ Problem is clearly articulated
+☐ Solution is specific and actionable
+☐ You've included a credibility signal (research, data, experience)
+☐ You've acknowledged limitations (builds trust)
+☐ Closing question invites genuine engagement
+☐ Post is 800-1,200 words (sweet spot for Reddit)
+☐ No more than 2 paragraphs are more than 150 words (readability)
+☐ Tone is helpful expert, not salesy
+☐ Product mention (if included) doesn't dominate
+☐ You disclose affiliation if mentioning your company
+
+---
+
+WHAT HAPPENS AFTER YOU POST:
+
+1. Respond to first comments within 30 minutes (set timer)
+2. Respond to all first-wave comments (first 2 hours)
+3. Check at 24 hours for follow-ups
+4. Watch for high-intent comments (flag for leads)
+
+First comment should be: "Thanks for reading! Happy to dig deeper on any of this."

@@ -1,0 +1,267 @@
+CASE STUDY TEMPLATE FOR REDDIT
+==============================
+
+Use this template to adapt Vantage Circle case studies for Reddit in an anonymized,
+authentic way that generates leads without being promotional.
+
+---
+
+TITLE FORMAT (Pick one):
+
+Format A: "How [Industry] [Company Size] [Fixed Specific Problem]"
+Example: "How a 150-person tech startup improved retention by 23%"
+
+Format B: "[Metric] improvement by doing [Specific Approach]"
+Example: "23% improvement in retention by implementing peer recognition culture"
+
+Format C: "We [tried/changed/implemented X]—here's what happened"
+Example: "We ditched top-down recognition for peer recognition—here's what happened"
+
+TITLE: [Pick format above, customize to case]
+
+---
+
+CONTENT STRUCTURE
+
+PART 1: THE SITUATION (Paragraph 1, 80-100 words)
+
+[Company description - anonymized but identifiable]
+"Mid-sized tech company. Around [X] employees. Growing at [X]% YoY.
+[Specific industry if helps context]. [One line about company stage/context]."
+
+[The problem - specific, relatable, measurable]
+"Problem: Low employee engagement (averaging [X] out of 10).
+Recognition program existed but adoption was around [X]%.
+People weren't seeing the value. Managers complained about extra work.
+Employees didn't feel recognized."
+
+[The consequence if left unfixed]
+"Turnover in high-performing teams was [X]%, above industry benchmarks.
+Culture was starting to fragment as company scaled."
+
+Example:
+"Mid-sized SaaS company, about 180 employees, $20M ARR.
+Growing team by 15-20% annually. About 3 years old.
+
+Problem: Engagement scores were stuck at 6.1 out of 10.
+They had a recognition program (mostly manager-driven), but adoption was about 35%.
+Managers said recognition felt like extra work.
+Employees didn't feel genuinely appreciated—recognition felt corporate/forced.
+
+Turnover for top performers was about 18% per year (industry avg: 12%).
+They were losing good people."
+
+---
+
+PART 2: THE HYPOTHESIS (Paragraph 2, 60-80 words)
+
+[What they thought the problem was]
+"Initial theory: [Wrong diagnosis]. So they tried [Wrong approach].
+Result: [It didn't work]."
+
+[The insight that changed things]
+"Then someone asked: [Key question]. That reframed things.
+New hypothesis: [Real problem]. This suggested: [Different approach]."
+
+Example:
+"Initial theory: We need more money in the recognition budget.
+So they added budget to buy recognition gifts.
+Result: Not much changed. Adoption still stuck at 35%.
+
+Then someone asked: 'What if people don't want gifts?
+What if they want to feel genuinely valued by peers?'
+That reframed things.
+New hypothesis: The problem wasn't budget, it was authenticity and frequency.
+They needed peer-to-peer recognition that felt natural, not corporate."
+
+---
+
+PART 3: THE CHANGE (Paragraph 3, 100-150 words)
+
+[What specifically changed - be tactical and concrete]
+"They implemented: [Specific mechanism].
+How it worked:
+- [Step 1]: [What it was and why]
+- [Step 2]: [What it was and why]
+- [Step 3]: [What it was and why]"
+
+[Rollout approach]
+"Rollout: [How they introduced it].
+Communication: [How they explained it to team].
+Adoption strategy: [How they got people to actually use it]."
+
+[What made it work vs. traditional approach]
+"Key difference from old approach: [What changed].
+This removed [barrier]. And added [advantage]."
+
+Example:
+"They implemented a peer recognition system where:
+- Any employee could recognize any other employee instantly (one-click interface)
+- Recognition was visible to entire team immediately (transparency and motivation)
+- Tied recognition to company values (making it meaningful, not random)
+
+Rollout: 2-week soft launch with early adopters from different teams.
+Communication: CEO explained why (peer recognition drives culture) and how (demo + live example).
+Adoption strategy: Manager-led kickoff during team meetings (managers demonstrated, asked team to recognize them first).
+
+Key difference from old approach: Old was annual/manager-driven. New was daily/peer-driven.
+Old required narrative justification. New was quick and lightweight.
+Old felt corporate (official awards). New felt authentic (peer appreciation)."
+
+---
+
+PART 4: THE RESULTS (Paragraph 4, 75-100 words)
+
+[Timeline of rollout and early signals]
+"Results appeared quickly:
+- Week 1-2: [What changed first - usually adoption/usage]
+- Month 1: [What happened next - usually engagement]
+- Month 3-6: [What's the lasting impact - turnover, retention]"
+
+[Specific metrics - be credible with numbers]
+"By [timeline], the metrics shifted:
+- Adoption: From [X]% to [X]%
+- Engagement: From [X] to [X] (out of 10)
+- Retention: [Specific improvement]
+- Other impact: [Additional benefit - cultural, operational]"
+
+[One surprising result]
+"Surprise: [What they didn't expect]. Impact: [Why it mattered]."
+
+Example:
+"Results appeared quickly:
+- Weeks 1-2: 40% of team gave/received recognition (immediate adoption spike)
+- Month 1: People started recognizing outside their immediate team (silos breaking down)
+- Month 3: Engagement scores shifted noticeably
+
+By month 6:
+- Adoption hit 65% (vs. 35% before)
+- Engagement improved from 6.1 to 7.2 (out of 10)
+- Voluntary turnover dropped to 12% (from 18%)
+- Unplanned turnover dropped even more
+
+Surprise: The biggest win wasn't the metrics. It was team cohesion.
+People who'd never interacted started recognizing each other.
+Collaboration improved. New people felt welcomed faster.
+Culture actually shifted."
+
+---
+
+PART 5: THE LEARNINGS (Paragraph 5, 80-120 words)
+
+[What worked that they didn't predict]
+"What worked: [Specific thing].
+Why: [The insight behind it]."
+
+[What they'd do differently]
+"If they did it again: [Change they'd make].
+Reason: [Why it would be better]."
+
+[Key principle / Insight they learned]
+"Biggest insight: [Principle that applies broadly, not just to them]."
+
+[What matters vs. what doesn't]
+"What mattered: [True driver]. What didn't: [Common misconception]."
+
+Example:
+"What worked: Making peer recognition the default, not something managers mandate.
+Why: When it's optional and peer-driven, it feels authentic. People choose to participate.
+
+If they did it again: They'd have launched with company values built in from day one.
+They added values-alignment a month later; would have been better up front.
+
+Biggest insight: Recognition culture scales infinitely when peer-driven.
+You can't scale culture with 1 manager and 180 reports.
+But 180 people recognizing each other? That scales.
+
+What mattered: Frequency (daily recognition beats annual awards). Authenticity (peer beats corporate).
+What didn't: Budget (didn't need more money). Complexity (simpler is better)."
+
+---
+
+PART 6: WHAT CAME NEXT (Paragraph 6, 50-75 words - OPTIONAL)
+
+[What happened after they got traction]
+"[Timeline]: They expanded the approach by [what they did].
+Impact: [What changed as a result].
+
+Current state: [Where they are now and what keeps working]."
+
+Example:
+"6 months in: They expanded peer recognition to include custom categories (based on company values).
+Impact: Recognition became more tied to cultural expectations, not random.
+
+Current state: Recognition is now core to onboarding. New employees get recognized within first week.
+It's become a cultural norm, not a program."
+
+---
+
+PART 7: CLOSING INVITATION (50-75 words)
+
+[Relate to reader + invite discussion]
+"Sound familiar? [Relatable aspect of their situation].
+
+Have you tried a similar approach?
+[Specific question that prompts discussion or signals your role]
+
+I'm happy to discuss specifics in comments or DMs."
+
+Example:
+"Sound familiar? Most companies have a recognition program that's underutilized.
+
+Have you tried peer-to-peer recognition?
+What's worked in your org?
+I'm happy to discuss specifics—this is exactly what I work on."
+
+---
+
+ANONYMIZATION CHECKLIST:
+
+Before posting, make sure you've:
+
+☐ Removed company name (replace with: "[Industry] company", "[X]-person [type] company")
+☐ Removed CEO/leader names
+☐ Removed specific geographic location (can say "US-based" if needed for context)
+☐ Removed client-specific features or customizations
+☐ Kept company size (important for relatability)
+☐ Kept industry (important for relevance)
+☐ Kept specific metrics (builds credibility)
+☐ Kept specific timeline (shows real implementation, not theory)
+☐ Kept the story and specifics (authenticity matters)
+
+CREDIBILITY CHECK:
+
+☐ Do the metrics feel realistic? (Not claiming 200% improvement)
+☐ Do the timelines feel realistic? (Not claiming transformation in 1 week)
+☐ Is there a setback or challenge mentioned? (Real stories have friction)
+☐ Are the numbers specific enough to be credible? (Not round numbers like "50%")
+☐ Does it tell a real story vs. being promotional? (Can you read this without thinking "this is an ad"?)
+
+---
+
+HANDLING QUESTIONS IN COMMENTS:
+
+If someone asks: "What platform did you use?"
+Response: "We used a platform focused on peer recognition. There are a few options out there.
+The key isn't the tool—it's the approach of peer-to-peer, daily, lightweight.
+Many tools do this. Happy to discuss specifics if helpful."
+
+If someone asks: "Was this Vantage Circle?"
+Response: "I work at Vantage Circle, so I'm obviously biased. But this case is representative
+of what we see with companies using peer recognition approaches. The framework works with
+most platforms that prioritize peer-to-peer and adoption."
+
+If someone asks: "How much did this cost?"
+Response: "[Platform investment]: $X/month. Implementation time: X weeks.
+But cost isn't the right metric—it's ROI. At 23% turnover improvement, this paid for
+itself in [X months]. That's the real calculation."
+
+---
+
+POST-CASE STUDY STRATEGY:
+
+1. Respond to every comment in first 2 hours (set engagement tone)
+2. Flag high-intent comments for lead follow-up
+3. Use this post in future Reddit discussions (link back when relevant)
+4. Monitor for feature requests or objections (insight into market)
+5. Update with follow-up 3-6 months later if case study progresses further
