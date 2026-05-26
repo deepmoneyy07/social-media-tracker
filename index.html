@@ -215,6 +215,49 @@
   .brand-notes-area { min-height:160px; background:var(--card2); border:1px solid var(--border); border-radius:8px; padding:14px; font-size:13px; line-height:1.6; resize:vertical; width:100%; font-family:inherit; color:var(--text); }
   .brand-notes-area:focus { border-color:var(--accent); outline:none; }
 
+  /* ─── CONTENT BANK ─── */
+  .cb-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; }
+  .cb-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px; box-shadow:0 1px 4px rgba(60,50,80,.06); transition:all .15s; cursor:default; position:relative; }
+  .cb-card:hover { border-color:var(--accent); }
+  .cb-card .cb-title { font-size:14px; font-weight:700; color:var(--text); margin-bottom:4px; }
+  .cb-card .cb-desc { font-size:12px; color:var(--muted); line-height:1.5; margin-bottom:8px; max-height:48px; overflow:hidden; }
+  .cb-card .cb-link { font-size:11.5px; color:var(--accent-text); text-decoration:none; word-break:break-all; }
+  .cb-card .cb-link:hover { text-decoration:underline; }
+  .cb-card .cb-actions { position:absolute; top:12px; right:12px; display:flex; gap:4px; opacity:0; transition:opacity .15s; }
+  .cb-card:hover .cb-actions { opacity:1; }
+  .type-badge { display:inline-flex; padding:2px 8px; border-radius:4px; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px; }
+  .type-video { color:var(--blue); background:var(--blue-dim); }
+  .type-report { color:var(--accent-text); background:var(--accent-dim); }
+  .type-award { color:var(--yellow); background:var(--yellow-dim); }
+  .type-testimonial { color:var(--green); background:var(--green-dim); }
+  .type-casestudy { color:var(--orange); background:var(--orange-dim); }
+  .type-other { color:var(--pink); background:var(--pink-dim); }
+
+  /* ─── STRATEGY FILE VIEWER ─── */
+  .strat-detail-overlay { display:none; position:fixed; inset:0; background:rgba(60,50,80,.35); z-index:998; align-items:flex-start; justify-content:center; padding-top:30px; overflow-y:auto; backdrop-filter:blur(4px); }
+  .strat-detail-overlay.open { display:flex; }
+  .strat-detail { background:#fff; border:1px solid var(--border); border-radius:12px; width:100%; max-width:900px; margin-bottom:40px; overflow:hidden; }
+  .strat-detail-header { background:var(--card2); padding:18px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:flex-start; }
+  .strat-detail-body { padding:24px; }
+  .file-viewer { margin-top:16px; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+  .file-viewer-header { padding:10px 14px; background:var(--card2); border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; font-size:12.5px; font-weight:600; color:var(--text); }
+  .file-viewer-content { max-height:600px; overflow:auto; }
+  .file-viewer-content iframe { width:100%; height:500px; border:none; }
+  .md-render { padding:16px 20px; font-size:13px; line-height:1.7; color:var(--text); }
+  .md-render h1 { font-size:20px; font-weight:700; margin:16px 0 8px; }
+  .md-render h2 { font-size:17px; font-weight:700; margin:14px 0 6px; }
+  .md-render h3 { font-size:14px; font-weight:700; margin:12px 0 4px; }
+  .md-render p { margin:6px 0; }
+  .md-render ul,.md-render ol { margin:6px 0 6px 20px; }
+  .md-render li { margin:2px 0; }
+  .md-render code { background:var(--card2); padding:1px 4px; border-radius:3px; font-size:12px; }
+  .md-render pre { background:var(--card2); padding:12px; border-radius:6px; overflow-x:auto; margin:8px 0; }
+  .md-render blockquote { border-left:3px solid var(--accent); padding-left:12px; color:var(--text2); margin:8px 0; }
+  .excel-preview { width:100%; border-collapse:collapse; font-size:12px; }
+  .excel-preview th { background:var(--card2); padding:8px 10px; text-align:left; font-weight:600; color:var(--text2); border-bottom:2px solid var(--border); white-space:nowrap; position:sticky; top:0; }
+  .excel-preview td { padding:6px 10px; border-bottom:1px solid var(--border); color:var(--text); }
+  .excel-preview tr:hover td { background:var(--card); }
+
   /* ─── BULK BAR ─── */
   .bulk-bar { position:fixed; bottom:0; left:220px; right:0; background:var(--card); border-top:1px solid var(--border); padding:10px 28px; display:flex; align-items:center; justify-content:space-between; z-index:200; animation:slideUp .2s ease; }
   .bulk-bar.hidden { display:none; }
@@ -269,6 +312,7 @@
     <div class="nav-item" data-page="calendar"><span class="ni">C</span> Content Calendar</div>
     <div class="nav-item" data-page="specialdays"><span class="ni">★</span> Special Days</div>
     <div class="nav-item" data-page="reminders"><span class="ni">R</span> Reminders</div>
+    <div class="nav-item" data-page="contentbank"><span class="ni">B</span> Content Bank</div>
     <div class="nav-section">Executives</div>
     <div class="nav-item" data-page="partha"><span class="ni">P</span> Partha's Brand</div>
     <div class="nav-item" data-page="john"><span class="ni">J</span> John's Brand</div>
@@ -320,7 +364,7 @@
         <button class="tab tab-ig" onclick="switchPlatform(this,'instagram')">Instagram</button>
       </div>
       <div style="display:flex;gap:6px">
-        <button class="btn btn-ghost btn-sm" id="bulk-select-btn" onclick="toggleBulkMode()">Select</button>
+        <button class="btn btn-ghost btn-sm" id="bulk-select-btn" onclick="toggleBulkMode('calendar')">Select</button>
         <button class="btn btn-ghost" onclick="$('import-file').click()">Import File</button>
         <button class="btn btn-primary" onclick="openPostModal()">+ Add Post</button>
       </div>
@@ -353,9 +397,31 @@
         <button class="tab" onclick="filterRem(this,'pending')">Pending</button>
         <button class="tab" onclick="filterRem(this,'done')">Done</button>
       </div>
-      <button class="btn btn-primary" onclick="openModal('rem-modal')">+ Add Reminder</button>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-ghost btn-sm" id="rem-bulk-select-btn" onclick="toggleBulkMode('reminders')">Select</button>
+        <button class="btn btn-primary" onclick="openModal('rem-modal')">+ Add Reminder</button>
+      </div>
     </div>
     <div id="rem-list"></div>
+  </div>
+
+  <!-- CONTENT BANK -->
+  <div class="page" id="page-contentbank">
+    <div class="page-header"><h2>Content Bank</h2><span class="sub">Videos, reports, awards, testimonials & more</span></div>
+    <div class="grid-4" style="margin-bottom:16px" id="cb-stats"></div>
+    <div class="section-actions">
+      <div class="tabs">
+        <button class="tab active" onclick="filterCB(this,'all')">All</button>
+        <button class="tab" onclick="filterCB(this,'video')">Videos</button>
+        <button class="tab" onclick="filterCB(this,'report')">Reports</button>
+        <button class="tab" onclick="filterCB(this,'award')">Awards</button>
+        <button class="tab" onclick="filterCB(this,'testimonial')">Testimonials</button>
+        <button class="tab" onclick="filterCB(this,'casestudy')">Case Studies</button>
+        <button class="tab" onclick="filterCB(this,'other')">Other</button>
+      </div>
+      <button class="btn btn-primary" onclick="openCBModal()">+ Add Item</button>
+    </div>
+    <div class="cb-grid" id="cb-list"></div>
   </div>
 
   <!-- PARTHA -->
@@ -467,6 +533,41 @@
   </div>
 </div>
 
+<!-- Content Bank Modal -->
+<div class="modal-overlay" id="cb-modal">
+  <div class="modal">
+    <h3 id="cb-modal-title">Add Content</h3>
+    <input type="hidden" id="cb-id" />
+    <div class="form-group"><label>Title *</label><input id="cb-title" placeholder="e.g. Employee Recognition ROI Report 2026" /></div>
+    <div class="form-group"><label>Type</label><select id="cb-type"><option value="video">Video</option><option value="report">Report</option><option value="award">Award</option><option value="testimonial">Testimonial</option><option value="casestudy">Case Study</option><option value="other">Other</option></select></div>
+    <div class="form-group"><label>Description</label><textarea id="cb-desc" placeholder="Brief description of this content asset..." style="min-height:60px"></textarea></div>
+    <div class="form-group"><label>URL / Link</label><input id="cb-url" placeholder="https://..." /></div>
+    <div class="form-group"><label>Tags <span style="font-weight:400;color:var(--muted)">(comma-separated)</span></label><input id="cb-tags" placeholder="e.g. recognition, ROI, Q3" /></div>
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('cb-modal')">Cancel</button><button class="btn btn-primary" onclick="saveCB()">Save</button></div>
+  </div>
+</div>
+
+<!-- Strategy Detail Viewer -->
+<div class="strat-detail-overlay" id="strat-detail-overlay">
+  <div class="strat-detail">
+    <div class="strat-detail-header">
+      <div>
+        <div style="font-size:18px;font-weight:700;color:var(--text)" id="sv-title"></div>
+        <div style="display:flex;gap:8px;margin-top:6px;align-items:center" id="sv-meta"></div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-ghost btn-sm" onclick="editStrat(document.getElementById('sv-id').value);closeStratViewer()">Edit</button>
+        <button class="btn btn-ghost btn-sm" onclick="closeStratViewer()">Close</button>
+      </div>
+    </div>
+    <input type="hidden" id="sv-id" />
+    <div class="strat-detail-body">
+      <div id="sv-desc" style="font-size:13px;line-height:1.7;color:var(--text2);margin-bottom:20px;white-space:pre-wrap"></div>
+      <div id="sv-files"></div>
+    </div>
+  </div>
+</div>
+
 <!-- Import Preview Modal -->
 <div class="modal-overlay" id="import-modal">
   <div class="modal modal-wide">
@@ -534,7 +635,7 @@
 <script>
 // ═══ DATA ═══
 const KEY='vc_dash_v3';
-let DB={strategies:[],posts:[],reminders:[],exec:{partha:{posts:[],topics:[],schedule:'Mon / Thu',bio:'Co-Founder & President, Vantage Circle'},john:{posts:[],topics:[],schedule:'Tue / Fri',bio:'Chief Business Officer, Vantage Circle'}}};
+let DB={strategies:[],posts:[],reminders:[],contentBank:[],exec:{partha:{posts:[],topics:[],schedule:'Mon / Thu',bio:'Co-Founder & President, Vantage Circle'},john:{posts:[],topics:[],schedule:'Tue / Fri',bio:'Chief Business Officer, Vantage Circle'}}};
 
 // Load: localStorage > v2 migration > seed data
 function load(){
@@ -545,6 +646,7 @@ function load(){
       DB=JSON.parse(d);
       DB.posts.forEach(p=>{if(!p.copy)p.copy='';if(!p.caption)p.caption=''});
       DB.strategies.forEach(s=>{if(!s.files)s.files=[]});
+      if(!DB.contentBank)DB.contentBank=[];
       if(DB.exec){if(!DB.exec.partha.brandNotes)DB.exec.partha.brandNotes='';if(!DB.exec.john.brandNotes)DB.exec.john.brandNotes=''}
     } else if(typeof SEED_DATA!=='undefined'){
       DB=JSON.parse(JSON.stringify(SEED_DATA)); // deep clone seed
@@ -589,7 +691,7 @@ function renderOverview(){
 
 // ═══ STRATEGY ═══
 function filterStrat(el,f){stratFilter=f;document.querySelectorAll('#page-strategy .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderStrategy()}
-function renderStrategy(){const list=stratFilter==='all'?DB.strategies:DB.strategies.filter(s=>s.status===stratFilter);const el=document.getElementById('strat-list');if(!list.length){el.innerHTML='<div class="empty"><p>No strategies yet. Add your first plan.</p></div>';return}el.innerHTML=list.map(s=>`<div class="item-row"><div class="item-body"><div class="item-title">${s.title}</div>${s.desc?`<div class="post-notes">${esc(s.desc)}</div>`:''}<div class="item-meta" style="margin-top:5px"><span class="badge badge-${s.status}">${statusLabel(s.status)}</span>${platBadge(s.platform)}${s.due?'<span>Due: '+s.due+'</span>':''}</div>${(s.files&&s.files.length)?`<div style="margin-top:6px">${s.files.map((f,fi)=>`<span class="file-chip file-chip-${fileChipType(f.type)}" onclick="event.stopPropagation();downloadStratFile('${s.id}',${fi})" title="Click to download"><b>${fileChipIcon(f.type)}</b> ${esc(f.name)}</span>`).join('')}</div>`:''}</div><div class="item-actions"><button class="icon-btn" onclick="editStrat('${s.id}')" title="Edit">E</button><button class="icon-btn del" onclick="deleteStrat('${s.id}')" title="Delete">x</button></div></div>`).join('')}
+function renderStrategy(){const list=stratFilter==='all'?DB.strategies:DB.strategies.filter(s=>s.status===stratFilter);const el=document.getElementById('strat-list');if(!list.length){el.innerHTML='<div class="empty"><p>No strategies yet. Add your first plan.</p></div>';return}el.innerHTML=list.map(s=>`<div class="item-row" onclick="openStratViewer('${s.id}')" style="cursor:pointer"><div class="item-body"><div class="item-title">${s.title}</div>${s.desc?`<div class="post-notes">${esc(s.desc)}</div>`:''}<div class="item-meta" style="margin-top:5px"><span class="badge badge-${s.status}">${statusLabel(s.status)}</span>${platBadge(s.platform)}${s.due?'<span>Due: '+s.due+'</span>':''}</div>${(s.files&&s.files.length)?`<div style="margin-top:6px">${s.files.map((f,fi)=>`<span class="file-chip file-chip-${fileChipType(f.type)}" onclick="event.stopPropagation();openStratViewer('${s.id}')" title="Click to view"><b>${fileChipIcon(f.type)}</b> ${esc(f.name)}</span>`).join('')}</div>`:''}</div><div class="item-actions" onclick="event.stopPropagation()"><button class="icon-btn" onclick="editStrat('${s.id}')" title="Edit">E</button><button class="icon-btn del" onclick="deleteStrat('${s.id}')" title="Delete">x</button></div></div>`).join('')}
 function openStratModal(){$('strat-id').value='';$('strat-title').value='';$('strat-desc').value='';$('strat-status').value='todo';$('strat-due').value='';$('strat-platform').value='all';$('strat-modal-title').textContent='Add Strategy';stratTempFiles=[];renderStratFilesList();openModal('strat-modal')}
 function editStrat(id){const s=DB.strategies.find(x=>x.id===id);if(!s)return;$('strat-id').value=s.id;$('strat-title').value=s.title;$('strat-desc').value=s.desc||'';$('strat-status').value=s.status;$('strat-due').value=s.due||'';$('strat-platform').value=s.platform||'all';$('strat-modal-title').textContent='Edit Strategy';stratTempFiles=[];renderStratFilesList();openModal('strat-modal')}
 function saveStrat(){const title=$('strat-title').value.trim();if(!title){alert('Title required');return}const id=$('strat-id').value;const existingFiles=id?((DB.strategies.find(x=>x.id===id)||{}).files||[]):[];const obj={id:id||uid(),title,desc:$('strat-desc').value.trim(),status:$('strat-status').value,due:$('strat-due').value,platform:$('strat-platform').value,files:[...existingFiles,...stratTempFiles.map(f=>({name:f.name,size:f.size,type:f.type,data:f.data}))]};if(id){const i=DB.strategies.findIndex(x=>x.id===id);DB.strategies[i]=obj}else DB.strategies.unshift(obj);stratTempFiles=[];save();closeModal('strat-modal');renderStrategy();renderOverview();toast('Strategy saved')}
@@ -620,8 +722,122 @@ function downloadStratFile(stratId,idx){const s=DB.strategies.find(x=>x.id===str
 function fileChipType(ext){return ext==='pdf'?'pdf':['xlsx','xls'].includes(ext)?'excel':'md'}
 function fileChipIcon(ext){return ext==='pdf'?'PDF':['xlsx','xls'].includes(ext)?'XLS':'MD'}
 
+// ═══ STRATEGY FILE VIEWER ═══
+function openStratViewer(id){
+  const s=DB.strategies.find(x=>x.id===id);if(!s)return;
+  $('sv-id').value=s.id;
+  $('sv-title').textContent=s.title;
+  $('sv-meta').innerHTML=`<span class="badge badge-${s.status}">${statusLabel(s.status)}</span>${platBadge(s.platform)}${s.due?'<span style="font-size:12px;color:var(--muted)">Due: '+s.due+'</span>':''}`;
+  $('sv-desc').textContent=s.desc||'No description provided.';
+  const filesEl=$('sv-files');
+  if(!s.files||!s.files.length){filesEl.innerHTML='<div style="color:var(--muted);font-size:13px;padding:12px 0">No files attached to this strategy. Click Edit to add files.</div>';
+  }else{
+    filesEl.innerHTML='<div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px">Attached Files ('+s.files.length+')</div>'+s.files.map((f,i)=>`<div class="file-viewer"><div class="file-viewer-header"><span><span class="file-chip file-chip-${fileChipType(f.type)}" style="margin:0"><b>${fileChipIcon(f.type)}</b> ${esc(f.name)}</span></span><button class="btn btn-ghost btn-sm" onclick="downloadStratFile('${s.id}',${i})">Download</button></div><div class="file-viewer-content" id="fv-${s.id}-${i}"></div></div>`).join('');
+    // Render each file inline
+    setTimeout(()=>{s.files.forEach((f,i)=>{const el=$('fv-'+s.id+'-'+i);if(!el)return;renderFileInline(el,f)})},50);
+  }
+  $('strat-detail-overlay').classList.add('open');
+}
+function closeStratViewer(){$('strat-detail-overlay').classList.remove('open')}
+$('strat-detail-overlay').addEventListener('click',e=>{if(e.target===$('strat-detail-overlay'))closeStratViewer()});
+
+function renderFileInline(el,f){
+  if(f.type==='pdf'){
+    el.innerHTML='<iframe src="'+f.data+'" style="width:100%;height:500px;border:none"></iframe>';
+  }else if(f.type==='md'||f.type==='markdown'){
+    // Decode base64 markdown and render as HTML
+    try{
+      const b64=f.data.split(',')[1]||f.data;
+      const raw=decodeURIComponent(escape(atob(b64)));
+      el.innerHTML='<div class="md-render">'+renderMarkdown(raw)+'</div>';
+    }catch(e){el.innerHTML='<div style="padding:16px;color:var(--muted)">Unable to render markdown preview.</div>'}
+  }else if(['xlsx','xls'].includes(f.type)){
+    // Parse Excel with SheetJS and render as table
+    try{
+      const b64=f.data.split(',')[1]||f.data;
+      const raw=atob(b64);const arr=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)arr[i]=raw.charCodeAt(i);
+      const wb=XLSX.read(arr,{type:'array'});
+      const ws=wb.Sheets[wb.SheetNames[0]];
+      const data=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+      if(!data.length){el.innerHTML='<div style="padding:16px;color:var(--muted)">Empty spreadsheet.</div>';return}
+      const headers=data[0],rows=data.slice(1);
+      el.innerHTML='<table class="excel-preview"><thead><tr>'+headers.map(h=>'<th>'+esc(String(h))+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+headers.map((_,ci)=>'<td>'+esc(String(r[ci]||''))+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
+    }catch(e){el.innerHTML='<div style="padding:16px;color:var(--muted)">Unable to render Excel preview.</div>'}
+  }
+}
+
+function renderMarkdown(src){
+  // Simple markdown to HTML renderer
+  let html='';
+  const lines=src.split('\n');
+  let inList=false,inOl=false,inCode=false,inBlockquote=false;
+  for(let i=0;i<lines.length;i++){
+    let line=lines[i];
+    // Code blocks
+    if(line.trim().startsWith('```')){
+      if(inCode){html+='</code></pre>';inCode=false}else{html+='<pre><code>';inCode=true}
+      continue;
+    }
+    if(inCode){html+=esc(line)+'\n';continue}
+    // Blockquotes
+    if(line.trim().startsWith('>')){
+      if(!inBlockquote){html+='<blockquote>';inBlockquote=true}
+      html+='<p>'+inlineMarkdown(line.replace(/^>\s*/,''))+'</p>';
+      if(i+1>=lines.length||!lines[i+1].trim().startsWith('>')){html+='</blockquote>';inBlockquote=false}
+      continue;
+    }
+    // Headers
+    if(line.match(/^### /)){html+='<h3>'+inlineMarkdown(line.slice(4))+'</h3>';continue}
+    if(line.match(/^## /)){html+='<h2>'+inlineMarkdown(line.slice(3))+'</h2>';continue}
+    if(line.match(/^# /)){html+='<h1>'+inlineMarkdown(line.slice(2))+'</h1>';continue}
+    // Horizontal rule
+    if(line.match(/^(-{3,}|\*{3,}|_{3,})$/)){html+='<hr style="border:none;border-top:1px solid var(--border);margin:12px 0">';continue}
+    // Unordered lists
+    if(line.match(/^\s*[-*+] /)){
+      if(!inList){html+='<ul>';inList=true}
+      html+='<li>'+inlineMarkdown(line.replace(/^\s*[-*+] /,''))+'</li>';
+      if(i+1>=lines.length||!lines[i+1].match(/^\s*[-*+] /)){html+='</ul>';inList=false}
+      continue;
+    }
+    // Ordered lists
+    if(line.match(/^\s*\d+\. /)){
+      if(!inOl){html+='<ol>';inOl=true}
+      html+='<li>'+inlineMarkdown(line.replace(/^\s*\d+\. /,''))+'</li>';
+      if(i+1>=lines.length||!lines[i+1].match(/^\s*\d+\. /)){html+='</ol>';inOl=false}
+      continue;
+    }
+    // Tables
+    if(line.trim().startsWith('|')&&line.trim().endsWith('|')){
+      let tableRows=[line];
+      while(i+1<lines.length&&lines[i+1].trim().startsWith('|')&&lines[i+1].trim().endsWith('|')){i++;tableRows.push(lines[i])}
+      if(tableRows.length>=2){
+        const parseRow=r=>r.split('|').slice(1,-1).map(c=>c.trim());
+        const hdr=parseRow(tableRows[0]);
+        const isSep=tableRows[1].trim().match(/^\|[\s\-:|]+\|$/);
+        const bodyStart=isSep?2:1;
+        html+='<table class="excel-preview"><thead><tr>'+hdr.map(h=>'<th>'+inlineMarkdown(h)+'</th>').join('')+'</tr></thead><tbody>';
+        for(let ri=bodyStart;ri<tableRows.length;ri++){const cells=parseRow(tableRows[ri]);html+='<tr>'+cells.map(c=>'<td>'+inlineMarkdown(c)+'</td>').join('')+'</tr>'}
+        html+='</tbody></table>';
+        continue;
+      }
+    }
+    // Empty line
+    if(!line.trim()){html+='';continue}
+    // Paragraph
+    html+='<p>'+inlineMarkdown(line)+'</p>';
+  }
+  return html;
+}
+function inlineMarkdown(text){
+  return esc(text)
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/`(.+?)`/g,'<code>$1</code>')
+    .replace(/\[(.+?)\]\((.+?)\)/g,'<a href="$2" style="color:var(--accent-text)" target="_blank">$1</a>');
+}
+
 // ═══ CALENDAR ═══
-let bulkMode=false, bulkSelected=new Set();
+let bulkMode=false, bulkSelected=new Set(), bulkCtx='calendar';
 
 function switchPlatform(el,plat){curPlatform=plat;document.querySelectorAll('#page-calendar .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');bulkSelected.clear();updateBulkBar();renderCalendar()}
 
@@ -654,22 +870,39 @@ function renderCalendar(){
     </div>`).join('');
 }
 
-// BULK MODE
-function toggleBulkMode(){
+// BULK MODE (context-aware: calendar or reminders)
+function toggleBulkMode(ctx){
+  if(ctx)bulkCtx=ctx;
   bulkMode=!bulkMode;bulkSelected.clear();
-  $('bulk-select-btn').textContent=bulkMode?'Cancel Select':'Select';
+  const btn=bulkCtx==='reminders'?$('rem-bulk-select-btn'):$('bulk-select-btn');
+  if(btn)btn.textContent=bulkMode?'Cancel Select':'Select';
+  // Reset the other button if switching context
+  if(bulkMode&&bulkCtx==='reminders'&&$('bulk-select-btn'))$('bulk-select-btn').textContent='Select';
+  if(bulkMode&&bulkCtx==='calendar'&&$('rem-bulk-select-btn'))$('rem-bulk-select-btn').textContent='Select';
   $('bulk-bar').classList.toggle('hidden',!bulkMode);
-  updateBulkBar();renderCalendar();
+  updateBulkBar();
+  if(bulkCtx==='reminders')renderReminders();else renderCalendar();
 }
-function toggleBulkItem(id){if(bulkSelected.has(id))bulkSelected.delete(id);else bulkSelected.add(id);updateBulkBar();renderCalendar()}
-function bulkSelectAll(){DB.posts.filter(p=>p.platform===curPlatform).forEach(p=>bulkSelected.add(p.id));updateBulkBar();renderCalendar()}
-function bulkDeselectAll(){bulkSelected.clear();updateBulkBar();renderCalendar()}
+function toggleBulkItem(id){if(bulkSelected.has(id))bulkSelected.delete(id);else bulkSelected.add(id);updateBulkBar();if(bulkCtx==='reminders')renderReminders();else renderCalendar()}
+function bulkSelectAll(){
+  if(bulkCtx==='reminders'){
+    let list=remFilter==='all'?DB.reminders:remFilter==='done'?DB.reminders.filter(r=>r.done):DB.reminders.filter(r=>!r.done);
+    list.forEach(r=>bulkSelected.add(r.id));updateBulkBar();renderReminders();
+  }else{DB.posts.filter(p=>p.platform===curPlatform).forEach(p=>bulkSelected.add(p.id));updateBulkBar();renderCalendar()}
+}
+function bulkDeselectAll(){bulkSelected.clear();updateBulkBar();if(bulkCtx==='reminders')renderReminders();else renderCalendar()}
 function updateBulkBar(){$('bulk-count-num').textContent=bulkSelected.size}
 function bulkDelete(){
   const n=bulkSelected.size;if(!n)return;
-  if(!confirm('Delete '+n+' post'+(n>1?'s':'')+'?'))return;
-  DB.posts=DB.posts.filter(p=>!bulkSelected.has(p.id));
-  bulkSelected.clear();save();updateBulkBar();renderCalendar();renderOverview();toast(n+' post'+(n>1?'s':'')+' deleted');
+  if(bulkCtx==='reminders'){
+    if(!confirm('Delete '+n+' reminder'+(n>1?'s':'')+'?'))return;
+    DB.reminders=DB.reminders.filter(r=>!bulkSelected.has(r.id));
+    bulkSelected.clear();save();updateBulkBar();renderReminders();renderOverview();toast(n+' reminder'+(n>1?'s':'')+' deleted');
+  }else{
+    if(!confirm('Delete '+n+' post'+(n>1?'s':'')+'?'))return;
+    DB.posts=DB.posts.filter(p=>!bulkSelected.has(p.id));
+    bulkSelected.clear();save();updateBulkBar();renderCalendar();renderOverview();toast(n+' post'+(n>1?'s':'')+' deleted');
+  }
 }
 
 // POST DETAIL (Notion-like)
@@ -711,11 +944,42 @@ function togglePost(id,checked){const p=DB.posts.find(x=>x.id===id);if(p){p.chec
 
 // ═══ REMINDERS ═══
 function filterRem(el,f){remFilter=f;document.querySelectorAll('#page-reminders .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderReminders()}
-function renderReminders(){let list=remFilter==='all'?DB.reminders:remFilter==='done'?DB.reminders.filter(r=>r.done):DB.reminders.filter(r=>!r.done);list=list.sort((a,b)=>a.date>b.date?1:-1);const el=document.getElementById('rem-list');if(!list.length){el.innerHTML='<div class="empty"><p>No reminders.</p></div>';return}el.innerHTML=list.map(r=>`<div class="item-row ${r.done?'reminder-done':''}"><span class="priority-dot p-${r.priority}" style="margin-top:5px"></span><div class="item-body"><div class="item-title">${esc(r.title)}</div>${r.notes?`<div class="post-notes">${esc(r.notes)}</div>`:''}<div class="item-meta" style="margin-top:3px"><span class="badge badge-${r.priority}">${r.priority}</span><span>${r.date}${r.time?' &middot; '+r.time:''}</span></div></div><div class="item-actions" style="opacity:1">${!r.done?`<button class="btn btn-sm" style="background:var(--green-dim);color:var(--green);border:none" onclick="doneRem('${r.id}')">Done</button>`:'<span class="badge badge-done">Done</span>'}<button class="icon-btn" onclick="editRem('${r.id}')" title="Edit">E</button><button class="icon-btn del" onclick="deleteRem('${r.id}')" title="Delete">x</button></div></div>`).join('')}
+function renderReminders(){let list=remFilter==='all'?DB.reminders:remFilter==='done'?DB.reminders.filter(r=>r.done):DB.reminders.filter(r=>!r.done);list=list.sort((a,b)=>a.date>b.date?1:-1);const el=document.getElementById('rem-list');const isBulk=bulkMode&&bulkCtx==='reminders';if(!list.length){el.innerHTML='<div class="empty"><p>No reminders.</p></div>';return}el.innerHTML=list.map(r=>`<div class="item-row ${r.done?'reminder-done':''} ${isBulk&&bulkSelected.has(r.id)?'selected':''}" ${isBulk?`onclick="toggleBulkItem('${r.id}')" style="cursor:pointer"`:''}>${isBulk?`<input type="checkbox" ${bulkSelected.has(r.id)?'checked':''} onclick="event.stopPropagation();toggleBulkItem('${r.id}')" style="margin-top:2px">`:`<span class="priority-dot p-${r.priority}" style="margin-top:5px"></span>`}<div class="item-body"><div class="item-title">${esc(r.title)}</div>${r.notes?`<div class="post-notes">${esc(r.notes)}</div>`:''}<div class="item-meta" style="margin-top:3px"><span class="badge badge-${r.priority}">${r.priority}</span><span>${r.date}${r.time?' &middot; '+r.time:''}</span></div></div>${isBulk?'':`<div class="item-actions" style="opacity:1">${!r.done?`<button class="btn btn-sm" style="background:var(--green-dim);color:var(--green);border:none" onclick="doneRem('${r.id}')">Done</button>`:'<span class="badge badge-done">Done</span>'}<button class="icon-btn" onclick="editRem('${r.id}')" title="Edit">E</button><button class="icon-btn del" onclick="deleteRem('${r.id}')" title="Delete">x</button></div>`}</div>`).join('')}
 function editRem(id){const r=DB.reminders.find(x=>x.id===id);if(!r)return;$('rem-id').value=r.id;$('rem-title').value=r.title;$('rem-notes').value=r.notes||'';$('rem-date').value=r.date;$('rem-time').value=r.time||'';$('rem-priority').value=r.priority;$('rem-modal-title').textContent='Edit Reminder';openModal('rem-modal')}
 function saveRem(){const title=$('rem-title').value.trim(),date=$('rem-date').value;if(!title||!date){alert('Title and date required');return}const id=$('rem-id').value;const obj={id:id||uid(),title,notes:$('rem-notes').value.trim(),date,time:$('rem-time').value,priority:$('rem-priority').value,done:false};if(id){const i=DB.reminders.findIndex(x=>x.id===id);obj.done=DB.reminders[i].done;DB.reminders[i]=obj}else DB.reminders.unshift(obj);save();closeModal('rem-modal');renderReminders();renderOverview();toast('Reminder saved')}
 function deleteRem(id){if(!confirm('Delete this reminder?'))return;DB.reminders=DB.reminders.filter(x=>x.id!==id);save();renderReminders();renderOverview();toast('Deleted')}
 function doneRem(id){const r=DB.reminders.find(x=>x.id===id);if(r){r.done=true;save();renderReminders();renderOverview();toast('Marked as done')}}
+
+// ═══ CONTENT BANK ═══
+let cbFilter='all';
+function filterCB(el,f){cbFilter=f;document.querySelectorAll('#page-contentbank .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderContentBank()}
+function renderContentBank(){
+  const all=DB.contentBank;
+  const filtered=cbFilter==='all'?all:all.filter(x=>x.type===cbFilter);
+  const videos=all.filter(x=>x.type==='video').length,reports=all.filter(x=>x.type==='report').length,awards=all.filter(x=>x.type==='award').length,testimonials=all.filter(x=>x.type==='testimonial').length;
+  $('cb-stats').innerHTML=`
+    <div class="stat-card"><div class="stat-label"><span class="stat-dot" style="background:var(--accent)"></span>Total Items</div><div class="stat-val" style="color:var(--accent)">${all.length}</div></div>
+    <div class="stat-card"><div class="stat-label"><span class="stat-dot" style="background:var(--blue)"></span>Videos</div><div class="stat-val" style="color:var(--blue)">${videos}</div></div>
+    <div class="stat-card"><div class="stat-label"><span class="stat-dot" style="background:var(--yellow)"></span>Awards</div><div class="stat-val" style="color:var(--yellow)">${awards}</div></div>
+    <div class="stat-card"><div class="stat-label"><span class="stat-dot" style="background:var(--green)"></span>Testimonials</div><div class="stat-val" style="color:var(--green)">${testimonials}</div></div>`;
+  const el=$('cb-list');
+  if(!filtered.length){el.innerHTML='<div class="empty" style="grid-column:1/-1"><p>No content yet. Add your first item.</p></div>';return}
+  el.innerHTML=filtered.map(item=>{
+    const typeClass='type-'+item.type;
+    const typeLabel=item.type==='casestudy'?'Case Study':item.type.charAt(0).toUpperCase()+item.type.slice(1);
+    return`<div class="cb-card">
+      <div class="cb-actions"><button class="icon-btn" onclick="editCB('${item.id}')" title="Edit">E</button><button class="icon-btn del" onclick="deleteCB('${item.id}')" title="Delete">x</button></div>
+      <div class="type-badge ${typeClass}">${typeLabel}</div>
+      <div class="cb-title">${esc(item.title)}</div>
+      ${item.desc?`<div class="cb-desc">${esc(item.desc)}</div>`:''}
+      ${item.url?`<a class="cb-link" href="${esc(item.url)}" target="_blank" onclick="event.stopPropagation()">${esc(item.url)}</a>`:''}
+      ${item.tags&&item.tags.length?`<div style="margin-top:8px">${item.tags.map(t=>`<span class="topic-chip" style="font-size:10.5px">${esc(t)}</span>`).join('')}</div>`:''}
+    </div>`}).join('');
+}
+function openCBModal(){$('cb-id').value='';$('cb-title').value='';$('cb-type').value='video';$('cb-desc').value='';$('cb-url').value='';$('cb-tags').value='';$('cb-modal-title').textContent='Add Content';openModal('cb-modal')}
+function editCB(id){const item=DB.contentBank.find(x=>x.id===id);if(!item)return;$('cb-id').value=item.id;$('cb-title').value=item.title;$('cb-type').value=item.type;$('cb-desc').value=item.desc||'';$('cb-url').value=item.url||'';$('cb-tags').value=(item.tags||[]).join(', ');$('cb-modal-title').textContent='Edit Content';openModal('cb-modal')}
+function saveCB(){const title=$('cb-title').value.trim();if(!title){alert('Title required');return}const id=$('cb-id').value;const tags=$('cb-tags').value.split(',').map(t=>t.trim()).filter(Boolean);const obj={id:id||uid(),title,type:$('cb-type').value,desc:$('cb-desc').value.trim(),url:$('cb-url').value.trim(),tags};if(id){const i=DB.contentBank.findIndex(x=>x.id===id);DB.contentBank[i]=obj}else DB.contentBank.unshift(obj);save();closeModal('cb-modal');renderContentBank();toast('Content saved')}
+function deleteCB(id){if(!confirm('Delete this content item?'))return;DB.contentBank=DB.contentBank.filter(x=>x.id!==id);save();renderContentBank();toast('Deleted')}
 
 // ═══ SPECIAL DAYS ═══
 let sdFilter='all';
@@ -1004,6 +1268,7 @@ function render(){
   if(curPage==='calendar')renderCalendar();
   if(curPage==='specialdays')renderSpecialDays();
   if(curPage==='reminders')renderReminders();
+  if(curPage==='contentbank')renderContentBank();
   if(curPage==='partha')renderExec('partha');
   if(curPage==='john')renderExec('john');
 }
