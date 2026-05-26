@@ -431,6 +431,32 @@
   .ov-event-item .ov-evt-info { flex:1; }
   .ov-event-item .ov-evt-name { font-size:13px; font-weight:600; color:var(--text); }
   .ov-event-item .ov-evt-date { font-size:11px; color:var(--muted); }
+
+  /* ─── AI ELEMENTS ─── */
+  .btn-ai { background:linear-gradient(135deg,#8b7ce8,#e84393); color:#fff; border:none; box-shadow:0 2px 8px rgba(139,124,232,.3); }
+  .btn-ai:hover { opacity:0.9; box-shadow:0 3px 12px rgba(139,124,232,.4); }
+  .btn-ai:disabled { opacity:0.5; cursor:not-allowed; }
+  .ai-loading { display:inline-flex; align-items:center; gap:6px; }
+  .ai-loading .ai-spin { width:14px; height:14px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin .6s linear infinite; }
+  @keyframes spin { to{transform:rotate(360deg)} }
+  .ai-output { background:linear-gradient(135deg,#faf8fc,#f5f0fa); border:1px solid rgba(139,124,232,.2); border-radius:8px; padding:14px; margin-top:10px; font-size:12.5px; line-height:1.6; color:var(--text); white-space:pre-wrap; position:relative; }
+  .ai-output .ai-label { font-size:10px; font-weight:700; color:#e84393; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; display:flex; align-items:center; gap:4px; }
+  .ai-output .ai-apply-btn { position:absolute; top:10px; right:10px; padding:4px 10px; border-radius:5px; border:1px solid var(--accent); background:var(--accent-dim); color:var(--accent-text); font-size:11px; font-weight:600; cursor:pointer; font-family:inherit; }
+  .ai-output .ai-apply-btn:hover { background:var(--accent); color:#fff; }
+  .ai-brief { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:18px; margin-top:12px; }
+  .ai-brief h4 { font-size:14px; font-weight:700; margin-bottom:8px; color:var(--text); }
+  .ai-brief .ai-brief-section { margin-bottom:12px; }
+  .ai-brief .ai-brief-section strong { font-size:11.5px; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px; }
+  .ai-insight-card { background:linear-gradient(135deg,#faf8fc,#f0ecfa); border:1px solid rgba(139,124,232,.2); border-radius:10px; padding:16px; margin-bottom:10px; }
+  .ai-insight-card .insight-title { font-size:13px; font-weight:700; color:var(--accent-text); margin-bottom:6px; display:flex; align-items:center; gap:6px; }
+  .ai-insight-card .insight-body { font-size:12.5px; color:var(--text2); line-height:1.6; white-space:pre-wrap; }
+  .ai-config-bar { background:var(--card2); border:1px solid var(--border); border-radius:8px; padding:10px 14px; margin-bottom:16px; display:flex; align-items:center; gap:10px; font-size:12px; }
+  .ai-config-bar input { flex:1; font-size:12px; padding:6px 10px; }
+  .ai-repurpose-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
+  .ai-repurpose-card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:12px; font-size:12px; }
+  .ai-repurpose-card .rp-plat { font-size:11px; font-weight:700; margin-bottom:6px; }
+  .ai-repurpose-card .rp-text { color:var(--text2); line-height:1.5; white-space:pre-wrap; max-height:120px; overflow-y:auto; }
+  .ai-repurpose-card .rp-action { margin-top:8px; text-align:right; }
 </style>
 </head>
 <body>
@@ -460,6 +486,7 @@
   <div class="sidebar-footer">
     <div style="margin-bottom:4px">Deepmoni Barman &middot; Marketing</div>
     <div id="sync-status"><span class="sync-dot sync-offline"></span><span style="font-size:10px">Local only</span></div>
+    <div style="margin-top:6px"><a href="#" onclick="event.preventDefault();setGeminiKey()" style="font-size:10px;color:var(--accent-text);text-decoration:none">✨ AI Settings</a></div>
   </div>
 </div>
 
@@ -623,6 +650,10 @@
       <div class="card"><div class="card-title">Engagement Rate</div><canvas id="chart-engagement" height="220"></canvas></div>
     </div>
     <div class="card"><div class="card-title">Recent Entries</div><div id="analytics-table"></div></div>
+    <div style="margin-top:14px">
+      <button class="btn btn-ai" onclick="aiAnalyticsInsights()" id="ai-insights-btn">🧠 AI Analyze Performance & Recommendations</button>
+      <div id="ai-analytics-output"></div>
+    </div>
   </div>
 
   <!-- IMPORTANT EVENTS -->
@@ -707,6 +738,11 @@
     <div class="form-group"><label>Copy (Post body text)</label><textarea id="post-copy" placeholder="Write the full post copy here..." style="min-height:100px"></textarea></div>
     <div class="form-group"><label>Caption (Social media caption / hook)</label><textarea id="post-caption" placeholder="Short caption, hook, or CTA for the post..." style="min-height:60px"></textarea></div>
     <div class="form-group"><label>Notes (Internal / planning)</label><textarea id="post-notes" placeholder="Hashtags, references, internal notes..." style="min-height:50px"></textarea></div>
+    <div style="display:flex;gap:6px;margin-bottom:12px">
+      <button type="button" class="btn btn-ai btn-sm" id="ai-write-btn" onclick="aiWritePost()">✨ AI Write Post</button>
+      <button type="button" class="btn btn-ai btn-sm" id="ai-hashtag-btn" onclick="aiHashtags()">🏷️ AI Hashtags</button>
+    </div>
+    <div id="ai-post-output"></div>
     <div class="grid-2">
       <div class="form-group"><label>Status</label><select id="post-status"><option value="draft">Draft</option><option value="scheduled">Scheduled</option><option value="published">Published</option></select></div>
       <div class="form-group"><label>Post Time</label><input type="time" id="post-time" /></div>
@@ -947,6 +983,12 @@
         <label>Notes (Internal)</label>
         <textarea id="detail-notes" placeholder="Hashtags, references, strategy notes, internal comments..." onchange="detailSave()" style="min-height:60px"></textarea>
       </div>
+      <hr class="detail-divider" />
+      <div style="display:flex;gap:6px">
+        <button type="button" class="btn btn-ai btn-sm" onclick="aiRepurpose()">🔄 AI Repurpose to Other Platforms</button>
+        <button type="button" class="btn btn-ai btn-sm" onclick="aiImprove()">✨ AI Improve Copy</button>
+      </div>
+      <div id="ai-detail-output"></div>
     </div>
   </div>
 </div>
@@ -973,6 +1015,40 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "811440436151",
   appId: "1:811440436151:web:5cacabde1c69181719ee32"
 };
+
+// ═══ GEMINI AI CONFIG ═══
+// ────────────────────────────────────────────────────────────────────────────
+// To enable AI features (free):
+//   1. Go to https://aistudio.google.com/apikey
+//   2. Click "Create API Key" → copy it
+//   3. Paste below. Free tier: 15 req/min, 1M tokens/day
+// ────────────────────────────────────────────────────────────────────────────
+let GEMINI_KEY = localStorage.getItem('vc_gemini_key') || '';
+const GEMINI_MODEL = 'gemini-2.0-flash';
+
+async function callGemini(prompt, maxTokens) {
+  if (!GEMINI_KEY) { toast('Set your Gemini API key first (Settings in sidebar footer)'); return null; }
+  try {
+    const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + GEMINI_MODEL + ':generateContent?key=' + GEMINI_KEY, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { maxOutputTokens: maxTokens || 1024, temperature: 0.8 }
+      })
+    });
+    const data = await res.json();
+    if (data.error) { toast('AI error: ' + (data.error.message || 'Unknown')); return null; }
+    return (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0].text) || null;
+  } catch (e) { toast('AI request failed: ' + e.message); return null; }
+}
+
+const VC_BRAND_CONTEXT = 'Vantage Circle is a Global Employee Engagement Platform (SaaS) offering Rewards & Recognition, Employee Benefits (Perks), Employee Wellness, and Employee Feedback solutions. Target audience: HR leaders, CHROs, People & Culture teams at mid-to-large enterprises. Brand voice: Professional, insightful, empathetic, data-driven, thought-leadership oriented. Key themes: employee recognition, workplace culture, employee engagement, retention, HR technology, people analytics.';
+
+function setGeminiKey() {
+  var key = prompt('Enter your Google Gemini API Key (free from aistudio.google.com/apikey):', GEMINI_KEY);
+  if (key !== null) { GEMINI_KEY = key.trim(); localStorage.setItem('vc_gemini_key', GEMINI_KEY); toast(GEMINI_KEY ? 'API key saved' : 'API key cleared'); }
+}
 
 // ═══ DATA ═══
 const KEY='vc_dash_v3';
@@ -2203,8 +2279,9 @@ function renderCampaigns(){
       +'</div>'
       +'<div style="display:flex;align-items:center;gap:8px;justify-content:space-between">'
       +'<div style="font-size:11.5px;color:var(--muted)">'+(s.hasPlannedContent?'<span style="color:var(--green);font-weight:600">✓ '+s.existingPostCount+' post(s) already planned</span>':'<span style="color:var(--yellow)">No content planned yet</span>')+'</div>'
-      +'<div style="display:flex;gap:6px"><button class="cs-action-btn" onclick="quickPlanCampaign(\''+s.id+'\',\''+s.date+'\',\''+esc(s.title).replace(/'/g,"\\'")+'\')">+ Quick Plan Posts</button>'
-      +'<button class="cs-action-btn" onclick="createEventFromCampaign(\''+s.date+'\',\''+esc(s.title).replace(/'/g,"\\'")+'\')">Create Event</button></div>'
+      +'<div style="display:flex;gap:6px;flex-wrap:wrap"><button class="cs-action-btn" onclick="quickPlanCampaign(\''+s.id+'\',\''+s.date+'\',\''+esc(s.title).replace(/'/g,"\\'")+'\')">+ Quick Plan Posts</button>'
+      +'<button class="cs-action-btn" onclick="createEventFromCampaign(\''+s.date+'\',\''+esc(s.title).replace(/'/g,"\\'")+'\')">Create Event</button>'
+      +'<button class="cs-action-btn btn-ai" style="font-size:11px;padding:4px 10px" onclick="aiCampaignBrief(\''+esc(s.title).replace(/'/g,"\\'")+'\',\''+s.date+'\',\''+s.priority+'\')">📋 AI Campaign Brief</button></div>'
       +'</div></div>';
   }).join('');
 }
@@ -2226,6 +2303,163 @@ function createEventFromCampaign(date,title){
   evtTempFiles=[];evtTempPosts=[];
   $('event-modal-title').textContent='Create Event from Campaign';
   renderEventFilesList();renderEventPostsList();openModal('event-modal');
+}
+
+// ═══ AI FEATURES ═══
+
+// 1. AI Post Writer
+async function aiWritePost() {
+  var title = $('post-title').value.trim();
+  var platform = $('post-platform').value;
+  if (!title) { toast('Enter a post title/topic first'); return; }
+  var btn = $('ai-write-btn');
+  btn.disabled = true; btn.innerHTML = '<span class="ai-loading"><span class="ai-spin"></span> Writing...</span>';
+  var prompt = VC_BRAND_CONTEXT + '\n\nWrite a ' + platName(platform) + ' post for Vantage Circle about: "' + title + '".\n\n'
+    + 'Requirements:\n'
+    + '- Platform: ' + platName(platform) + '\n'
+    + (platform === 'twitter' ? '- Keep under 280 characters per tweet. If a thread, use numbered tweets.\n' : '')
+    + (platform === 'linkedin' ? '- Professional tone, 150-300 words, use line breaks for readability, include a hook opening and CTA.\n' : '')
+    + (platform === 'reddit' ? '- Conversational, value-first, no hard selling. Discussion-oriented.\n' : '')
+    + (platform === 'instagram' ? '- Engaging, visual language, include emoji, keep caption under 150 words.\n' : '')
+    + '- Brand voice: Professional, insightful, empathetic\n'
+    + '\nRespond with EXACTLY this format (no extra text):\n'
+    + 'COPY:\n[full post body]\n\nCAPTION:\n[short hook/caption/CTA]\n\nHASHTAGS:\n[5-8 relevant hashtags]';
+
+  var result = await callGemini(prompt, 800);
+  btn.disabled = false; btn.innerHTML = '✨ AI Write Post';
+  if (!result) return;
+
+  var out = $('ai-post-output');
+  out.innerHTML = '<div class="ai-output"><div class="ai-label">✨ AI Generated</div><button class="ai-apply-btn" onclick="aiApplyPost()">Apply to Post</button><div id="ai-raw-post">' + esc(result) + '</div></div>';
+  out._raw = result;
+}
+
+function aiApplyPost() {
+  var raw = $('ai-post-output')._raw;
+  if (!raw) return;
+  var copyMatch = raw.match(/COPY:\s*\n([\s\S]*?)(?=\n\s*CAPTION:|\n\s*HASHTAGS:|$)/i);
+  var captionMatch = raw.match(/CAPTION:\s*\n([\s\S]*?)(?=\n\s*HASHTAGS:|$)/i);
+  var hashMatch = raw.match(/HASHTAGS:\s*\n([\s\S]*?)$/i);
+  if (copyMatch) $('post-copy').value = copyMatch[1].trim();
+  if (captionMatch) $('post-caption').value = captionMatch[1].trim();
+  if (hashMatch) { var existing = $('post-notes').value; $('post-notes').value = (existing ? existing + '\n' : '') + hashMatch[1].trim(); }
+  $('ai-post-output').innerHTML = '';
+  toast('AI content applied to post fields');
+}
+
+// 2. AI Hashtags
+async function aiHashtags() {
+  var title = $('post-title').value.trim();
+  var platform = $('post-platform').value;
+  if (!title) { toast('Enter a post title first'); return; }
+  var btn = $('ai-hashtag-btn');
+  btn.disabled = true; btn.innerHTML = '<span class="ai-loading"><span class="ai-spin"></span> Generating...</span>';
+  var prompt = 'Generate 10 relevant hashtags for a ' + platName(platform) + ' post by Vantage Circle (employee engagement SaaS platform) about: "' + title + '". Mix trending HR hashtags with niche ones. Return ONLY the hashtags, one per line, with # prefix.';
+  var result = await callGemini(prompt, 200);
+  btn.disabled = false; btn.innerHTML = '🏷️ AI Hashtags';
+  if (!result) return;
+  $('ai-post-output').innerHTML = '<div class="ai-output"><div class="ai-label">🏷️ AI Hashtags</div><button class="ai-apply-btn" onclick="aiApplyHashtags()">Add to Notes</button><div>' + esc(result) + '</div></div>';
+  $('ai-post-output')._hashtags = result;
+}
+
+function aiApplyHashtags() {
+  var tags = ($('ai-post-output')._hashtags || '').trim();
+  var existing = $('post-notes').value;
+  $('post-notes').value = (existing ? existing + '\n\n' : '') + tags;
+  $('ai-post-output').innerHTML = '';
+  toast('Hashtags added to notes');
+}
+
+// 3. AI Repurpose (from post detail)
+async function aiRepurpose() {
+  var title = $('detail-title').value;
+  var copy = $('detail-copy').value;
+  var platform = $('detail-platform').value;
+  if (!copy && !title) { toast('Post needs content to repurpose'); return; }
+  var btn = event.target; btn.disabled = true; btn.innerHTML = '<span class="ai-loading"><span class="ai-spin"></span> Repurposing...</span>';
+
+  var otherPlatforms = ['linkedin', 'twitter', 'reddit', 'instagram'].filter(function(p) { return p !== platform; });
+  var prompt = VC_BRAND_CONTEXT + '\n\nHere is a ' + platName(platform) + ' post by Vantage Circle:\nTitle: ' + title + '\nContent: ' + (copy || title) + '\n\n'
+    + 'Repurpose this into posts for these platforms. Adapt the tone, length, and format for each:\n'
+    + otherPlatforms.map(function(p) { return '- ' + platName(p); }).join('\n')
+    + '\n\nFor each platform, respond with:\n[PLATFORM NAME]\n[adapted post content]\n---';
+
+  var result = await callGemini(prompt, 1200);
+  btn.disabled = false; btn.innerHTML = '🔄 AI Repurpose to Other Platforms';
+  if (!result) return;
+
+  // Parse result into platform sections
+  var sections = result.split(/---/).filter(function(s) { return s.trim(); });
+  var out = $('ai-detail-output');
+  out.innerHTML = '<div class="ai-output"><div class="ai-label">🔄 AI Repurposed Versions</div>'
+    + '<div class="ai-repurpose-grid">' + sections.map(function(s, i) {
+      var lines = s.trim().split('\n');
+      var platLine = lines[0] || '';
+      var content = lines.slice(1).join('\n').trim();
+      var targetPlat = platLine.toLowerCase().includes('twitter') ? 'twitter' : platLine.toLowerCase().includes('reddit') ? 'reddit' : platLine.toLowerCase().includes('instagram') ? 'instagram' : platLine.toLowerCase().includes('linkedin') ? 'linkedin' : otherPlatforms[i] || 'linkedin';
+      return '<div class="ai-repurpose-card"><div class="rp-plat">' + platBadge(targetPlat) + '</div><div class="rp-text">' + esc(content) + '</div><div class="rp-action"><button class="btn btn-primary btn-sm" onclick="aiCreateFromRepurpose(\'' + targetPlat + '\',' + i + ')">+ Create Post</button></div></div>';
+    }).join('') + '</div></div>';
+  out._sections = sections;
+  out._platforms = otherPlatforms;
+}
+
+function aiCreateFromRepurpose(platform, idx) {
+  var sections = ($('ai-detail-output')._sections || []);
+  var content = (sections[idx] || '').trim().split('\n').slice(1).join('\n').trim();
+  $('post-id').value = ''; $('post-date').value = $('detail-date').value;
+  $('post-platform').value = platform; $('post-title').value = $('detail-title').value + ' (' + platName(platform) + ')';
+  $('post-copy').value = content; $('post-caption').value = ''; $('post-notes').value = 'Repurposed from ' + platName($('detail-platform').value);
+  $('post-status').value = 'draft'; $('post-time').value = ''; $('post-modal-title').textContent = 'Create Repurposed Post';
+  $('ai-post-output').innerHTML = ''; openModal('post-modal');
+}
+
+// 4. AI Improve Copy
+async function aiImprove() {
+  var copy = $('detail-copy').value;
+  var title = $('detail-title').value;
+  var platform = $('detail-platform').value;
+  if (!copy) { toast('Write some copy first, then AI can improve it'); return; }
+  var btn = event.target; btn.disabled = true; btn.innerHTML = '<span class="ai-loading"><span class="ai-spin"></span> Improving...</span>';
+  var prompt = VC_BRAND_CONTEXT + '\n\nImprove this ' + platName(platform) + ' post for Vantage Circle. Make it more engaging, add a stronger hook, improve the CTA, and ensure it matches the brand voice.\n\nTitle: ' + title + '\nCurrent copy:\n' + copy + '\n\nReturn ONLY the improved post copy (no explanations).';
+  var result = await callGemini(prompt, 600);
+  btn.disabled = false; btn.innerHTML = '✨ AI Improve Copy';
+  if (!result) return;
+  $('ai-detail-output').innerHTML = '<div class="ai-output"><div class="ai-label">✨ AI Improved Version</div><button class="ai-apply-btn" onclick="$(&quot;detail-copy&quot;).value=this.parentElement.querySelector(&quot;.ai-improved-text&quot;).textContent;detailSave();$(&quot;ai-detail-output&quot;).innerHTML=&quot;&quot;;toast(&quot;Copy updated&quot;)">Apply</button><div class="ai-improved-text">' + esc(result) + '</div></div>';
+}
+
+// 5. AI Campaign Brief Generator
+async function aiCampaignBrief(title, date, priority) {
+  var btn = event.target; btn.disabled = true; btn.innerHTML = '<span class="ai-loading"><span class="ai-spin"></span> Generating brief...</span>';
+  var prompt = VC_BRAND_CONTEXT + '\n\nGenerate a complete social media campaign brief for Vantage Circle for this upcoming day:\n'
+    + 'Day: ' + title + '\nDate: ' + date + '\nPriority: ' + priority + '\n\n'
+    + 'Include:\n1. CAMPAIGN THEME (one-line creative theme)\n2. KEY MESSAGES (3 bullet points)\n3. CONTENT HOOKS (3 engaging hooks/angles)\n4. PLATFORM PLAN:\n   - LinkedIn: post idea + tone\n   - Twitter/X: tweet/thread idea\n   - Instagram: visual concept + caption idea\n   - Reddit: discussion angle\n5. HASHTAGS (8 relevant ones)\n6. POSTING TIMELINE (pre-day, day-of, post-day)\n\nBe specific, creative, and aligned with Vantage Circle brand.';
+  var result = await callGemini(prompt, 1200);
+  btn.disabled = false; btn.innerHTML = '📋 AI Campaign Brief';
+  if (!result) return;
+  // Insert brief below the button
+  var briefDiv = btn.nextElementSibling || document.createElement('div');
+  if (!briefDiv.classList.contains('ai-brief')) { briefDiv.className = 'ai-brief'; btn.parentElement.appendChild(briefDiv); }
+  briefDiv.innerHTML = '<div class="ai-label" style="font-size:10px;font-weight:700;color:#e84393;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;display:flex;align-items:center;gap:4px">📋 AI Campaign Brief</div><div style="font-size:12.5px;color:var(--text2);line-height:1.7;white-space:pre-wrap">' + esc(result) + '</div>';
+}
+
+// 6. AI Analytics Insights
+async function aiAnalyticsInsights() {
+  var all = DB.analytics || [];
+  if (all.length < 2) { toast('Add at least 2 analytics entries for AI to analyze'); return; }
+  var btn = $('ai-insights-btn'); btn.disabled = true; btn.innerHTML = '<span class="ai-loading"><span class="ai-spin"></span> Analyzing data...</span>';
+
+  var dataSummary = all.slice(-20).map(function(e) {
+    return e.weekOf + ' | ' + e.platform + ' | Followers:' + e.followers + ' | Impressions:' + e.impressions + ' | Eng:' + e.engagementRate + '% | Clicks:' + e.clicks + ' | Likes:' + e.likes + ' | Comments:' + e.comments + ' | Shares:' + e.shares;
+  }).join('\n');
+
+  var prompt = VC_BRAND_CONTEXT + '\n\nAnalyze this social media performance data for Vantage Circle and provide actionable insights:\n\n'
+    + dataSummary + '\n\n'
+    + 'Provide:\n1. PERFORMANCE SUMMARY (key metrics trends, what stands out)\n2. TOP WINS (what is working well)\n3. AREAS TO IMPROVE (weak spots)\n4. RECOMMENDATIONS (3-5 specific, actionable suggestions)\n5. BEST POSTING STRATEGY (when and what to post more of)\n6. CONTENT GAPS (topics/formats worth trying)\n\nBe specific with numbers and percentages from the data.';
+
+  var result = await callGemini(prompt, 1200);
+  btn.disabled = false; btn.innerHTML = '🧠 AI Analyze Performance & Recommendations';
+  if (!result) return;
+  $('ai-analytics-output').innerHTML = '<div class="ai-insight-card"><div class="insight-title">🧠 AI Performance Analysis</div><div class="insight-body">' + esc(result) + '</div></div>';
 }
 
 // ═══ RENDER ═══
