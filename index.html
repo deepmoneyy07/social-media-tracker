@@ -7,6 +7,7 @@
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script src="seed-data.js"></script>
 <style>
   :root {
@@ -305,6 +306,41 @@
   .col-map select { font-size:12px; padding:6px 8px; }
   .unmapped-info { font-size:11.5px; color:var(--muted); margin-bottom:12px; padding:8px 12px; background:var(--card2); border-radius:6px; border:1px solid var(--border); }
   .unmapped-info strong { color:var(--text2); }
+
+  /* ─── GOALS ─── */
+  .goal-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px; box-shadow:0 1px 4px rgba(60,50,80,.06); margin-bottom:10px; transition:all .15s; position:relative; }
+  .goal-card:hover { border-color:var(--accent); }
+  .goal-card .goal-title { font-size:14px; font-weight:700; color:var(--text); margin-bottom:6px; }
+  .goal-card .goal-badges { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+  .goal-card .goal-progress { margin-bottom:8px; }
+  .goal-card .goal-progress-label { display:flex; justify-content:space-between; font-size:11.5px; color:var(--muted); margin-bottom:4px; }
+  .goal-card .goal-meta { font-size:11.5px; color:var(--muted); display:flex; gap:10px; flex-wrap:wrap; }
+  .goal-card .goal-actions { position:absolute; top:14px; right:14px; display:flex; gap:4px; opacity:0; transition:opacity .15s; }
+  .goal-card:hover .goal-actions { opacity:1; }
+  .badge-cat { background:var(--accent-dim); color:var(--accent-text); }
+  .badge-active { background:var(--blue-dim); color:var(--blue); }
+  .badge-achieved { background:var(--green-dim); color:var(--green); }
+  .badge-missed { background:var(--red-dim); color:var(--red); }
+
+  /* ─── ANALYTICS TABLE ─── */
+  .an-table { width:100%; border-collapse:collapse; font-size:12px; }
+  .an-table th { text-align:left; padding:8px 10px; border-bottom:2px solid var(--border); color:var(--muted); font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; }
+  .an-table td { padding:7px 10px; border-bottom:1px solid var(--border); color:var(--text2); }
+  .an-table tr:hover td { background:var(--card); }
+  .an-table .an-actions { display:flex; gap:4px; opacity:0; transition:opacity .15s; }
+  .an-table tr:hover .an-actions { opacity:1; }
+
+  /* ─── ACTIVITY FEED ─── */
+  .activity-item { display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); }
+  .activity-item:last-child { border-bottom:none; }
+  .activity-icon { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; }
+  .activity-icon-add { background:var(--green-dim); color:var(--green); }
+  .activity-icon-edit { background:var(--blue-dim); color:var(--blue); }
+  .activity-icon-delete { background:var(--red-dim); color:var(--red); }
+  .activity-icon-done { background:var(--accent-dim); color:var(--accent-text); }
+  .activity-text { flex:1; font-size:12.5px; color:var(--text2); line-height:1.4; }
+  .activity-text strong { color:var(--text); font-weight:600; }
+  .activity-time { font-size:11px; color:var(--muted); white-space:nowrap; flex-shrink:0; }
 </style>
 </head>
 <body>
@@ -321,6 +357,9 @@
     <div class="nav-item" data-page="specialdays"><span class="ni">★</span> Special Days</div>
     <div class="nav-item" data-page="reminders"><span class="ni">R</span> Reminders</div>
     <div class="nav-item" data-page="contentbank"><span class="ni">B</span> Content Bank</div>
+    <div class="nav-section">Tracking</div>
+    <div class="nav-item" data-page="goals"><span class="ni">G</span> Goals & OKRs</div>
+    <div class="nav-item" data-page="analytics"><span class="ni">A</span> Analytics</div>
     <div class="nav-section">Executives</div>
     <div class="nav-item" data-page="partha"><span class="ni">P</span> Partha's Brand</div>
     <div class="nav-item" data-page="john"><span class="ni">J</span> John's Brand</div>
@@ -348,6 +387,7 @@
       <div class="card"><div class="card-title">Active Strategies</div><div id="ov-strategies"></div></div>
       <div class="card"><div class="card-title">Post Status Breakdown</div><div id="ov-breakdown"></div></div>
     </div>
+    <div style="margin-top:14px" class="card"><div class="card-title">Recent Activity</div><div id="ov-activity"></div></div>
   </div>
 
   <!-- STRATEGY -->
@@ -445,6 +485,41 @@
   <div class="page" id="page-john">
     <div class="page-header"><h2>John's Personal Brand</h2><span class="sub">Executive thought leadership</span></div>
     <div id="exec-john-content"></div>
+  </div>
+
+  <!-- GOALS & OKRs -->
+  <div class="page" id="page-goals">
+    <div class="page-header"><h2>Goals & OKRs</h2><span class="sub">Track social media goals and key results</span></div>
+    <div class="grid-4" style="margin-bottom:16px" id="goals-stats"></div>
+    <div class="section-actions">
+      <div class="tabs">
+        <button class="tab active" onclick="filterGoals(this,'all')">All</button>
+        <button class="tab" onclick="filterGoals(this,'active')">Active</button>
+        <button class="tab" onclick="filterGoals(this,'achieved')">Achieved</button>
+        <button class="tab" onclick="filterGoals(this,'missed')">Missed</button>
+      </div>
+      <button class="btn btn-primary" onclick="openGoalModal()">+ Add Goal</button>
+    </div>
+    <div id="goals-list"></div>
+  </div>
+
+  <!-- ANALYTICS -->
+  <div class="page" id="page-analytics">
+    <div class="page-header"><h2>Social Analytics</h2><span class="sub">Track performance across platforms</span></div>
+    <div class="section-actions">
+      <div class="tabs">
+        <button class="tab active" onclick="filterAnalytics(this,'all')">All</button>
+        <button class="tab tab-li" onclick="filterAnalytics(this,'linkedin')">LinkedIn</button>
+        <button class="tab tab-reddit" onclick="filterAnalytics(this,'reddit')">Reddit</button>
+        <button class="tab tab-ig" onclick="filterAnalytics(this,'instagram')">Instagram</button>
+      </div>
+      <button class="btn btn-primary" onclick="openAnalyticsModal()">+ Add Entry</button>
+    </div>
+    <div class="grid-2" style="margin-top:16px;margin-bottom:16px">
+      <div class="card"><div class="card-title">Followers Growth</div><canvas id="chart-followers" height="220"></canvas></div>
+      <div class="card"><div class="card-title">Engagement Rate</div><canvas id="chart-engagement" height="220"></canvas></div>
+    </div>
+    <div class="card"><div class="card-title">Recent Entries</div><div id="analytics-table"></div></div>
   </div>
 
 </div>
@@ -601,6 +676,59 @@
   </div>
 </div>
 
+<!-- Goal Modal -->
+<div class="modal-overlay" id="goal-modal">
+  <div class="modal">
+    <h3 id="goal-modal-title">Add Goal</h3>
+    <input type="hidden" id="goal-id" />
+    <div class="form-group"><label>Title *</label><input id="goal-title" placeholder="e.g. Reach 10K LinkedIn followers by Q3" /></div>
+    <div class="grid-2">
+      <div class="form-group"><label>Category</label><select id="goal-category"><option value="Followers">Followers</option><option value="Engagement">Engagement</option><option value="Leads">Leads</option><option value="Content">Content</option><option value="Reach">Reach</option><option value="Custom">Custom</option></select></div>
+      <div class="form-group"><label>Platform</label><select id="goal-platform"><option value="all">All Platforms</option><option value="linkedin">LinkedIn</option><option value="reddit">Reddit</option><option value="instagram">Instagram</option></select></div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group"><label>Target</label><input type="number" id="goal-target" placeholder="e.g. 10000" /></div>
+      <div class="form-group"><label>Current</label><input type="number" id="goal-current" placeholder="e.g. 6500" /></div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group"><label>Unit Label</label><input id="goal-unit" placeholder="e.g. followers, %, posts" /></div>
+      <div class="form-group"><label>Deadline</label><input type="date" id="goal-deadline" /></div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group"><label>Quarter</label><select id="goal-quarter"><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option></select></div>
+      <div class="form-group"><label>Year</label><input type="number" id="goal-year" value="2026" /></div>
+    </div>
+    <div class="form-group"><label>Notes</label><textarea id="goal-notes" placeholder="Additional context or milestones..." style="min-height:56px"></textarea></div>
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('goal-modal')">Cancel</button><button class="btn btn-primary" onclick="saveGoal()">Save</button></div>
+  </div>
+</div>
+
+<!-- Analytics Modal -->
+<div class="modal-overlay" id="analytics-modal">
+  <div class="modal">
+    <h3 id="analytics-modal-title">Add Analytics Entry</h3>
+    <input type="hidden" id="an-id" />
+    <div class="grid-2">
+      <div class="form-group"><label>Week Of *</label><input type="date" id="an-week" /></div>
+      <div class="form-group"><label>Platform *</label><select id="an-platform"><option value="linkedin">LinkedIn</option><option value="reddit">Reddit</option><option value="instagram">Instagram</option></select></div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group"><label>Followers</label><input type="number" id="an-followers" placeholder="0" /></div>
+      <div class="form-group"><label>Impressions</label><input type="number" id="an-impressions" placeholder="0" /></div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group"><label>Engagement Rate (%)</label><input type="number" step="0.01" id="an-engagement" placeholder="0.00" /></div>
+      <div class="form-group"><label>Clicks</label><input type="number" id="an-clicks" placeholder="0" /></div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group"><label>Likes</label><input type="number" id="an-likes" placeholder="0" /></div>
+      <div class="form-group"><label>Comments</label><input type="number" id="an-comments" placeholder="0" /></div>
+    </div>
+    <div class="form-group"><label>Shares</label><input type="number" id="an-shares" placeholder="0" /></div>
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('analytics-modal')">Cancel</button><button class="btn btn-primary" onclick="saveAnalytics()">Save</button></div>
+  </div>
+</div>
+
 <!-- POST DETAIL (Notion-like page) -->
 <div class="detail-overlay" id="detail-overlay">
   <div class="detail-page">
@@ -675,6 +803,9 @@ function migrateDB(d){
   d.posts.forEach(p=>{if(!p.copy)p.copy='';if(!p.caption)p.caption=''});
   d.strategies.forEach(s=>{if(!s.files)s.files=[]});
   if(!d.contentBank)d.contentBank=[];
+  if(!d.goals)d.goals=[];
+  if(!d.analytics)d.analytics=[];
+  if(!d.activity)d.activity=[];
   if(!d.exec)d.exec={partha:{posts:[],topics:[],schedule:'Mon / Thu',bio:'Co-Founder & President, Vantage Circle'},john:{posts:[],topics:[],schedule:'Tue / Fri',bio:'Chief Business Officer, Vantage Circle'}};
   if(d.exec.partha&&!d.exec.partha.brandNotes)d.exec.partha.brandNotes='';
   if(d.exec.john&&!d.exec.john.brandNotes)d.exec.john.brandNotes='';
@@ -784,6 +915,11 @@ function renderOverview(){
   document.getElementById('ov-strategies').innerHTML=actStrats.length?actStrats.map(s=>`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:12.5px;font-weight:600">${s.title}</span><span class="badge badge-${s.status}">${s.status==='progress'?'In Progress':'To Do'}</span></div><div class="prog-bar"><div class="prog-fill" style="width:${s.status==='progress'?'55':'10'}%;background:var(--accent)"></div></div></div>`).join(''):'<div class="empty"><p>No active strategies</p></div>';
   const draft=DB.posts.filter(p=>p.status==='draft').length,sched=DB.posts.filter(p=>p.status==='scheduled').length,pub=DB.posts.filter(p=>p.status==='published').length,total=DB.posts.length||1;
   document.getElementById('ov-breakdown').innerHTML=`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Draft</span><span style="color:var(--muted)">${draft}</span></div><div class="prog-bar"><div class="prog-fill" style="width:${(draft/total*100).toFixed(0)}%;background:var(--text2)"></div></div></div><div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Scheduled</span><span style="color:var(--muted)">${sched}</span></div><div class="prog-bar"><div class="prog-fill" style="width:${(sched/total*100).toFixed(0)}%;background:var(--accent)"></div></div></div><div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Published</span><span style="color:var(--muted)">${pub}</span></div><div class="prog-bar"><div class="prog-fill" style="width:${(pub/total*100).toFixed(0)}%;background:var(--green)"></div></div></div>`;
+  // Activity feed
+  const acts=(DB.activity||[]).slice(0,8);
+  const actEl=document.getElementById('ov-activity');
+  if(!acts.length){actEl.innerHTML='<div class="empty"><p>No recent activity</p></div>'}
+  else{actEl.innerHTML=acts.map(a=>{const ic=activityIcon(a.action);return`<div class="activity-item"><div class="activity-icon ${ic.cls}">${ic.ch}</div><div class="activity-text"><strong>${esc(a.action)}</strong> ${esc(a.targetType)}: ${esc(a.targetTitle)}</div><div class="activity-time">${relativeTime(a.timestamp)}</div></div>`}).join('')}
 }
 
 // ═══ STRATEGY ═══
@@ -791,8 +927,8 @@ function filterStrat(el,f){stratFilter=f;document.querySelectorAll('#page-strate
 function renderStrategy(){const list=stratFilter==='all'?DB.strategies:DB.strategies.filter(s=>s.status===stratFilter);const el=document.getElementById('strat-list');if(!list.length){el.innerHTML='<div class="empty"><p>No strategies yet. Add your first plan.</p></div>';return}el.innerHTML=list.map(s=>`<div class="item-row" onclick="openStratViewer('${s.id}')" style="cursor:pointer"><div class="item-body"><div class="item-title">${s.title}</div>${s.desc?`<div class="post-notes">${esc(s.desc)}</div>`:''}<div class="item-meta" style="margin-top:5px"><span class="badge badge-${s.status}">${statusLabel(s.status)}</span>${platBadge(s.platform)}${s.due?'<span>Due: '+s.due+'</span>':''}</div>${(s.files&&s.files.length)?`<div style="margin-top:6px">${s.files.map((f,fi)=>`<span class="file-chip file-chip-${fileChipType(f.type)}" onclick="event.stopPropagation();openStratViewer('${s.id}')" title="Click to view"><b>${fileChipIcon(f.type)}</b> ${esc(f.name)}</span>`).join('')}</div>`:''}</div><div class="item-actions" onclick="event.stopPropagation()"><button class="icon-btn" onclick="editStrat('${s.id}')" title="Edit">E</button><button class="icon-btn del" onclick="deleteStrat('${s.id}')" title="Delete">x</button></div></div>`).join('')}
 function openStratModal(){$('strat-id').value='';$('strat-title').value='';$('strat-desc').value='';$('strat-status').value='todo';$('strat-due').value='';$('strat-platform').value='all';$('strat-modal-title').textContent='Add Strategy';stratTempFiles=[];renderStratFilesList();openModal('strat-modal')}
 function editStrat(id){const s=DB.strategies.find(x=>x.id===id);if(!s)return;$('strat-id').value=s.id;$('strat-title').value=s.title;$('strat-desc').value=s.desc||'';$('strat-status').value=s.status;$('strat-due').value=s.due||'';$('strat-platform').value=s.platform||'all';$('strat-modal-title').textContent='Edit Strategy';stratTempFiles=[];renderStratFilesList();openModal('strat-modal')}
-function saveStrat(){const title=$('strat-title').value.trim();if(!title){alert('Title required');return}const id=$('strat-id').value;const existingFiles=id?((DB.strategies.find(x=>x.id===id)||{}).files||[]):[];const obj={id:id||uid(),title,desc:$('strat-desc').value.trim(),status:$('strat-status').value,due:$('strat-due').value,platform:$('strat-platform').value,files:[...existingFiles,...stratTempFiles.map(f=>({name:f.name,size:f.size,type:f.type,data:f.data}))]};if(id){const i=DB.strategies.findIndex(x=>x.id===id);DB.strategies[i]=obj}else DB.strategies.unshift(obj);stratTempFiles=[];save();closeModal('strat-modal');renderStrategy();renderOverview();toast('Strategy saved')}
-function deleteStrat(id){if(!confirm('Delete this strategy?'))return;DB.strategies=DB.strategies.filter(x=>x.id!==id);save();renderStrategy();renderOverview();toast('Deleted')}
+function saveStrat(){const title=$('strat-title').value.trim();if(!title){alert('Title required');return}const id=$('strat-id').value;const existingFiles=id?((DB.strategies.find(x=>x.id===id)||{}).files||[]):[];const obj={id:id||uid(),title,desc:$('strat-desc').value.trim(),status:$('strat-status').value,due:$('strat-due').value,platform:$('strat-platform').value,files:[...existingFiles,...stratTempFiles.map(f=>({name:f.name,size:f.size,type:f.type,data:f.data}))]};if(id){const i=DB.strategies.findIndex(x=>x.id===id);DB.strategies[i]=obj;logActivity('edited','strategy',title)}else{DB.strategies.unshift(obj);logActivity('added','strategy',title)}stratTempFiles=[];save();closeModal('strat-modal');renderStrategy();renderOverview();toast('Strategy saved')}
+function deleteStrat(id){if(!confirm('Delete this strategy?'))return;const _s=DB.strategies.find(x=>x.id===id);logActivity('deleted','strategy',_s?_s.title:'');DB.strategies=DB.strategies.filter(x=>x.id!==id);save();renderStrategy();renderOverview();toast('Deleted')}
 
 // ═══ STRATEGY FILE UPLOADS ═══
 let stratTempFiles=[];
@@ -1035,17 +1171,17 @@ $('detail-overlay').addEventListener('click',e=>{if(e.target===$('detail-overlay
 
 function openPostModal(){$('post-id').value='';$('post-date').value=toDateStr(new Date());$('post-platform').value=curPlatform;$('post-title').value='';$('post-copy').value='';$('post-caption').value='';$('post-notes').value='';$('post-status').value='draft';$('post-time').value='';$('post-modal-title').textContent='Add Post';openModal('post-modal')}
 function editPost(id){const p=DB.posts.find(x=>x.id===id);if(!p)return;$('post-id').value=p.id;$('post-date').value=p.date;$('post-platform').value=p.platform;$('post-title').value=p.title;$('post-copy').value=p.copy||'';$('post-caption').value=p.caption||'';$('post-notes').value=p.notes||'';$('post-status').value=p.status;$('post-time').value=p.time||'';$('post-modal-title').textContent='Edit Post';openModal('post-modal')}
-function savePost(){const title=$('post-title').value.trim(),date=$('post-date').value;if(!title||!date){alert('Title and date required');return}const id=$('post-id').value;const obj={id:id||uid(),date,platform:$('post-platform').value,title,copy:$('post-copy').value.trim(),caption:$('post-caption').value.trim(),notes:$('post-notes').value.trim(),status:$('post-status').value,time:$('post-time').value,checked:false};if(id){const i=DB.posts.findIndex(x=>x.id===id);obj.checked=DB.posts[i].checked;DB.posts[i]=obj}else DB.posts.push(obj);save();closeModal('post-modal');curPlatform=obj.platform;renderCalendar();renderOverview();toast('Post saved')}
-function deletePost(id){if(!confirm('Delete this post?'))return;DB.posts=DB.posts.filter(x=>x.id!==id);save();renderCalendar();renderOverview();toast('Deleted')}
+function savePost(){const title=$('post-title').value.trim(),date=$('post-date').value;if(!title||!date){alert('Title and date required');return}const id=$('post-id').value;const obj={id:id||uid(),date,platform:$('post-platform').value,title,copy:$('post-copy').value.trim(),caption:$('post-caption').value.trim(),notes:$('post-notes').value.trim(),status:$('post-status').value,time:$('post-time').value,checked:false};if(id){const i=DB.posts.findIndex(x=>x.id===id);obj.checked=DB.posts[i].checked;DB.posts[i]=obj;logActivity('edited','post',title)}else{DB.posts.push(obj);logActivity('added','post',title)}save();closeModal('post-modal');curPlatform=obj.platform;renderCalendar();renderOverview();toast('Post saved')}
+function deletePost(id){if(!confirm('Delete this post?'))return;const _p=DB.posts.find(x=>x.id===id);logActivity('deleted','post',_p?_p.title:'');DB.posts=DB.posts.filter(x=>x.id!==id);save();renderCalendar();renderOverview();toast('Deleted')}
 function togglePost(id,checked){const p=DB.posts.find(x=>x.id===id);if(p){p.checked=checked;save()}}
 
 // ═══ REMINDERS ═══
 function filterRem(el,f){remFilter=f;document.querySelectorAll('#page-reminders .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderReminders()}
 function renderReminders(){let list=remFilter==='all'?DB.reminders:remFilter==='done'?DB.reminders.filter(r=>r.done):DB.reminders.filter(r=>!r.done);list=list.sort((a,b)=>a.date>b.date?1:-1);const el=document.getElementById('rem-list');const isBulk=bulkMode&&bulkCtx==='reminders';if(!list.length){el.innerHTML='<div class="empty"><p>No reminders.</p></div>';return}el.innerHTML=list.map(r=>`<div class="item-row ${r.done?'reminder-done':''} ${isBulk&&bulkSelected.has(r.id)?'selected':''}" ${isBulk?`onclick="toggleBulkItem('${r.id}')" style="cursor:pointer"`:''}>${isBulk?`<input type="checkbox" ${bulkSelected.has(r.id)?'checked':''} onclick="event.stopPropagation();toggleBulkItem('${r.id}')" style="margin-top:2px">`:`<span class="priority-dot p-${r.priority}" style="margin-top:5px"></span>`}<div class="item-body"><div class="item-title">${esc(r.title)}</div>${r.notes?`<div class="post-notes">${esc(r.notes)}</div>`:''}<div class="item-meta" style="margin-top:3px"><span class="badge badge-${r.priority}">${r.priority}</span><span>${r.date}${r.time?' &middot; '+r.time:''}</span></div></div>${isBulk?'':`<div class="item-actions" style="opacity:1">${!r.done?`<button class="btn btn-sm" style="background:var(--green-dim);color:var(--green);border:none" onclick="doneRem('${r.id}')">Done</button>`:'<span class="badge badge-done">Done</span>'}<button class="icon-btn" onclick="editRem('${r.id}')" title="Edit">E</button><button class="icon-btn del" onclick="deleteRem('${r.id}')" title="Delete">x</button></div>`}</div>`).join('')}
 function editRem(id){const r=DB.reminders.find(x=>x.id===id);if(!r)return;$('rem-id').value=r.id;$('rem-title').value=r.title;$('rem-notes').value=r.notes||'';$('rem-date').value=r.date;$('rem-time').value=r.time||'';$('rem-priority').value=r.priority;$('rem-modal-title').textContent='Edit Reminder';openModal('rem-modal')}
-function saveRem(){const title=$('rem-title').value.trim(),date=$('rem-date').value;if(!title||!date){alert('Title and date required');return}const id=$('rem-id').value;const obj={id:id||uid(),title,notes:$('rem-notes').value.trim(),date,time:$('rem-time').value,priority:$('rem-priority').value,done:false};if(id){const i=DB.reminders.findIndex(x=>x.id===id);obj.done=DB.reminders[i].done;DB.reminders[i]=obj}else DB.reminders.unshift(obj);save();closeModal('rem-modal');renderReminders();renderOverview();toast('Reminder saved')}
-function deleteRem(id){if(!confirm('Delete this reminder?'))return;DB.reminders=DB.reminders.filter(x=>x.id!==id);save();renderReminders();renderOverview();toast('Deleted')}
-function doneRem(id){const r=DB.reminders.find(x=>x.id===id);if(r){r.done=true;save();renderReminders();renderOverview();toast('Marked as done')}}
+function saveRem(){const title=$('rem-title').value.trim(),date=$('rem-date').value;if(!title||!date){alert('Title and date required');return}const id=$('rem-id').value;const obj={id:id||uid(),title,notes:$('rem-notes').value.trim(),date,time:$('rem-time').value,priority:$('rem-priority').value,done:false};if(id){const i=DB.reminders.findIndex(x=>x.id===id);obj.done=DB.reminders[i].done;DB.reminders[i]=obj;logActivity('edited','reminder',title)}else{DB.reminders.unshift(obj);logActivity('added','reminder',title)}save();closeModal('rem-modal');renderReminders();renderOverview();toast('Reminder saved')}
+function deleteRem(id){if(!confirm('Delete this reminder?'))return;const _r=DB.reminders.find(x=>x.id===id);logActivity('deleted','reminder',_r?_r.title:'');DB.reminders=DB.reminders.filter(x=>x.id!==id);save();renderReminders();renderOverview();toast('Deleted')}
+function doneRem(id){const r=DB.reminders.find(x=>x.id===id);if(r){r.done=true;logActivity('completed','reminder',r.title);save();renderReminders();renderOverview();toast('Marked as done')}}
 
 // ═══ CONTENT BANK ═══
 let cbFilter='all';
@@ -1075,8 +1211,8 @@ function renderContentBank(){
 }
 function openCBModal(){$('cb-id').value='';$('cb-title').value='';$('cb-type').value='video';$('cb-desc').value='';$('cb-url').value='';$('cb-tags').value='';$('cb-modal-title').textContent='Add Content';openModal('cb-modal')}
 function editCB(id){const item=DB.contentBank.find(x=>x.id===id);if(!item)return;$('cb-id').value=item.id;$('cb-title').value=item.title;$('cb-type').value=item.type;$('cb-desc').value=item.desc||'';$('cb-url').value=item.url||'';$('cb-tags').value=(item.tags||[]).join(', ');$('cb-modal-title').textContent='Edit Content';openModal('cb-modal')}
-function saveCB(){const title=$('cb-title').value.trim();if(!title){alert('Title required');return}const id=$('cb-id').value;const tags=$('cb-tags').value.split(',').map(t=>t.trim()).filter(Boolean);const obj={id:id||uid(),title,type:$('cb-type').value,desc:$('cb-desc').value.trim(),url:$('cb-url').value.trim(),tags};if(id){const i=DB.contentBank.findIndex(x=>x.id===id);DB.contentBank[i]=obj}else DB.contentBank.unshift(obj);save();closeModal('cb-modal');renderContentBank();toast('Content saved')}
-function deleteCB(id){if(!confirm('Delete this content item?'))return;DB.contentBank=DB.contentBank.filter(x=>x.id!==id);save();renderContentBank();toast('Deleted')}
+function saveCB(){const title=$('cb-title').value.trim();if(!title){alert('Title required');return}const id=$('cb-id').value;const tags=$('cb-tags').value.split(',').map(t=>t.trim()).filter(Boolean);const obj={id:id||uid(),title,type:$('cb-type').value,desc:$('cb-desc').value.trim(),url:$('cb-url').value.trim(),tags};if(id){const i=DB.contentBank.findIndex(x=>x.id===id);DB.contentBank[i]=obj;logActivity('edited','content',title)}else{DB.contentBank.unshift(obj);logActivity('added','content',title)}save();closeModal('cb-modal');renderContentBank();toast('Content saved')}
+function deleteCB(id){if(!confirm('Delete this content item?'))return;const _c=DB.contentBank.find(x=>x.id===id);logActivity('deleted','content',_c?_c.title:'');DB.contentBank=DB.contentBank.filter(x=>x.id!==id);save();renderContentBank();toast('Deleted')}
 
 // ═══ SPECIAL DAYS ═══
 let sdFilter='all';
@@ -1185,8 +1321,8 @@ function removeTopic(n,i){DB.exec[n].topics.splice(i,1);save();renderExec(n)}
 function editSchedule(n){const s=prompt('Enter posting schedule (e.g. Mon / Thu):',DB.exec[n].schedule);if(s){DB.exec[n].schedule=s;save();renderExec(n)}}
 function openExecPost(exec){$('ep-id').value='';$('ep-exec').value=exec;$('ep-title').value='';$('ep-notes').value='';$('ep-date').value=toDateStr(new Date());$('ep-status').value='draft';$('exec-post-title').textContent=(exec==='partha'?"Partha's":"John's")+' LinkedIn Post';openModal('exec-post-modal')}
 function editExecPost(exec,id){const p=DB.exec[exec].posts.find(x=>x.id===id);if(!p)return;$('ep-id').value=p.id;$('ep-exec').value=exec;$('ep-title').value=p.title;$('ep-notes').value=p.notes||'';$('ep-date').value=p.date||'';$('ep-status').value=p.status;$('exec-post-title').textContent='Edit Post';openModal('exec-post-modal')}
-function saveExecPost(){const title=$('ep-title').value.trim();if(!title){alert('Title required');return}const id=$('ep-id').value,exec=$('ep-exec').value;const obj={id:id||uid(),title,notes:$('ep-notes').value.trim(),date:$('ep-date').value,status:$('ep-status').value};if(id){const i=DB.exec[exec].posts.findIndex(x=>x.id===id);DB.exec[exec].posts[i]=obj}else DB.exec[exec].posts.unshift(obj);save();closeModal('exec-post-modal');renderExec(exec);toast('Post saved')}
-function deleteExecPost(exec,id){if(!confirm('Delete this post?'))return;DB.exec[exec].posts=DB.exec[exec].posts.filter(x=>x.id!==id);save();renderExec(exec);toast('Deleted')}
+function saveExecPost(){const title=$('ep-title').value.trim();if(!title){alert('Title required');return}const id=$('ep-id').value,exec=$('ep-exec').value;const obj={id:id||uid(),title,notes:$('ep-notes').value.trim(),date:$('ep-date').value,status:$('ep-status').value};if(id){const i=DB.exec[exec].posts.findIndex(x=>x.id===id);DB.exec[exec].posts[i]=obj;logActivity('edited','exec post',title)}else{DB.exec[exec].posts.unshift(obj);logActivity('added','exec post',title)}save();closeModal('exec-post-modal');renderExec(exec);toast('Post saved')}
+function deleteExecPost(exec,id){if(!confirm('Delete this post?'))return;const _ep=DB.exec[exec].posts.find(x=>x.id===id);logActivity('deleted','exec post',_ep?_ep.title:'');DB.exec[exec].posts=DB.exec[exec].posts.filter(x=>x.id!==id);save();renderExec(exec);toast('Deleted')}
 
 // ═══ HELPERS ═══
 function $(id){return document.getElementById(id)}
@@ -1358,6 +1494,105 @@ function sendBrowserNotif(items){
   if(soonItems.length){new Notification('VC Social Hub — Coming Up',{body:soonItems.map(r=>r.title).join(', '),icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="80" font-size="80">🔔</text></svg>'})}
 }
 
+// ═══ ACTIVITY FEED ═══
+function logActivity(action,targetType,targetTitle){
+  if(!DB.activity)DB.activity=[];
+  DB.activity.unshift({id:uid(),user:'Team',action:action,targetType:targetType,targetTitle:targetTitle,timestamp:new Date().toISOString()});
+  if(DB.activity.length>50)DB.activity=DB.activity.slice(0,50);
+}
+function relativeTime(iso){
+  const now=Date.now(),t=new Date(iso).getTime(),diff=Math.floor((now-t)/1000);
+  if(diff<60)return'just now';if(diff<3600)return Math.floor(diff/60)+' min ago';
+  if(diff<86400)return Math.floor(diff/3600)+' hour'+(Math.floor(diff/3600)>1?'s':'')+' ago';
+  if(diff<172800)return'yesterday';
+  return Math.floor(diff/86400)+' days ago';
+}
+function activityIcon(action){
+  if(action.includes('added')||action.includes('imported'))return{cls:'activity-icon-add',ch:'+'};
+  if(action.includes('edited')||action.includes('updated'))return{cls:'activity-icon-edit',ch:'✎'};
+  if(action.includes('deleted'))return{cls:'activity-icon-delete',ch:'×'};
+  if(action.includes('completed')||action.includes('done'))return{cls:'activity-icon-done',ch:'✓'};
+  return{cls:'activity-icon-add',ch:'+'};
+}
+
+// ═══ GOALS & OKRs ═══
+let goalsFilter='all';
+function filterGoals(el,f){goalsFilter=f;document.querySelectorAll('#page-goals .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderGoals()}
+function autoGoalStatus(g){
+  if(Number(g.current)>=Number(g.target))return'achieved';
+  if(g.deadline&&new Date(g.deadline+'T23:59:59')<new Date()&&Number(g.current)<Number(g.target))return'missed';
+  return'active';
+}
+function renderGoals(){
+  DB.goals.forEach(function(g){g.status=autoGoalStatus(g)});
+  var all=DB.goals;
+  var filtered=goalsFilter==='all'?all:all.filter(function(g){return g.status===goalsFilter});
+  var active=all.filter(function(g){return g.status==='active'}).length;
+  var achieved=all.filter(function(g){return g.status==='achieved'}).length;
+  var onTrack=all.length?Math.round((all.filter(function(g){return g.status==='active'||g.status==='achieved'}).length/all.length)*100):0;
+  $('goals-stats').innerHTML='<div class="stat-card"><div class="stat-label"><span class="stat-dot" style="background:var(--accent)"></span>Total Goals</div><div class="stat-val" style="color:var(--accent)">'+all.length+'</div></div>'
+    +'<div class="stat-card"><div class="stat-label"><span class="stat-dot" style="background:var(--blue)"></span>Active</div><div class="stat-val" style="color:var(--blue)">'+active+'</div></div>'
+    +'<div class="stat-card"><div class="stat-label"><span class="stat-dot" style="background:var(--green)"></span>Achieved</div><div class="stat-val" style="color:var(--green)">'+achieved+'</div></div>'
+    +'<div class="stat-card"><div class="stat-label"><span class="stat-dot" style="background:var(--yellow)"></span>On Track %</div><div class="stat-val" style="color:var(--yellow)">'+onTrack+'%</div></div>';
+  var el=$('goals-list');
+  if(!filtered.length){el.innerHTML='<div class="empty"><p>No goals match this filter. Add your first goal.</p></div>';return}
+  el.innerHTML=filtered.map(function(g){
+    var pct=Number(g.target)?Math.min(Math.round((Number(g.current)/Number(g.target))*100),100):0;
+    var barColor=g.status==='achieved'?'var(--green)':g.status==='missed'?'var(--red)':'var(--accent)';
+    return '<div class="goal-card">'
+      +'<div class="goal-actions"><button class="icon-btn" onclick="editGoal(\''+g.id+'\')" title="Edit">E</button><button class="icon-btn del" onclick="deleteGoal(\''+g.id+'\')" title="Delete">x</button></div>'
+      +'<div class="goal-title">'+esc(g.title)+'</div>'
+      +'<div class="goal-badges"><span class="badge badge-cat">'+esc(g.category)+'</span>'+platBadge(g.platform)+'<span class="badge badge-'+g.status+'">'+g.status+'</span></div>'
+      +'<div class="goal-progress"><div class="goal-progress-label"><span>'+Number(g.current)+' / '+Number(g.target)+' '+esc(g.unit||'')+'</span><span>'+pct+'%</span></div>'
+      +'<div class="prog-bar" style="height:7px"><div class="prog-fill" style="width:'+pct+'%;background:'+barColor+'"></div></div></div>'
+      +'<div class="goal-meta">'+(g.quarter?'<span>'+g.quarter+' '+g.year+'</span>':'')+(g.deadline?'<span>Deadline: '+g.deadline+'</span>':'')+(g.notes?'<span>'+esc(g.notes).substring(0,40)+'</span>':'')+'</div>'
+      +'</div>';
+  }).join('');
+}
+function openGoalModal(){$('goal-id').value='';$('goal-title').value='';$('goal-category').value='Followers';$('goal-platform').value='all';$('goal-target').value='';$('goal-current').value='';$('goal-unit').value='';$('goal-quarter').value='Q2';$('goal-year').value='2026';$('goal-deadline').value='';$('goal-notes').value='';$('goal-modal-title').textContent='Add Goal';openModal('goal-modal')}
+function editGoal(id){var g=DB.goals.find(function(x){return x.id===id});if(!g)return;$('goal-id').value=g.id;$('goal-title').value=g.title;$('goal-category').value=g.category;$('goal-platform').value=g.platform;$('goal-target').value=g.target;$('goal-current').value=g.current;$('goal-unit').value=g.unit||'';$('goal-quarter').value=g.quarter||'Q2';$('goal-year').value=g.year||'2026';$('goal-deadline').value=g.deadline||'';$('goal-notes').value=g.notes||'';$('goal-modal-title').textContent='Edit Goal';openModal('goal-modal')}
+function saveGoal(){var title=$('goal-title').value.trim();if(!title){alert('Title required');return}var id=$('goal-id').value;var obj={id:id||uid(),title:title,category:$('goal-category').value,platform:$('goal-platform').value,target:Number($('goal-target').value)||0,current:Number($('goal-current').value)||0,unit:$('goal-unit').value.trim(),quarter:$('goal-quarter').value,year:Number($('goal-year').value)||2026,deadline:$('goal-deadline').value,status:'active',notes:$('goal-notes').value.trim(),createdAt:new Date().toISOString()};obj.status=autoGoalStatus(obj);if(id){var i=DB.goals.findIndex(function(x){return x.id===id});DB.goals[i]=obj;logActivity('edited','goal',title)}else{DB.goals.unshift(obj);logActivity('added','goal',title)}save();closeModal('goal-modal');renderGoals();toast('Goal saved')}
+function deleteGoal(id){if(!confirm('Delete this goal?'))return;var g=DB.goals.find(function(x){return x.id===id});logActivity('deleted','goal',g?g.title:'');DB.goals=DB.goals.filter(function(x){return x.id!==id});save();renderGoals();toast('Deleted')}
+
+// ═══ ANALYTICS ═══
+let analyticsFilter='all';
+let followersChart=null,engagementChart=null;
+function filterAnalytics(el,f){analyticsFilter=f;document.querySelectorAll('#page-analytics .tab').forEach(function(t){t.classList.remove('active')});el.classList.add('active');renderAnalytics()}
+function renderAnalytics(){
+  var all=DB.analytics||[];
+  var filtered=analyticsFilter==='all'?all:all.filter(function(e){return e.platform===analyticsFilter});
+  var sorted=filtered.slice().sort(function(a,b){return a.weekOf>b.weekOf?1:-1});
+  var last12=sorted.slice(-12);
+  // Followers bar chart
+  var fCanvas=$('chart-followers');
+  if(fCanvas){
+    if(followersChart){followersChart.destroy();followersChart=null}
+    var labels=last12.map(function(e){return e.weekOf});
+    var fData=last12.map(function(e){return Number(e.followers)||0});
+    var bgColors=last12.map(function(e){return e.platform==='linkedin'?'rgba(107,159,216,0.7)':e.platform==='reddit'?'rgba(212,144,96,0.7)':'rgba(200,120,168,0.7)'});
+    followersChart=new Chart(fCanvas,{type:'bar',data:{labels:labels,datasets:[{label:'Followers',data:fData,backgroundColor:analyticsFilter==='all'?bgColors:bgColors,borderRadius:4}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false,grid:{color:'rgba(224,218,232,0.5)'}},x:{grid:{display:false}}}}});
+  }
+  // Engagement line chart
+  var eCanvas=$('chart-engagement');
+  if(eCanvas){
+    if(engagementChart){engagementChart.destroy();engagementChart=null}
+    var eLabels=last12.map(function(e){return e.weekOf});
+    var eData=last12.map(function(e){return Number(e.engagementRate)||0});
+    engagementChart=new Chart(eCanvas,{type:'line',data:{labels:eLabels,datasets:[{label:'Engagement %',data:eData,borderColor:'#8b7ce8',backgroundColor:'rgba(139,124,232,0.1)',fill:true,tension:0.3,pointRadius:4,pointBackgroundColor:'#8b7ce8'}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'rgba(224,218,232,0.5)'}},x:{grid:{display:false}}}}});
+  }
+  // Table
+  var tEl=$('analytics-table');
+  var display=sorted.slice().reverse().slice(0,20);
+  if(!display.length){tEl.innerHTML='<div class="empty"><p>No analytics data yet. Add your first entry.</p></div>';return}
+  tEl.innerHTML='<table class="an-table"><thead><tr><th>Week</th><th>Platform</th><th>Followers</th><th>Impressions</th><th>Eng. Rate</th><th>Clicks</th><th>Likes</th><th>Comments</th><th>Shares</th><th></th></tr></thead><tbody>'
+    +display.map(function(e){return '<tr><td>'+esc(e.weekOf)+'</td><td>'+platBadge(e.platform)+'</td><td>'+Number(e.followers||0).toLocaleString()+'</td><td>'+Number(e.impressions||0).toLocaleString()+'</td><td>'+Number(e.engagementRate||0).toFixed(2)+'%</td><td>'+Number(e.clicks||0)+'</td><td>'+Number(e.likes||0)+'</td><td>'+Number(e.comments||0)+'</td><td>'+Number(e.shares||0)+'</td><td><div class="an-actions"><button class="icon-btn" onclick="editAnalytics(\''+e.id+'\')" title="Edit">E</button><button class="icon-btn del" onclick="deleteAnalytics(\''+e.id+'\')" title="Delete">x</button></div></td></tr>'}).join('')
+    +'</tbody></table>';
+}
+function openAnalyticsModal(){$('an-id').value='';$('an-week').value=toDateStr(new Date());$('an-platform').value='linkedin';$('an-followers').value='';$('an-impressions').value='';$('an-engagement').value='';$('an-clicks').value='';$('an-likes').value='';$('an-comments').value='';$('an-shares').value='';$('analytics-modal-title').textContent='Add Analytics Entry';openModal('analytics-modal')}
+function editAnalytics(id){var e=(DB.analytics||[]).find(function(x){return x.id===id});if(!e)return;$('an-id').value=e.id;$('an-week').value=e.weekOf;$('an-platform').value=e.platform;$('an-followers').value=e.followers||'';$('an-impressions').value=e.impressions||'';$('an-engagement').value=e.engagementRate||'';$('an-clicks').value=e.clicks||'';$('an-likes').value=e.likes||'';$('an-comments').value=e.comments||'';$('an-shares').value=e.shares||'';$('analytics-modal-title').textContent='Edit Analytics Entry';openModal('analytics-modal')}
+function saveAnalytics(){var week=$('an-week').value,plat=$('an-platform').value;if(!week){alert('Week date required');return}var id=$('an-id').value;var obj={id:id||uid(),weekOf:week,platform:plat,followers:Number($('an-followers').value)||0,impressions:Number($('an-impressions').value)||0,engagementRate:Number($('an-engagement').value)||0,clicks:Number($('an-clicks').value)||0,likes:Number($('an-likes').value)||0,comments:Number($('an-comments').value)||0,shares:Number($('an-shares').value)||0};if(id){var i=(DB.analytics||[]).findIndex(function(x){return x.id===id});DB.analytics[i]=obj;logActivity('edited','analytics',plat+' week '+week)}else{DB.analytics.push(obj);logActivity('added','analytics',plat+' week '+week)}save();closeModal('analytics-modal');renderAnalytics();toast('Entry saved')}
+function deleteAnalytics(id){if(!confirm('Delete this entry?'))return;var e=(DB.analytics||[]).find(function(x){return x.id===id});logActivity('deleted','analytics',e?e.platform+' week '+e.weekOf:'');DB.analytics=(DB.analytics||[]).filter(function(x){return x.id!==id});save();renderAnalytics();toast('Deleted')}
+
 // ═══ RENDER ═══
 function render(){
   if(curPage==='overview')renderOverview();
@@ -1368,6 +1603,8 @@ function render(){
   if(curPage==='contentbank')renderContentBank();
   if(curPage==='partha')renderExec('partha');
   if(curPage==='john')renderExec('john');
+  if(curPage==='goals')renderGoals();
+  if(curPage==='analytics')renderAnalytics();
 }
 document.querySelector('#page-strategy .btn-primary').onclick=openStratModal;
 document.querySelector('#page-reminders .btn-primary').onclick=()=>{$('rem-id').value='';$('rem-title').value='';$('rem-notes').value='';$('rem-date').value=toDateStr(new Date());$('rem-time').value='';$('rem-priority').value='medium';$('rem-modal-title').textContent='Add Reminder';openModal('rem-modal')};
