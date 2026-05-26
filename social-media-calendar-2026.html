@@ -10,17 +10,17 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #0e0e12;
-    --card: #18181f;
-    --border: #2a2a35;
-    --accent: #6d5cff;
-    --accent-light: #8b7dff;
-    --high: #ff4d6a;
-    --medium: #ffb84d;
-    --low: #4dd4ac;
-    --text: #e8e8ec;
-    --text-muted: #8a8a9a;
-    --white: #ffffff;
+    --bg: #f5f2ee;
+    --card: #ffffff;
+    --border: #e0dae8;
+    --accent: #8b7ce8;
+    --accent-light: #6b5cb8;
+    --high: #d97070;
+    --medium: #d4a843;
+    --low: #5fb89a;
+    --text: #3a3550;
+    --text-muted: #8e88a0;
+    --white: #3a3550;
   }
 
   body {
@@ -153,6 +153,9 @@
     gap: 12px;
     transition: border-color 0.2s;
   }
+  .day-card {
+    box-shadow: 0 1px 4px rgba(60,50,80,.06);
+  }
   .day-card:hover {
     border-color: var(--accent);
   }
@@ -192,9 +195,9 @@
     border-radius: 6px;
     margin-top: 6px;
   }
-  .day-priority.high { background: rgba(255,77,106,0.15); color: var(--high); }
-  .day-priority.medium { background: rgba(255,184,77,0.15); color: var(--medium); }
-  .day-priority.low { background: rgba(77,212,172,0.15); color: var(--low); }
+  .day-priority.high { background: rgba(217,112,112,0.12); color: var(--high); }
+  .day-priority.medium { background: rgba(212,168,67,0.12); color: var(--medium); }
+  .day-priority.low { background: rgba(95,184,154,0.12); color: var(--low); }
 
   /* DOWNLOAD BTN */
   .download-bar {
@@ -204,15 +207,15 @@
     z-index: 100;
   }
   .download-btn {
-    background: linear-gradient(135deg, var(--accent), var(--accent-light));
-    color: var(--white);
+    background: linear-gradient(135deg, #8b7ce8, #6b5cb8);
+    color: #fff;
     border: none;
     padding: 14px 28px;
     border-radius: 12px;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 4px 20px rgba(109,92,255,0.4);
+    box-shadow: 0 4px 20px rgba(139,124,232,0.3);
     display: flex;
     align-items: center;
     gap: 8px;
@@ -269,14 +272,14 @@
 
 <div class="header">
   <h1>Social Media Calendar 2026</h1>
-  <p>Special Days & Content Opportunities — Full Year Reference</p>
+  <p>HR-Curated Special Days & Content Opportunities — Full Year Reference</p>
   <div class="brand">Vantage Circle Marketing Team</div>
 </div>
 
 <div class="legend">
-  <div class="legend-item"><div class="legend-dot high"></div> High Priority — Must-post days</div>
-  <div class="legend-item"><div class="legend-dot medium"></div> Medium Priority — Recommended</div>
-  <div class="legend-item"><div class="legend-dot low"></div> Low Priority — Optional / Fun</div>
+  <div class="legend-item"><div class="legend-dot high"></div> High — Must-post (core HR / major festivals)</div>
+  <div class="legend-item"><div class="legend-dot medium"></div> Medium — Recommended (workplace relevance)</div>
+  <div class="legend-item"><div class="legend-dot low"></div> Low — Optional (engagement / fun)</div>
 </div>
 
 <div class="stats-bar" id="statsBar"></div>
@@ -284,7 +287,7 @@
 <div id="calendarBody"></div>
 
 <div class="footer">
-  Social Media Calendar 2026 — Vantage Circle &bull; Generated for content planning &bull; 103 special days across 12 months
+  Social Media Calendar 2026 — Vantage Circle &bull; HR-Curated for content planning &bull; 78 special days across 12 months
 </div>
 
 <div class="download-bar">
@@ -296,109 +299,84 @@
 
 <script>
 const SPECIAL_DAYS = [
-  {date:"2026-01-01",title:"New Year's Day / Global Family Day",priority:"high"},
-  {date:"2026-01-02",title:"World Introvert Day",priority:"low"},
-  {date:"2026-01-04",title:"World Braille Day",priority:"low"},
-  {date:"2026-01-05",title:"National Bird Day",priority:"low"},
-  {date:"2026-01-10",title:"World Hindi Day",priority:"medium"},
-  {date:"2026-01-12",title:"National Youth Day",priority:"medium"},
-  {date:"2026-01-13",title:"Lohri",priority:"high"},
-  {date:"2026-01-14",title:"Pongal / Makar Sankranti",priority:"high"},
-  {date:"2026-01-15",title:"Indian Army Day",priority:"medium"},
-  {date:"2026-01-21",title:"National Hugging Day",priority:"low"},
-  {date:"2026-01-23",title:"Netaji Subhash Chandra Bose Jayanti",priority:"medium"},
-  {date:"2026-01-24",title:"National Girl Child Day / Intl Education Day",priority:"medium"},
-  {date:"2026-01-25",title:"National Voters Day / National Tourism Day",priority:"medium"},
-  {date:"2026-01-26",title:"Republic Day",priority:"high"},
-  {date:"2026-01-28",title:"Data Privacy Day",priority:"medium"},
-  {date:"2026-01-30",title:"Martyrs' Day",priority:"medium"},
-  {date:"2026-02-04",title:"World Cancer Day",priority:"medium"},
-  {date:"2026-02-07",title:"Rose Day",priority:"low"},
-  {date:"2026-02-14",title:"Valentine's Day / World Radio Day",priority:"high"},
-  {date:"2026-02-19",title:"Shivaji Maharaj Jayanti",priority:"medium"},
-  {date:"2026-02-20",title:"World Day of Social Justice",priority:"medium"},
-  {date:"2026-02-26",title:"Maha Shivratri",priority:"high"},
-  {date:"2026-02-28",title:"National Science Day",priority:"medium"},
-  {date:"2026-03-01",title:"Zero Discrimination Day",priority:"medium"},
-  {date:"2026-03-07",title:"Employee Appreciation Day",priority:"high"},
-  {date:"2026-03-08",title:"International Women's Day",priority:"high"},
-  {date:"2026-03-14",title:"Holi",priority:"high"},
-  {date:"2026-03-15",title:"National Consumer Rights Day",priority:"medium"},
-  {date:"2026-03-20",title:"International Day of Happiness",priority:"medium"},
-  {date:"2026-03-22",title:"World Water Day",priority:"medium"},
-  {date:"2026-03-30",title:"Gudi Padwa / Doctors' Day",priority:"medium"},
-  {date:"2026-04-01",title:"April Fool's Day / Fun At Work Day",priority:"medium"},
-  {date:"2026-04-02",title:"World Autism Awareness Day",priority:"medium"},
-  {date:"2026-04-07",title:"World Health Day",priority:"high"},
-  {date:"2026-04-13",title:"Ambedkar Jayanti / Bihu",priority:"high"},
-  {date:"2026-04-22",title:"Earth Day",priority:"high"},
-  {date:"2026-04-23",title:"World Book Day / English Language Day",priority:"medium"},
-  {date:"2026-04-28",title:"National Superhero Day / World Safety Day",priority:"medium"},
-  {date:"2026-05-01",title:"International Workers' Day / Maharashtra Day",priority:"high"},
-  {date:"2026-05-04",title:"Star Wars Day / World Laughter Day",priority:"medium"},
-  {date:"2026-05-08",title:"World Red Cross Day",priority:"medium"},
-  {date:"2026-05-11",title:"Mother's Day / National Technology Day",priority:"high"},
-  {date:"2026-05-12",title:"Buddha Purnima",priority:"medium"},
-  {date:"2026-05-15",title:"International Day of Families",priority:"medium"},
-  {date:"2026-05-21",title:"International Tea Day",priority:"low"},
-  {date:"2026-05-28",title:"Menstrual Hygiene Day",priority:"medium"},
-  {date:"2026-05-31",title:"World No Tobacco Day",priority:"medium"},
-  {date:"2026-06-01",title:"World Milk Day / Global Day of Parents",priority:"medium"},
-  {date:"2026-06-05",title:"World Environment Day",priority:"high"},
-  {date:"2026-06-08",title:"World Oceans Day / Best Friends Day",priority:"medium"},
-  {date:"2026-06-12",title:"World Day Against Child Labor",priority:"medium"},
-  {date:"2026-06-14",title:"World Blood Donor Day",priority:"medium"},
-  {date:"2026-06-15",title:"Father's Day",priority:"high"},
-  {date:"2026-06-21",title:"International Yoga Day / World Music Day",priority:"high"},
-  {date:"2026-06-30",title:"World Social Media Day",priority:"high"},
-  {date:"2026-07-07",title:"World Chocolate Day",priority:"low"},
-  {date:"2026-07-11",title:"World Population Day",priority:"medium"},
-  {date:"2026-07-17",title:"World Emoji Day",priority:"medium"},
-  {date:"2026-07-26",title:"Kargil Vijay Diwas",priority:"high"},
-  {date:"2026-07-27",title:"Parents' Day",priority:"medium"},
-  {date:"2026-07-29",title:"International Tiger Day",priority:"medium"},
-  {date:"2026-07-30",title:"International Friendship Day",priority:"medium"},
-  {date:"2026-08-09",title:"Raksha Bandhan",priority:"high"},
-  {date:"2026-08-12",title:"International Youth Day",priority:"medium"},
-  {date:"2026-08-15",title:"Independence Day",priority:"high"},
-  {date:"2026-08-16",title:"Janmashtami",priority:"high"},
-  {date:"2026-08-19",title:"World Photography Day",priority:"medium"},
-  {date:"2026-08-21",title:"Senior Citizens Day",priority:"medium"},
-  {date:"2026-08-26",title:"Women's Equality Day",priority:"medium"},
-  {date:"2026-08-27",title:"Ganesh Chaturthi",priority:"high"},
-  {date:"2026-09-05",title:"Teachers' Day / Onam",priority:"high"},
-  {date:"2026-09-08",title:"International Literacy Day",priority:"medium"},
-  {date:"2026-09-10",title:"World Suicide Prevention Day",priority:"medium"},
-  {date:"2026-09-14",title:"Hindi Diwas",priority:"medium"},
-  {date:"2026-09-15",title:"Engineer's Day",priority:"medium"},
-  {date:"2026-09-21",title:"International Day of Peace",priority:"medium"},
-  {date:"2026-09-22",title:"Navratri",priority:"high"},
-  {date:"2026-09-27",title:"World Tourism Day",priority:"medium"},
-  {date:"2026-09-28",title:"Durga Puja",priority:"high"},
-  {date:"2026-09-30",title:"International Podcast Day",priority:"medium"},
-  {date:"2026-10-01",title:"International Coffee Day",priority:"medium"},
-  {date:"2026-10-02",title:"Gandhi Jayanti / Dussehra",priority:"high"},
-  {date:"2026-10-05",title:"World Teachers' Day",priority:"medium"},
-  {date:"2026-10-08",title:"Indian Air Force Day",priority:"medium"},
-  {date:"2026-10-10",title:"World Mental Health Day",priority:"high"},
-  {date:"2026-10-16",title:"World Food Day",priority:"medium"},
-  {date:"2026-10-19",title:"Dhanteras",priority:"high"},
-  {date:"2026-10-21",title:"Diwali",priority:"high"},
-  {date:"2026-10-23",title:"Bhai Dooj",priority:"medium"},
-  {date:"2026-10-27",title:"Chhath Puja",priority:"medium"},
-  {date:"2026-10-31",title:"Halloween",priority:"medium"},
-  {date:"2026-11-01",title:"World Vegan Day / No Shave November",priority:"medium"},
-  {date:"2026-11-05",title:"Guru Nanak Jayanti",priority:"high"},
-  {date:"2026-11-13",title:"World Kindness Day",priority:"medium"},
-  {date:"2026-11-14",title:"Children's Day",priority:"high"},
-  {date:"2026-11-18",title:"National Entrepreneurs' Day",priority:"medium"},
-  {date:"2026-11-19",title:"International Men's Day",priority:"medium"},
-  {date:"2026-11-27",title:"Thanksgiving Day",priority:"high"},
-  {date:"2026-12-01",title:"World AIDS Day",priority:"medium"},
-  {date:"2026-12-03",title:"Intl Day of Persons with Disabilities",priority:"medium"},
-  {date:"2026-12-10",title:"Human Rights Day",priority:"medium"},
-  {date:"2026-12-25",title:"Christmas",priority:"high"},
-  {date:"2026-12-31",title:"New Year's Eve",priority:"high"}
+  {date:"2026-01-01",title:"New Year's Day",priority:"high",note:"Goal setting, fresh start for teams"},
+  {date:"2026-01-10",title:"World Hindi Day",priority:"low",note:"Language diversity in workplaces"},
+  {date:"2026-01-12",title:"National Youth Day",priority:"medium",note:"Young workforce, mentorship"},
+  {date:"2026-01-13",title:"Lohri",priority:"high",note:"North Indian festival"},
+  {date:"2026-01-14",title:"Pongal / Makar Sankranti",priority:"high",note:"Harvest festival, regional inclusion"},
+  {date:"2026-01-15",title:"Indian Army Day",priority:"low",note:"Honoring service"},
+  {date:"2026-01-23",title:"Netaji SC Bose Jayanti",priority:"low",note:"Leadership inspiration"},
+  {date:"2026-01-24",title:"National Girl Child Day / Intl Education Day",priority:"medium",note:"Gender equity, L&D, D&I"},
+  {date:"2026-01-26",title:"Republic Day",priority:"high",note:"National holiday, employer branding"},
+  {date:"2026-01-28",title:"Data Privacy Day",priority:"medium",note:"HR tech, employee data protection"},
+  {date:"2026-01-30",title:"Martyrs' Day",priority:"low",note:"Values and tribute"},
+  {date:"2026-02-04",title:"World Cancer Day",priority:"low",note:"Employee health awareness"},
+  {date:"2026-02-14",title:"Valentine's Day",priority:"low",note:"Team bonding, appreciation culture"},
+  {date:"2026-02-19",title:"Shivaji Maharaj Jayanti",priority:"low",note:"Leadership, cultural inclusion"},
+  {date:"2026-02-20",title:"World Day of Social Justice",priority:"medium",note:"Workplace equity, D&I"},
+  {date:"2026-02-26",title:"Maha Shivratri",priority:"high",note:"Major Indian festival"},
+  {date:"2026-02-28",title:"National Science Day",priority:"low",note:"Innovation culture, L&D"},
+  {date:"2026-03-01",title:"Zero Discrimination Day",priority:"medium",note:"Inclusive workplaces, D&I"},
+  {date:"2026-03-06",title:"Employee Appreciation Day",priority:"high",note:"Core VC theme — recognition & rewards flagship day"},
+  {date:"2026-03-08",title:"International Women's Day",priority:"high",note:"Gender diversity, women in leadership"},
+  {date:"2026-03-14",title:"Holi",priority:"high",note:"Major Indian festival"},
+  {date:"2026-03-20",title:"International Day of Happiness",priority:"medium",note:"Employee wellbeing, positive culture"},
+  {date:"2026-03-25",title:"Gudi Padwa / Ugadi",priority:"medium",note:"Indian New Year, cultural inclusion"},
+  {date:"2026-04-01",title:"Fun at Work Day",priority:"medium",note:"Workplace culture, team engagement"},
+  {date:"2026-04-02",title:"World Autism Awareness Day",priority:"medium",note:"Neurodiversity, inclusive hiring"},
+  {date:"2026-04-07",title:"World Health Day",priority:"high",note:"Employee wellness, health programs"},
+  {date:"2026-04-13",title:"Ambedkar Jayanti",priority:"high",note:"Social justice, D&I, national holiday"},
+  {date:"2026-04-14",title:"Baisakhi / Bihu / Vishu",priority:"high",note:"Major regional festivals, cultural inclusion"},
+  {date:"2026-04-22",title:"Earth Day",priority:"medium",note:"Corporate sustainability, ESG"},
+  {date:"2026-04-23",title:"World Book Day",priority:"low",note:"Learning culture, employee development"},
+  {date:"2026-04-28",title:"World Day for Safety & Health at Work",priority:"high",note:"Workplace safety, occupational health"},
+  {date:"2026-05-01",title:"International Workers' Day",priority:"high",note:"Labor rights, workforce recognition"},
+  {date:"2026-05-10",title:"Mother's Day",priority:"high",note:"Family-friendly workplaces, work-life balance"},
+  {date:"2026-05-11",title:"National Technology Day",priority:"medium",note:"Innovation, HR tech"},
+  {date:"2026-05-15",title:"International Day of Families",priority:"medium",note:"Work-life balance, parental policies"},
+  {date:"2026-05-28",title:"Menstrual Hygiene Day",priority:"medium",note:"Workplace inclusion, women's health"},
+  {date:"2026-05-31",title:"World No Tobacco Day",priority:"low",note:"Workplace wellness"},
+  {date:"2026-06-01",title:"Global Day of Parents",priority:"low",note:"Work-life balance"},
+  {date:"2026-06-05",title:"World Environment Day",priority:"medium",note:"Corporate sustainability, green HR"},
+  {date:"2026-06-21",title:"International Yoga Day / Father's Day",priority:"high",note:"Employee wellness + family themes"},
+  {date:"2026-06-30",title:"World Social Media Day",priority:"medium",note:"Employer branding, HR marketing"},
+  {date:"2026-07-26",title:"Kargil Vijay Diwas / Parents' Day",priority:"medium",note:"Leadership, resilience + work-life"},
+  {date:"2026-07-30",title:"International Friendship Day",priority:"low",note:"Team bonding, peer recognition"},
+  {date:"2026-08-09",title:"Raksha Bandhan",priority:"high",note:"Major Indian festival"},
+  {date:"2026-08-12",title:"International Youth Day",priority:"medium",note:"Gen Z workforce, mentorship"},
+  {date:"2026-08-15",title:"Independence Day",priority:"high",note:"National holiday, employer branding"},
+  {date:"2026-08-16",title:"Janmashtami",priority:"high",note:"Major Indian festival"},
+  {date:"2026-08-21",title:"Senior Citizens Day",priority:"low",note:"Intergenerational workforce"},
+  {date:"2026-08-26",title:"Women's Equality Day",priority:"medium",note:"Gender pay equity, D&I"},
+  {date:"2026-08-27",title:"Ganesh Chaturthi",priority:"high",note:"Major Indian festival"},
+  {date:"2026-09-05",title:"Teachers' Day / Onam",priority:"high",note:"Mentorship, L&D + Kerala festival"},
+  {date:"2026-09-08",title:"International Literacy Day",priority:"low",note:"L&D, upskilling"},
+  {date:"2026-09-10",title:"World Suicide Prevention Day",priority:"medium",note:"Mental health at work, EAP"},
+  {date:"2026-09-14",title:"Hindi Diwas",priority:"low",note:"Language diversity"},
+  {date:"2026-09-15",title:"Engineer's Day",priority:"medium",note:"Tech workforce recognition"},
+  {date:"2026-09-21",title:"International Day of Peace",priority:"low",note:"Workplace harmony"},
+  {date:"2026-09-22",title:"Navratri",priority:"high",note:"Major Indian festival, 9-day celebration"},
+  {date:"2026-09-26",title:"HR Professional Day",priority:"high",note:"Core VC audience — THE day for HR professionals"},
+  {date:"2026-09-28",title:"Durga Puja",priority:"high",note:"Major Indian festival"},
+  {date:"2026-10-02",title:"Gandhi Jayanti / Dussehra",priority:"high",note:"National holiday + major festival"},
+  {date:"2026-10-05",title:"World Teachers' Day",priority:"low",note:"L&D, mentorship"},
+  {date:"2026-10-10",title:"World Mental Health Day",priority:"high",note:"Employee mental wellness, EAP"},
+  {date:"2026-10-16",title:"Boss's Day",priority:"high",note:"Manager appreciation, leadership recognition"},
+  {date:"2026-10-19",title:"Dhanteras",priority:"high",note:"Diwali season begins, rewards"},
+  {date:"2026-10-21",title:"Diwali",priority:"high",note:"Biggest Indian festival, workplace celebrations"},
+  {date:"2026-10-23",title:"Bhai Dooj",priority:"medium",note:"Family, cultural celebration"},
+  {date:"2026-10-27",title:"Chhath Puja",priority:"medium",note:"Regional festival, inclusion"},
+  {date:"2026-11-01",title:"No-Shave November",priority:"low",note:"Fun workplace culture, team bonding"},
+  {date:"2026-11-05",title:"Guru Nanak Jayanti",priority:"high",note:"Major Indian festival, Sikh inclusion"},
+  {date:"2026-11-13",title:"World Kindness Day",priority:"medium",note:"Recognition culture, peer appreciation"},
+  {date:"2026-11-14",title:"Children's Day",priority:"medium",note:"Work-life balance, fun culture"},
+  {date:"2026-11-18",title:"National Entrepreneurs' Day",priority:"medium",note:"Intrapreneurship, innovation"},
+  {date:"2026-11-19",title:"International Men's Day",priority:"medium",note:"Men's health, gender inclusion"},
+  {date:"2026-11-26",title:"Thanksgiving Day",priority:"medium",note:"Gratitude culture, recognition"},
+  {date:"2026-12-03",title:"Intl Day of Persons with Disabilities",priority:"medium",note:"Disability inclusion, accessible workplaces"},
+  {date:"2026-12-10",title:"Human Rights Day",priority:"medium",note:"Workplace rights, ethical employment"},
+  {date:"2026-12-25",title:"Christmas",priority:"high",note:"Global festival, year-end celebrations"},
+  {date:"2026-12-31",title:"New Year's Eve",priority:"high",note:"Year-end reflections, milestones"}
 ];
 
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -452,6 +430,7 @@ for (let m = 0; m < 12; m++) {
           </div>
           <div class="day-info">
             <div class="day-title">${d.title}</div>
+            ${d.note?`<div style="font-size:11px;color:var(--text-muted);margin-top:3px">${d.note}</div>`:''}
             <span class="day-priority ${d.priority}">${d.priority}</span>
           </div>
         </div>`;
