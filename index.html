@@ -39,11 +39,11 @@
   body { font-family:-apple-system,'Segoe UI',system-ui,Roboto,sans-serif; background:var(--bg); color:var(--text); display:flex; min-height:100vh; font-size:13px; line-height:1.5; }
 
   /* ─── SIDEBAR ─── */
-  #sidebar { width:220px; min-height:100vh; background:var(--sidebar); border-right:1px solid var(--border); display:flex; flex-direction:column; position:fixed; top:0; left:0; z-index:100; }
+  #sidebar { width:220px; height:100vh; background:var(--sidebar); border-right:1px solid var(--border); display:flex; flex-direction:column; position:fixed; top:0; left:0; z-index:100; }
   .logo { padding:20px 18px 14px; border-bottom:1px solid var(--border); }
   .logo h1 { font-size:15px; font-weight:700; color:var(--text); letter-spacing:0.3px; }
   .logo span { font-size:10.5px; color:var(--muted); letter-spacing:0.3px; }
-  nav { flex:1; padding:12px 8px; display:flex; flex-direction:column; gap:2px; }
+  nav { flex:1; padding:12px 8px; display:flex; flex-direction:column; gap:2px; overflow-y:auto; min-height:0; }
   .nav-item { display:flex; align-items:center; gap:9px; padding:8px 12px; border-radius:7px; cursor:pointer; font-size:13px; color:var(--text2); transition:all .15s; user-select:none; }
   .nav-item:hover { background:var(--card); color:var(--text); }
   .nav-item.active { background:var(--accent-dim); color:var(--accent-text); font-weight:600; }
