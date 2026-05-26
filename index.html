@@ -1024,7 +1024,7 @@ const FIREBASE_CONFIG = {
 //   3. Paste below. Free tier: 15 req/min, 1M tokens/day
 // ────────────────────────────────────────────────────────────────────────────
 let GEMINI_KEY = localStorage.getItem('vc_gemini_key') || '';
-const GEMINI_MODEL = 'gemini-2.0-flash';
+let GEMINI_MODEL = localStorage.getItem('vc_gemini_model') || 'gemini-2.0-flash-lite';
 
 async function callGemini(prompt, maxTokens) {
   if (!GEMINI_KEY) { toast('Set your Gemini API key first (Settings in sidebar footer)'); return null; }
@@ -1048,6 +1048,13 @@ const VC_BRAND_CONTEXT = 'Vantage Circle is a Global Employee Engagement Platfor
 function setGeminiKey() {
   var key = prompt('Enter your Google Gemini API Key (free from aistudio.google.com/apikey):', GEMINI_KEY);
   if (key !== null) { GEMINI_KEY = key.trim(); localStorage.setItem('vc_gemini_key', GEMINI_KEY); toast(GEMINI_KEY ? 'API key saved' : 'API key cleared'); }
+  var models = ['gemini-2.0-flash-lite','gemini-2.0-flash','gemini-1.5-flash','gemini-1.5-pro'];
+  var currentIdx = models.indexOf(GEMINI_MODEL);
+  var modelChoice = prompt('Choose AI model (enter number):\n1. gemini-2.0-flash-lite (Recommended — best free tier)\n2. gemini-2.0-flash (faster, may hit quota)\n3. gemini-1.5-flash (stable fallback)\n4. gemini-1.5-pro (highest quality, limited free)\n\nCurrently using: ' + GEMINI_MODEL, currentIdx + 1);
+  if (modelChoice !== null && modelChoice.trim()) {
+    var idx = parseInt(modelChoice.trim()) - 1;
+    if (idx >= 0 && idx < models.length) { GEMINI_MODEL = models[idx]; localStorage.setItem('vc_gemini_model', GEMINI_MODEL); toast('Model set to ' + GEMINI_MODEL); }
+  }
 }
 
 // ═══ DATA ═══
