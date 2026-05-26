@@ -367,6 +367,67 @@
   .view-btn { width:30px; height:28px; border:none; border-radius:4px; background:transparent; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; transition:all .15s; }
   .view-btn.active { background:var(--accent-dim); color:var(--accent-text); }
   .view-btn:hover:not(.active) { background:var(--card); }
+
+  /* ─── IMPORTANT EVENTS (Glowing) ─── */
+  .nav-item.glow-event { position:relative; }
+  .nav-item.glow-event::before { content:''; position:absolute; inset:-2px; border-radius:9px; background:linear-gradient(135deg,#e84393,#8b7ce8,#e84393); opacity:0; z-index:-1; transition:opacity .3s; animation:glowPulse 2s ease-in-out infinite; }
+  .nav-item.glow-event::before { opacity:0.6; }
+  .nav-item.glow-event:hover::before { opacity:0.9; }
+  @keyframes glowPulse { 0%,100%{opacity:0.4;filter:blur(2px)} 50%{opacity:0.8;filter:blur(4px)} }
+  .nav-item.glow-event { background:linear-gradient(135deg,#fae8f5,#ece8f8); color:var(--accent-text); font-weight:600; border:1px solid rgba(139,124,232,.3); }
+  .nav-item.glow-event.active { background:linear-gradient(135deg,#f0d0ee,#ddd5f8); border-color:var(--accent); }
+  .nav-item.glow-event .ni { color:#e84393; }
+
+  .event-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:18px; box-shadow:0 1px 4px rgba(60,50,80,.06); margin-bottom:12px; transition:all .15s; position:relative; }
+  .event-card:hover { border-color:var(--accent); box-shadow:0 2px 12px rgba(139,124,232,.12); }
+  .event-card .event-title { font-size:15px; font-weight:700; color:var(--text); margin-bottom:4px; }
+  .event-card .event-type-badge { display:inline-flex; padding:3px 10px; border-radius:5px; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
+  .event-card .event-desc { font-size:12.5px; color:var(--text2); line-height:1.5; margin:8px 0; }
+  .event-card .event-dates { display:flex; gap:16px; align-items:center; flex-wrap:wrap; font-size:12px; color:var(--muted); margin-bottom:8px; }
+  .event-card .event-dates strong { color:var(--text2); }
+  .event-card .event-actions { position:absolute; top:14px; right:14px; display:flex; gap:4px; opacity:0; transition:opacity .15s; }
+  .event-card:hover .event-actions { opacity:1; }
+  .event-card .event-posts { margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
+  .event-card .event-post-chip { display:inline-flex; align-items:center; gap:4px; padding:3px 8px; border-radius:4px; font-size:11px; margin:2px 2px 0 0; font-weight:500; cursor:pointer; transition:opacity .15s; }
+  .event-card .event-post-chip:hover { opacity:0.7; }
+  .evt-shrm { color:#e84393; background:#fae0f0; }
+  .evt-webinar { color:var(--blue); background:var(--blue-dim); }
+  .evt-podcast { color:var(--orange); background:var(--orange-dim); }
+  .evt-hrbytes { color:var(--green); background:var(--green-dim); }
+  .evt-campaign { color:var(--accent-text); background:var(--accent-dim); }
+  .evt-other { color:var(--text2); background:#ece8f0; }
+  .event-section-label { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px; margin:6px 0; }
+  .event-plan-chip { display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:5px; font-size:11.5px; font-weight:500; margin:3px 3px 0 0; cursor:pointer; transition:all .15s; border:1px solid transparent; }
+  .event-plan-chip:hover { opacity:.8; }
+  .plan-gtm { background:var(--red-dim); color:var(--red); }
+  .plan-social { background:var(--blue-dim); color:var(--blue); }
+  .plan-content { background:var(--accent-dim); color:var(--accent-text); }
+
+  /* ─── CAMPAIGN SUGGESTIONS ─── */
+  .campaign-suggest-card { background:linear-gradient(135deg,var(--card),#faf8fc); border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:10px; transition:all .15s; }
+  .campaign-suggest-card:hover { border-color:var(--accent); }
+  .campaign-suggest-card .cs-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; }
+  .campaign-suggest-card .cs-title { font-size:14px; font-weight:700; color:var(--text); }
+  .campaign-suggest-card .cs-date { font-size:12px; color:var(--muted); }
+  .campaign-suggest-card .cs-days-left { font-size:11px; font-weight:600; padding:2px 8px; border-radius:4px; }
+  .cs-urgent { background:var(--red-dim); color:var(--red); }
+  .cs-soon { background:var(--yellow-dim); color:var(--yellow); }
+  .cs-upcoming { background:var(--green-dim); color:var(--green); }
+  .campaign-suggest-card .cs-body { font-size:12.5px; color:var(--text2); line-height:1.5; margin-bottom:10px; }
+  .campaign-suggest-card .cs-platforms { display:flex; gap:4px; flex-wrap:wrap; margin-bottom:8px; }
+  .cs-action-btn { padding:5px 12px; border-radius:5px; border:1px solid var(--border); background:var(--card); cursor:pointer; font-size:11.5px; font-weight:600; color:var(--accent-text); transition:all .15s; font-family:inherit; }
+  .cs-action-btn:hover { background:var(--accent-dim); border-color:var(--accent); }
+
+  /* ─── OVERVIEW EVENT STRIP ─── */
+  .ov-event-strip { background:linear-gradient(135deg,#fae8f5,#ece8f8); border:1px solid rgba(139,124,232,.25); border-radius:10px; padding:14px 18px; margin-bottom:16px; }
+  .ov-event-strip .strip-title { font-size:12px; font-weight:700; color:#e84393; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+  .ov-event-strip .strip-title .glow-dot { width:8px; height:8px; border-radius:50%; background:#e84393; animation:glowPulse 2s infinite; }
+  .ov-event-item { display:flex; align-items:center; gap:10px; padding:6px 0; border-bottom:1px solid rgba(139,124,232,.15); }
+  .ov-event-item:last-child { border-bottom:none; }
+  .ov-event-item .ov-evt-type { width:32px; height:32px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+  .ov-event-item .ov-evt-info { flex:1; }
+  .ov-event-item .ov-evt-name { font-size:13px; font-weight:600; color:var(--text); }
+  .ov-event-item .ov-evt-date { font-size:11px; color:var(--muted); }
 </style>
 </head>
 <body>
@@ -378,6 +439,9 @@
     <div class="nav-section">Main</div>
     <div class="nav-item active" data-page="overview"><span class="ni">O</span> Overview</div>
     <div class="nav-item" data-page="strategy"><span class="ni">S</span> Strategy & Plans</div>
+    <div class="nav-section">Important</div>
+    <div class="nav-item glow-event" data-page="events"><span class="ni">🔥</span> Important Events</div>
+    <div class="nav-item" data-page="campaigns"><span class="ni">💡</span> Campaign Ideas</div>
     <div class="nav-section">Content</div>
     <div class="nav-item" data-page="calendar"><span class="ni">C</span> Content Calendar</div>
     <div class="nav-item" data-page="specialdays"><span class="ni">★</span> Special Days</div>
@@ -403,6 +467,7 @@
   <div class="page active" id="page-overview">
     <div class="page-header"><h2>Overview</h2><span class="sub">Social media command center</span></div>
     <div id="notify-area"></div>
+    <div id="ov-events-strip"></div>
     <div id="today-chip" class="date-chip"></div>
     <div class="grid-4" style="margin-bottom:16px" id="stat-cards"></div>
     <div class="grid-2">
@@ -553,6 +618,38 @@
       <div class="card"><div class="card-title">Engagement Rate</div><canvas id="chart-engagement" height="220"></canvas></div>
     </div>
     <div class="card"><div class="card-title">Recent Entries</div><div id="analytics-table"></div></div>
+  </div>
+
+  <!-- IMPORTANT EVENTS -->
+  <div class="page" id="page-events">
+    <div class="page-header"><h2>🔥 Important Events</h2><span class="sub">SHRMTech, Webinars, HR Podcast, Campaigns — never miss them</span></div>
+    <div class="grid-4" style="margin-bottom:16px" id="events-stats"></div>
+    <div class="section-actions">
+      <div class="tabs">
+        <button class="tab active" onclick="filterEvents(this,'all')">All</button>
+        <button class="tab" onclick="filterEvents(this,'conference')">Conferences</button>
+        <button class="tab" onclick="filterEvents(this,'webinar')">Webinars</button>
+        <button class="tab" onclick="filterEvents(this,'podcast')">Podcasts</button>
+        <button class="tab" onclick="filterEvents(this,'campaign')">Campaigns</button>
+      </div>
+      <button class="btn btn-primary" onclick="openEventModal()">+ Add Event</button>
+    </div>
+    <div id="events-list"></div>
+  </div>
+
+  <!-- CAMPAIGN IDEAS -->
+  <div class="page" id="page-campaigns">
+    <div class="page-header"><h2>💡 Campaign Ideas</h2><span class="sub">Suggested campaigns based on upcoming special days & holidays</span></div>
+    <div class="grid-3" style="margin-bottom:16px" id="campaign-stats"></div>
+    <div class="section-actions">
+      <div class="tabs">
+        <button class="tab active" onclick="filterCampaigns(this,'all')">All</button>
+        <button class="tab" onclick="filterCampaigns(this,'urgent')">This Week</button>
+        <button class="tab" onclick="filterCampaigns(this,'soon')">This Month</button>
+        <button class="tab" onclick="filterCampaigns(this,'upcoming')">Next 3 Months</button>
+      </div>
+    </div>
+    <div id="campaigns-list"></div>
   </div>
 
 </div>
@@ -736,6 +833,53 @@
   </div>
 </div>
 
+<!-- Event Modal -->
+<div class="modal-overlay" id="event-modal">
+  <div class="modal modal-wide">
+    <h3 id="event-modal-title">Add Event</h3>
+    <input type="hidden" id="evt-id" />
+    <div class="form-group"><label>Event Name *</label><input id="evt-name" placeholder="e.g. SHRMTech 2026, HR Podcast Episode 12, HR Bytes" /></div>
+    <div class="grid-2">
+      <div class="form-group"><label>Event Type</label><select id="evt-type"><option value="conference">Conference / Summit</option><option value="webinar">Webinar</option><option value="podcast">Podcast</option><option value="hrbytes">HR Bytes</option><option value="campaign">Campaign</option><option value="other">Other</option></select></div>
+      <div class="form-group"><label>Priority</label><select id="evt-priority"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select></div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group"><label>Start Date *</label><input type="date" id="evt-start" /></div>
+      <div class="form-group"><label>End Date</label><input type="date" id="evt-end" /></div>
+    </div>
+    <div class="form-group"><label>Description</label><textarea id="evt-desc" placeholder="Event details, objectives, key topics to cover..." style="min-height:60px"></textarea></div>
+    <div class="form-group"><label>GTM Plan</label><textarea id="evt-gtm" placeholder="Go-To-Market plan: pre-event buzz, during-event coverage, post-event follow-up..." style="min-height:60px"></textarea></div>
+    <div class="form-group"><label>Social Media Plan</label><textarea id="evt-social" placeholder="Social media strategy: platforms to target, post types, hashtags, posting schedule..." style="min-height:60px"></textarea></div>
+    <div class="form-group">
+      <label>Attached Files <span style="font-weight:400;color:var(--muted)">(PDF, Excel, Markdown — max 2MB each)</span></label>
+      <div id="evt-files-list" style="margin-bottom:8px"><span style="font-size:11.5px;color:var(--muted)">No files attached</span></div>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="$('evt-file-input').click()">+ Attach File</button>
+      <input type="file" id="evt-file-input" accept=".pdf,.xlsx,.xls,.md,.markdown" style="display:none" onchange="handleEventFile(this)" />
+    </div>
+    <div class="form-group">
+      <label>Linked Posts <span style="font-weight:400;color:var(--muted)">(posts auto-created in Content Calendar)</span></label>
+      <div id="evt-posts-list" style="margin-bottom:8px"></div>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="addEventPost()">+ Add Post to Calendar</button>
+    </div>
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('event-modal')">Cancel</button><button class="btn btn-primary" onclick="saveEvent()">Save</button></div>
+  </div>
+</div>
+
+<!-- Event Post Sub-Modal -->
+<div class="modal-overlay" id="evt-post-modal">
+  <div class="modal">
+    <h3>Add Event Post</h3>
+    <input type="hidden" id="evtp-idx" />
+    <div class="grid-2">
+      <div class="form-group"><label>Date *</label><input type="date" id="evtp-date" /></div>
+      <div class="form-group"><label>Platform</label><select id="evtp-platform"><option value="linkedin">LinkedIn</option><option value="reddit">Reddit</option><option value="instagram">Instagram</option></select></div>
+    </div>
+    <div class="form-group"><label>Post Title *</label><input id="evtp-title" placeholder="e.g. Pre-event teaser for SHRMTech" /></div>
+    <div class="form-group"><label>Notes</label><textarea id="evtp-notes" placeholder="Post angle, key message..." style="min-height:50px"></textarea></div>
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('evt-post-modal')">Cancel</button><button class="btn btn-primary" onclick="saveEventPost()">Add Post</button></div>
+  </div>
+</div>
+
 <!-- Analytics Modal -->
 <div class="modal-overlay" id="analytics-modal">
   <div class="modal">
@@ -839,6 +983,7 @@ function migrateDB(d){
   if(!d.goals)d.goals=[];
   if(!d.analytics)d.analytics=[];
   if(!d.activity)d.activity=[];
+  if(!d.events)d.events=[];
   if(!d.exec)d.exec={partha:{posts:[],topics:[],schedule:'Mon / Thu',bio:'Co-Founder & President, Vantage Circle'},john:{posts:[],topics:[],schedule:'Tue / Fri',bio:'Chief Business Officer, Vantage Circle'}};
   if(d.exec.partha&&!d.exec.partha.brandNotes)d.exec.partha.brandNotes='';
   if(d.exec.john&&!d.exec.john.brandNotes)d.exec.john.brandNotes='';
@@ -1771,9 +1916,313 @@ function editAnalytics(id){var e=(DB.analytics||[]).find(function(x){return x.id
 function saveAnalytics(){var week=$('an-week').value,plat=$('an-platform').value;if(!week){alert('Week date required');return}var id=$('an-id').value;var obj={id:id||uid(),weekOf:week,platform:plat,followers:Number($('an-followers').value)||0,impressions:Number($('an-impressions').value)||0,engagementRate:Number($('an-engagement').value)||0,clicks:Number($('an-clicks').value)||0,likes:Number($('an-likes').value)||0,comments:Number($('an-comments').value)||0,shares:Number($('an-shares').value)||0};if(id){var i=(DB.analytics||[]).findIndex(function(x){return x.id===id});DB.analytics[i]=obj;logActivity('edited','analytics',plat+' week '+week)}else{DB.analytics.push(obj);logActivity('added','analytics',plat+' week '+week)}save();closeModal('analytics-modal');renderAnalytics();toast('Entry saved')}
 function deleteAnalytics(id){if(!confirm('Delete this entry?'))return;var e=(DB.analytics||[]).find(function(x){return x.id===id});logActivity('deleted','analytics',e?e.platform+' week '+e.weekOf:'');DB.analytics=(DB.analytics||[]).filter(function(x){return x.id!==id});save();renderAnalytics();toast('Deleted')}
 
+// ═══ IMPORTANT EVENTS ═══
+let eventsFilter='all';
+let evtTempFiles=[],evtTempPosts=[];
+
+function filterEvents(el,f){eventsFilter=f;document.querySelectorAll('#page-events .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderEvents()}
+
+function evtTypeBadge(type){
+  const map={conference:['evt-shrm','Conference'],webinar:['evt-webinar','Webinar'],podcast:['evt-podcast','Podcast'],hrbytes:['evt-hrbytes','HR Bytes'],campaign:['evt-campaign','Campaign'],other:['evt-other','Other']};
+  const m=map[type]||map.other;
+  return '<span class="event-type-badge '+m[0]+'">'+m[1]+'</span>';
+}
+function evtTypeIcon(type){
+  const map={conference:'🏛️',webinar:'📹',podcast:'🎙️',hrbytes:'📊',campaign:'📢',other:'📌'};
+  return map[type]||'📌';
+}
+
+function renderEvents(){
+  var all=DB.events||[];
+  var filtered=eventsFilter==='all'?all:all.filter(function(e){return e.type===eventsFilter});
+  filtered.sort(function(a,b){return a.startDate>b.startDate?1:-1});
+
+  var conferences=all.filter(function(e){return e.type==='conference'}).length;
+  var webinars=all.filter(function(e){return e.type==='webinar'}).length;
+  var podcasts=all.filter(function(e){return e.type==='podcast'||e.type==='hrbytes'}).length;
+  var upcoming=all.filter(function(e){return e.startDate>=toDateStr(new Date())}).length;
+
+  $('events-stats').innerHTML=
+    '<div class="stat-card"><div class="stat-label"><span class="stat-dot" style="background:#e84393"></span>Total Events</div><div class="stat-val" style="color:#e84393">'+all.length+'</div></div>'
+    +'<div class="stat-card"><div class="stat-label"><span class="stat-dot" style="background:var(--blue)"></span>Webinars</div><div class="stat-val" style="color:var(--blue)">'+webinars+'</div></div>'
+    +'<div class="stat-card"><div class="stat-label"><span class="stat-dot" style="background:var(--orange)"></span>Podcasts / HR Bytes</div><div class="stat-val" style="color:var(--orange)">'+podcasts+'</div></div>'
+    +'<div class="stat-card"><div class="stat-label"><span class="stat-dot" style="background:var(--green)"></span>Upcoming</div><div class="stat-val" style="color:var(--green)">'+upcoming+'</div></div>';
+
+  var el=$('events-list');
+  if(!filtered.length){el.innerHTML='<div class="empty"><p>No events yet. Add your first event to keep track of SHRMTech, webinars, podcasts & campaigns.</p></div>';return}
+
+  el.innerHTML=filtered.map(function(e){
+    var daysLeft=Math.ceil((new Date(e.startDate+'T00:00:00')-new Date())/(1000*60*60*24));
+    var daysLabel=daysLeft<0?'Past event':daysLeft===0?'Today!':daysLeft+' day'+(daysLeft>1?'s':'')+' away';
+    var daysCls=daysLeft<=0?'cs-urgent':daysLeft<=7?'cs-soon':'cs-upcoming';
+
+    var linkedPosts=(e.linkedPostIds||[]).map(function(pid){return DB.posts.find(function(p){return p.id===pid})}).filter(Boolean);
+
+    return '<div class="event-card">'
+      +'<div class="event-actions"><button class="icon-btn" onclick="editEvent(\''+e.id+'\')" title="Edit">E</button><button class="icon-btn del" onclick="deleteEvent(\''+e.id+'\')" title="Delete">x</button></div>'
+      +evtTypeBadge(e.type)
+      +'<div class="event-title">'+esc(e.name)+'</div>'
+      +'<div class="event-dates"><span><strong>'+e.startDate+'</strong>'+(e.endDate&&e.endDate!==e.startDate?' → <strong>'+e.endDate+'</strong>':'')+'</span>'
+      +'<span class="cs-days-left '+daysCls+'">'+daysLabel+'</span>'
+      +'<span class="badge badge-'+e.priority+'">'+e.priority+'</span></div>'
+      +(e.desc?'<div class="event-desc">'+esc(e.desc)+'</div>':'')
+      +(e.gtm?'<div style="margin-top:8px"><div class="event-section-label">GTM Plan</div><div style="font-size:12px;color:var(--text2);white-space:pre-wrap;line-height:1.5;background:var(--card2);padding:10px 12px;border-radius:6px;border:1px solid var(--border)">'+esc(e.gtm)+'</div></div>':'')
+      +(e.socialPlan?'<div style="margin-top:8px"><div class="event-section-label">Social Plan</div><div style="font-size:12px;color:var(--text2);white-space:pre-wrap;line-height:1.5;background:var(--card2);padding:10px 12px;border-radius:6px;border:1px solid var(--border)">'+esc(e.socialPlan)+'</div></div>':'')
+      +((e.files&&e.files.length)?'<div style="margin-top:8px"><div class="event-section-label">Attached Files</div>'+e.files.map(function(f,fi){return '<span class="file-chip file-chip-'+fileChipType(f.type)+'" onclick="openEventFileViewer(\''+e.id+'\','+fi+')"><b>'+fileChipIcon(f.type)+'</b> '+esc(f.name)+'</span>'}).join('')+'</div>':'')
+      +(linkedPosts.length?'<div class="event-posts"><div class="event-section-label">Linked Posts ('+linkedPosts.length+')</div>'+linkedPosts.map(function(p){var pcls=p.platform==='linkedin'?'post-li':p.platform==='reddit'?'post-reddit':'post-ig';return '<span class="event-post-chip cal-day-post '+pcls+'" onclick="openDetail(\''+p.id+'\')">'+esc(p.title)+' &middot; '+p.date+'</span>'}).join('')+'</div>':'')
+      +'</div>';
+  }).join('');
+}
+
+function openEventFileViewer(eventId,idx){
+  var e=(DB.events||[]).find(function(x){return x.id===eventId});
+  if(!e||!e.files||!e.files[idx])return;
+  // Reuse strategy viewer
+  var f=e.files[idx];
+  $('sv-title').textContent=e.name+' — '+f.name;
+  $('sv-meta').innerHTML=evtTypeBadge(e.type);
+  $('sv-id').value='';
+  $('sv-desc').textContent='';
+  var filesEl=$('sv-files');
+  filesEl.innerHTML='<div class="file-viewer"><div class="file-viewer-header"><span><span class="file-chip file-chip-'+fileChipType(f.type)+'" style="margin:0"><b>'+fileChipIcon(f.type)+'</b> '+esc(f.name)+'</span></span></div><div class="file-viewer-content" id="evt-fv-preview"></div></div>';
+  setTimeout(function(){renderFileInline($('evt-fv-preview'),f)},50);
+  $('strat-detail-overlay').classList.add('open');
+}
+
+function openEventModal(){
+  $('evt-id').value='';$('evt-name').value='';$('evt-type').value='conference';$('evt-priority').value='medium';
+  $('evt-start').value=toDateStr(new Date());$('evt-end').value='';
+  $('evt-desc').value='';$('evt-gtm').value='';$('evt-social').value='';
+  evtTempFiles=[];evtTempPosts=[];
+  $('event-modal-title').textContent='Add Event';
+  renderEventFilesList();renderEventPostsList();openModal('event-modal');
+}
+
+function editEvent(id){
+  var e=(DB.events||[]).find(function(x){return x.id===id});if(!e)return;
+  $('evt-id').value=e.id;$('evt-name').value=e.name;$('evt-type').value=e.type;$('evt-priority').value=e.priority;
+  $('evt-start').value=e.startDate;$('evt-end').value=e.endDate||'';
+  $('evt-desc').value=e.desc||'';$('evt-gtm').value=e.gtm||'';$('evt-social').value=e.socialPlan||'';
+  evtTempFiles=[];
+  evtTempPosts=(e.linkedPostIds||[]).map(function(pid){var p=DB.posts.find(function(x){return x.id===pid});return p?{id:p.id,date:p.date,platform:p.platform,title:p.title,notes:p.notes||''}:null}).filter(Boolean);
+  $('event-modal-title').textContent='Edit Event';
+  renderEventFilesList();renderEventPostsList();openModal('event-modal');
+}
+
+function handleEventFile(input){
+  var file=input.files[0];if(!file)return;input.value='';
+  var ext=file.name.split('.').pop().toLowerCase();
+  if(!['pdf','xlsx','xls','md','markdown'].includes(ext)){alert('Only PDF, Excel, and Markdown files.');return}
+  if(file.size>2*1024*1024){alert('File too large (max 2MB).');return}
+  var reader=new FileReader();
+  reader.onload=function(ev){evtTempFiles.push({name:file.name,size:file.size,type:ext==='markdown'?'md':ext,data:ev.target.result});renderEventFilesList();toast('File attached')};
+  reader.readAsDataURL(file);
+}
+
+function renderEventFilesList(){
+  var id=$('evt-id').value;
+  var existing=id?((DB.events||[]).find(function(e){return e.id===id})||{}).files||[]:[];
+  var all=existing.map(function(f,i){return Object.assign({},f,{_i:i,_e:true})}).concat(evtTempFiles.map(function(f,i){return Object.assign({},f,{_i:i,_e:false})}));
+  $('evt-files-list').innerHTML=all.length?all.map(function(f){return '<span class="file-chip file-chip-'+fileChipType(f.type)+'"><b>'+fileChipIcon(f.type)+'</b> '+esc(f.name)+' <span style="opacity:.6">('+Math.round(f.size/1024)+'KB)</span><span class="file-rm" onclick="event.stopPropagation();rmEventFile('+(f._e?1:0)+','+f._i+')">x</span></span>'}).join(''):'<span style="font-size:11.5px;color:var(--muted)">No files attached</span>';
+}
+
+function rmEventFile(isExisting,idx){
+  if(isExisting){var id=$('evt-id').value;var e=(DB.events||[]).find(function(x){return x.id===id});if(e&&e.files){e.files.splice(idx,1);save()}}else{evtTempFiles.splice(idx,1)}
+  renderEventFilesList();
+}
+
+function renderEventPostsList(){
+  $('evt-posts-list').innerHTML=evtTempPosts.length?evtTempPosts.map(function(p,i){
+    return '<div class="item-row" style="margin-bottom:6px;padding:8px 10px"><div class="item-body"><div class="item-title" style="font-size:12.5px">'+esc(p.title)+'</div><div class="item-meta">'+platBadge(p.platform)+' <span>'+p.date+'</span></div></div><button class="icon-btn del" onclick="evtTempPosts.splice('+i+',1);renderEventPostsList()" title="Remove">x</button></div>'
+  }).join(''):'<span style="font-size:11.5px;color:var(--muted)">No linked posts yet. Add posts that auto-sync to Content Calendar.</span>';
+}
+
+function addEventPost(){
+  $('evtp-idx').value='-1';
+  $('evtp-date').value=$('evt-start').value||toDateStr(new Date());
+  $('evtp-platform').value='linkedin';$('evtp-title').value='';$('evtp-notes').value='';
+  openModal('evt-post-modal');
+}
+
+function saveEventPost(){
+  var title=$('evtp-title').value.trim(),date=$('evtp-date').value;
+  if(!title||!date){alert('Title and date required');return}
+  evtTempPosts.push({id:null,date:date,platform:$('evtp-platform').value,title:title,notes:$('evtp-notes').value.trim()});
+  closeModal('evt-post-modal');renderEventPostsList();
+}
+
+function saveEvent(){
+  var name=$('evt-name').value.trim();if(!name){alert('Event name required');return}
+  var startDate=$('evt-start').value;if(!startDate){alert('Start date required');return}
+  var id=$('evt-id').value;
+  var existingFiles=id?((DB.events||[]).find(function(x){return x.id===id})||{}).files||[]:[];
+  var existingPostIds=id?((DB.events||[]).find(function(x){return x.id===id})||{}).linkedPostIds||[]:[];
+
+  // Create new linked posts in Content Calendar
+  var newPostIds=existingPostIds.slice();
+  evtTempPosts.forEach(function(tp){
+    if(tp.id){
+      // Existing post, already in calendar
+      if(newPostIds.indexOf(tp.id)===-1)newPostIds.push(tp.id);
+    }else{
+      // New post — add to DB.posts
+      var newPost={id:uid(),date:tp.date,platform:tp.platform,title:tp.title,copy:'',caption:'',notes:tp.notes+(tp.notes?'\n':'')+'[Event: '+name+']',status:'draft',time:'',checked:false};
+      DB.posts.push(newPost);
+      newPostIds.push(newPost.id);
+      logActivity('added','post',tp.title+' (from event)');
+    }
+  });
+
+  var obj={id:id||uid(),name:name,type:$('evt-type').value,priority:$('evt-priority').value,startDate:startDate,endDate:$('evt-end').value||startDate,desc:$('evt-desc').value.trim(),gtm:$('evt-gtm').value.trim(),socialPlan:$('evt-social').value.trim(),files:existingFiles.concat(evtTempFiles.map(function(f){return{name:f.name,size:f.size,type:f.type,data:f.data}})),linkedPostIds:newPostIds,createdAt:id?((DB.events||[]).find(function(x){return x.id===id})||{}).createdAt||new Date().toISOString():new Date().toISOString()};
+
+  if(id){var i=(DB.events||[]).findIndex(function(x){return x.id===id});DB.events[i]=obj;logActivity('edited','event',name)}
+  else{DB.events.unshift(obj);logActivity('added','event',name)}
+  evtTempFiles=[];evtTempPosts=[];
+  save();closeModal('event-modal');renderEvents();renderCalendar();renderOverview();toast('Event saved'+(newPostIds.length-existingPostIds.length>0?' — '+( newPostIds.length-existingPostIds.length)+' post(s) added to calendar':''));
+}
+
+function deleteEvent(id){
+  if(!confirm('Delete this event? (Linked posts in Content Calendar will remain.)'))return;
+  var e=(DB.events||[]).find(function(x){return x.id===id});
+  logActivity('deleted','event',e?e.name:'');
+  DB.events=(DB.events||[]).filter(function(x){return x.id!==id});
+  save();renderEvents();renderOverview();toast('Event deleted');
+}
+
+// Overview event strip
+function renderOverviewEvents(){
+  var now=new Date(),todayStr=toDateStr(now);
+  var upcoming=(DB.events||[]).filter(function(e){return e.startDate>=todayStr}).sort(function(a,b){return a.startDate>b.startDate?1:-1}).slice(0,5);
+  var el=$('ov-events-strip');
+  if(!upcoming.length){el.innerHTML='';return}
+  var evtTypeColors={conference:'#fae0f0',webinar:var_blue_dim(),podcast:'#f8ece0',hrbytes:'#e4f3ec',campaign:'#ece8f8',other:'#ece8f0'};
+  el.innerHTML='<div class="ov-event-strip"><div class="strip-title"><span class="glow-dot"></span> Upcoming Events</div>'
+    +upcoming.map(function(e){
+      var daysLeft=Math.ceil((new Date(e.startDate+'T00:00:00')-now)/(1000*60*60*24));
+      var daysLabel=daysLeft===0?'Today!':daysLeft===1?'Tomorrow':daysLeft+' days';
+      return '<div class="ov-event-item"><div class="ov-evt-type" style="background:'+(evtTypeColors[e.type]||'#ece8f0')+'">'+evtTypeIcon(e.type)+'</div><div class="ov-evt-info"><div class="ov-evt-name">'+esc(e.name)+'</div><div class="ov-evt-date">'+e.startDate+(e.endDate&&e.endDate!==e.startDate?' → '+e.endDate:'')+' &middot; <strong style="color:'+(daysLeft<=3?'var(--red)':'var(--accent-text)')+'">'+daysLabel+'</strong></div></div>'+evtTypeBadge(e.type)+'</div>'
+    }).join('')
+    +'</div>';
+}
+function var_blue_dim(){return '#e0edf8'}
+
+// ═══ CAMPAIGN SUGGESTIONS ═══
+let campaignFilter='all';
+function filterCampaigns(el,f){campaignFilter=f;document.querySelectorAll('#page-campaigns .tab').forEach(function(t){t.classList.remove('active')});el.classList.add('active');renderCampaigns()}
+
+function generateCampaignSuggestions(){
+  var now=new Date(),todayStr=toDateStr(now);
+  var in90=new Date(now);in90.setDate(in90.getDate()+90);
+  var maxDateStr=toDateStr(in90);
+
+  // Get upcoming special days from reminders
+  var upcoming=DB.reminders.filter(function(r){return r.date>=todayStr&&r.date<=maxDateStr}).sort(function(a,b){return a.date>b.date?1:-1});
+
+  // Build campaign suggestions
+  var suggestions=[];
+  var campaignTemplates={
+    high:{
+      label:'Major Campaign',
+      desc:'This is a high-priority day. Plan a multi-platform campaign with pre-event teasers, day-of posts, and follow-up content.',
+      platforms:['linkedin','reddit','instagram'],
+      postIdeas:['Teaser post (3 days before)','Main campaign post','Story/Reel with quick stat','Employee spotlight tied to theme','Follow-up engagement post']
+    },
+    medium:{
+      label:'Standard Campaign',
+      desc:'A good opportunity for planned content. Focus on 1-2 platforms with purpose-driven posts.',
+      platforms:['linkedin','instagram'],
+      postIdeas:['Informational carousel or infographic','Team celebration or shoutout post','Quick tips or stats post']
+    },
+    low:{
+      label:'Light Touch',
+      desc:'A lighter opportunity — consider a single themed post or Story acknowledgment.',
+      platforms:['linkedin'],
+      postIdeas:['Simple awareness post','Story poll or quick engagement post']
+    }
+  };
+
+  // Check which special days already have posts planned
+  var postDates={};DB.posts.forEach(function(p){if(!postDates[p.date])postDates[p.date]=[];postDates[p.date].push(p)});
+
+  upcoming.forEach(function(r){
+    var template=campaignTemplates[r.priority]||campaignTemplates.low;
+    var existingPosts=postDates[r.date]||[];
+    var daysLeft=Math.ceil((new Date(r.date+'T00:00:00')-now)/(1000*60*60*24));
+    var urgency=daysLeft<=7?'urgent':daysLeft<=30?'soon':'upcoming';
+
+    suggestions.push({
+      id:r.id,
+      title:r.title,
+      date:r.date,
+      priority:r.priority,
+      daysLeft:daysLeft,
+      urgency:urgency,
+      template:template,
+      existingPostCount:existingPosts.length,
+      hasPlannedContent:existingPosts.length>0
+    });
+  });
+
+  return suggestions;
+}
+
+function renderCampaigns(){
+  var suggestions=generateCampaignSuggestions();
+  var filtered=campaignFilter==='all'?suggestions:suggestions.filter(function(s){return s.urgency===campaignFilter});
+
+  var urgent=suggestions.filter(function(s){return s.urgency==='urgent'}).length;
+  var soon=suggestions.filter(function(s){return s.urgency==='soon'}).length;
+  var planned=suggestions.filter(function(s){return s.hasPlannedContent}).length;
+
+  $('campaign-stats').innerHTML=
+    '<div class="stat-card"><div class="stat-label"><span class="stat-dot" style="background:var(--red)"></span>This Week</div><div class="stat-val" style="color:var(--red)">'+urgent+'</div></div>'
+    +'<div class="stat-card"><div class="stat-label"><span class="stat-dot" style="background:var(--yellow)"></span>This Month</div><div class="stat-val" style="color:var(--yellow)">'+soon+'</div></div>'
+    +'<div class="stat-card"><div class="stat-label"><span class="stat-dot" style="background:var(--green)"></span>Content Planned</div><div class="stat-val" style="color:var(--green)">'+planned+'</div></div>';
+
+  var el=$('campaigns-list');
+  if(!filtered.length){el.innerHTML='<div class="empty"><p>No upcoming campaign opportunities in this time range.</p></div>';return}
+
+  el.innerHTML=filtered.map(function(s){
+    var daysCls=s.urgency==='urgent'?'cs-urgent':s.urgency==='soon'?'cs-soon':'cs-upcoming';
+    var daysLabel=s.daysLeft===0?'Today!':s.daysLeft===1?'Tomorrow':s.daysLeft+' days away';
+
+    return '<div class="campaign-suggest-card">'
+      +'<div class="cs-header"><div><div class="cs-title">'+esc(s.title)+'</div><div class="cs-date">'+formatDate(s.date)+'</div></div><span class="cs-days-left '+daysCls+'">'+daysLabel+'</span></div>'
+      +'<div class="cs-body"><span class="badge badge-'+s.priority+'" style="margin-right:6px">'+s.priority+' priority</span> '+esc(s.template.desc)+'</div>'
+      +'<div class="cs-platforms">'+s.template.platforms.map(function(p){return platBadge(p)}).join('')+'</div>'
+      +'<div style="margin-bottom:8px"><div class="event-section-label">Suggested Posts</div>'
+      +s.template.postIdeas.map(function(idea){return '<div style="font-size:12px;color:var(--text2);padding:2px 0">• '+idea+'</div>'}).join('')
+      +'</div>'
+      +'<div style="display:flex;align-items:center;gap:8px;justify-content:space-between">'
+      +'<div style="font-size:11.5px;color:var(--muted)">'+(s.hasPlannedContent?'<span style="color:var(--green);font-weight:600">✓ '+s.existingPostCount+' post(s) already planned</span>':'<span style="color:var(--yellow)">No content planned yet</span>')+'</div>'
+      +'<div style="display:flex;gap:6px"><button class="cs-action-btn" onclick="quickPlanCampaign(\''+s.id+'\',\''+s.date+'\',\''+esc(s.title).replace(/'/g,"\\'")+'\')">+ Quick Plan Posts</button>'
+      +'<button class="cs-action-btn" onclick="createEventFromCampaign(\''+s.date+'\',\''+esc(s.title).replace(/'/g,"\\'")+'\')">Create Event</button></div>'
+      +'</div></div>';
+  }).join('');
+}
+
+function quickPlanCampaign(remId,date,title){
+  // Quick-create a draft post for this campaign day
+  $('post-id').value='';$('post-date').value=date;$('post-platform').value='linkedin';
+  $('post-title').value=title+' — Campaign Post';
+  $('post-copy').value='';$('post-caption').value='';$('post-notes').value='Campaign for: '+title+'\nDate: '+date;
+  $('post-status').value='draft';$('post-time').value='';$('post-modal-title').textContent='Plan Campaign Post';
+  openModal('post-modal');
+}
+
+function createEventFromCampaign(date,title){
+  $('evt-id').value='';$('evt-name').value=title;$('evt-type').value='campaign';$('evt-priority').value='medium';
+  $('evt-start').value=date;$('evt-end').value=date;
+  $('evt-desc').value='Campaign based on special day: '+title;
+  $('evt-gtm').value='';$('evt-social').value='';
+  evtTempFiles=[];evtTempPosts=[];
+  $('event-modal-title').textContent='Create Event from Campaign';
+  renderEventFilesList();renderEventPostsList();openModal('event-modal');
+}
+
 // ═══ RENDER ═══
 function render(){
-  if(curPage==='overview')renderOverview();
+  if(curPage==='overview'){renderOverview();renderOverviewEvents()}
   if(curPage==='strategy')renderStrategy();
   if(curPage==='calendar')renderCalendar();
   if(curPage==='specialdays')renderSpecialDays();
@@ -1783,6 +2232,8 @@ function render(){
   if(curPage==='john')renderExec('john');
   if(curPage==='goals')renderGoals();
   if(curPage==='analytics')renderAnalytics();
+  if(curPage==='events')renderEvents();
+  if(curPage==='campaigns')renderCampaigns();
 }
 document.querySelector('#page-strategy .btn-primary').onclick=openStratModal;
 document.querySelector('#page-reminders .btn-primary').onclick=()=>{$('rem-id').value='';$('rem-title').value='';$('rem-notes').value='';$('rem-date').value=toDateStr(new Date());$('rem-time').value='';$('rem-priority').value='medium';$('rem-modal-title').textContent='Add Reminder';openModal('rem-modal')};
