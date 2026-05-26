@@ -341,6 +341,32 @@
   .activity-text { flex:1; font-size:12.5px; color:var(--text2); line-height:1.4; }
   .activity-text strong { color:var(--text); font-weight:600; }
   .activity-time { font-size:11px; color:var(--muted); white-space:nowrap; flex-shrink:0; }
+
+  /* ─── CALENDAR GRID VIEW ─── */
+  .cal-grid-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+  .cal-grid-nav .cal-month-label { font-size:16px; font-weight:700; color:var(--text); }
+  .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  .cal-grid .cal-day-header { background:var(--card2); padding:8px; text-align:center; font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; }
+  .cal-grid .cal-day { background:var(--card); min-height:110px; padding:6px; vertical-align:top; position:relative; }
+  .cal-grid .cal-day.today { background:#f0ecfa; }
+  .cal-grid .cal-day.other-month { background:var(--bg); opacity:0.5; }
+  .cal-day .day-num { font-size:12px; font-weight:700; color:var(--text); margin-bottom:4px; }
+  .cal-day.today .day-num { color:var(--accent); background:var(--accent-dim); width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+  .cal-day-post { font-size:10.5px; padding:3px 5px; border-radius:4px; margin-bottom:2px; cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:500; transition:opacity .15s; }
+  .cal-day-post:hover { opacity:0.8; }
+  .cal-day-post.post-li { background:var(--blue-dim); color:var(--blue); }
+  .cal-day-post.post-reddit { background:var(--orange-dim); color:var(--orange); }
+  .cal-day-post.post-ig { background:var(--pink-dim); color:var(--pink); }
+  .cal-day-special { font-size:10px; padding:2px 5px; border-radius:3px; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:500; cursor:default; }
+  .cal-day-special.sd-high { background:var(--red-dim); color:var(--red); }
+  .cal-day-special.sd-medium { background:var(--yellow-dim); color:var(--yellow); }
+  .cal-day-special.sd-low { background:var(--green-dim); color:var(--green); }
+  .cal-day .more-items { font-size:9.5px; color:var(--muted); cursor:pointer; padding:1px 4px; }
+  .cal-day .more-items:hover { color:var(--accent-text); }
+  .view-toggle { display:flex; gap:2px; background:var(--card2); border:1px solid var(--border); border-radius:6px; padding:2px; }
+  .view-btn { width:30px; height:28px; border:none; border-radius:4px; background:transparent; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; transition:all .15s; }
+  .view-btn.active { background:var(--accent-dim); color:var(--accent-text); }
+  .view-btn:hover:not(.active) { background:var(--card); }
 </style>
 </head>
 <body>
@@ -409,14 +435,21 @@
   <div class="page" id="page-calendar">
     <div class="page-header"><h2>Content Calendar</h2><span class="sub">Day-wise post planning</span></div>
     <div class="section-actions">
-      <div class="tabs">
-        <button class="tab tab-li active" onclick="switchPlatform(this,'linkedin')">LinkedIn</button>
-        <button class="tab tab-reddit" onclick="switchPlatform(this,'reddit')">Reddit</button>
-        <button class="tab tab-ig" onclick="switchPlatform(this,'instagram')">Instagram</button>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="tabs">
+          <button class="tab active" onclick="switchPlatform(this,'all')">All</button>
+          <button class="tab tab-li" onclick="switchPlatform(this,'linkedin')">LinkedIn</button>
+          <button class="tab tab-reddit" onclick="switchPlatform(this,'reddit')">Reddit</button>
+          <button class="tab tab-ig" onclick="switchPlatform(this,'instagram')">Instagram</button>
+        </div>
+        <div class="view-toggle">
+          <button class="view-btn active" id="view-list-btn" onclick="switchCalView('list')" title="List view">☰</button>
+          <button class="view-btn" id="view-cal-btn" onclick="switchCalView('calendar')" title="Calendar view">📅</button>
+        </div>
       </div>
       <div style="display:flex;gap:6px">
-        <button class="btn btn-ghost btn-sm" id="bulk-select-btn" onclick="toggleBulkMode('calendar')">Select</button>
-        <button class="btn btn-ghost" onclick="$('import-file').click()">Import File</button>
+        <button class="btn btn-ghost btn-sm cal-list-only" id="bulk-select-btn" onclick="toggleBulkMode('calendar')">Select</button>
+        <button class="btn btn-ghost cal-list-only" onclick="$('import-file').click()">Import File</button>
         <button class="btn btn-primary" onclick="openPostModal()">+ Add Post</button>
       </div>
       <input type="file" id="import-file" accept=".xlsx,.xls,.csv,.tsv,.txt" style="display:none" onchange="handleFileSelect(this)" />
@@ -809,6 +842,7 @@ function migrateDB(d){
   if(!d.exec)d.exec={partha:{posts:[],topics:[],schedule:'Mon / Thu',bio:'Co-Founder & President, Vantage Circle'},john:{posts:[],topics:[],schedule:'Tue / Fri',bio:'Chief Business Officer, Vantage Circle'}};
   if(d.exec.partha&&!d.exec.partha.brandNotes)d.exec.partha.brandNotes='';
   if(d.exec.john&&!d.exec.john.brandNotes)d.exec.john.brandNotes='';
+  if(!d.calView)d.calView='list';
   return d;
 }
 
@@ -887,7 +921,8 @@ load();
 initFirebase();
 
 // ═══ NAV ═══
-let curPage='overview',curPlatform='linkedin',stratFilter='all',remFilter='all';
+let curPage='overview',curPlatform='all',stratFilter='all',remFilter='all';
+let calViewMonth=new Date().getMonth(), calViewYear=new Date().getFullYear();
 document.querySelectorAll('.nav-item').forEach(el=>{el.addEventListener('click',()=>{document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));el.classList.add('active');const p=el.dataset.page;document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');curPage=p;if(bulkMode)toggleBulkMode();render()})});
 
 // ═══ MODALS ═══
@@ -1072,35 +1107,178 @@ function inlineMarkdown(text){
 // ═══ CALENDAR ═══
 let bulkMode=false, bulkSelected=new Set(), bulkCtx='calendar';
 
-function switchPlatform(el,plat){curPlatform=plat;document.querySelectorAll('#page-calendar .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');bulkSelected.clear();updateBulkBar();renderCalendar()}
+function switchPlatform(el,plat){curPlatform=plat;document.querySelectorAll('#page-calendar .tabs .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');bulkSelected.clear();updateBulkBar();renderCalendar()}
+
+function switchCalView(mode){
+  DB.calView=mode;save();
+  $('view-list-btn').classList.toggle('active',mode==='list');
+  $('view-cal-btn').classList.toggle('active',mode==='calendar');
+  document.querySelectorAll('.cal-list-only').forEach(function(el){el.style.display=mode==='calendar'?'none':''});
+  renderCalendar();
+}
+
+function calPrevMonth(){calViewMonth--;if(calViewMonth<0){calViewMonth=11;calViewYear--}renderCalendar()}
+function calNextMonth(){calViewMonth++;if(calViewMonth>11){calViewMonth=0;calViewYear++}renderCalendar()}
+function calToday(){var n=new Date();calViewMonth=n.getMonth();calViewYear=n.getFullYear();renderCalendar()}
 
 function renderCalendar(){
-  const posts=DB.posts.filter(p=>p.platform===curPlatform).sort((a,b)=>a.date>b.date?1:-1);
-  const el=document.getElementById('cal-list');
-  if(!posts.length){el.innerHTML=`<div class="empty"><p>No posts planned for ${platName(curPlatform)}.</p></div>`;return}
-  const grouped={};posts.forEach(p=>{if(!grouped[p.date])grouped[p.date]=[];grouped[p.date].push(p)});
-  el.innerHTML=Object.keys(grouped).sort().map(date=>`
-    <div class="date-group">
-      <div class="date-header">${formatDate(date)}</div>
-      ${grouped[date].map(p=>`
-        <div class="item-row ${bulkSelected.has(p.id)?'selected':''}" onclick="${bulkMode?`toggleBulkItem('${p.id}')`:`openDetail('${p.id}')`}" style="cursor:pointer">
-          ${bulkMode?`<input type="checkbox" ${bulkSelected.has(p.id)?'checked':''} onclick="event.stopPropagation();toggleBulkItem('${p.id}')" style="margin-top:2px">`:`<input type="checkbox" ${p.checked?'checked':''} onclick="event.stopPropagation();togglePost('${p.id}',this.checked)" style="margin-top:2px">`}
-          <div class="item-body">
-            <div class="item-title" style="${!bulkMode&&p.checked?'text-decoration:line-through;color:var(--muted)':''}">${esc(p.title)}</div>
-            ${p.copy?`<div class="post-notes" style="margin-top:2px">${esc(p.copy).substring(0,80)}${p.copy.length>80?'...':''}</div>`:''}
-            ${p.caption?`<div style="font-size:11px;color:var(--accent-text);margin-top:2px;font-style:italic">${esc(p.caption).substring(0,60)}${p.caption.length>60?'...':''}</div>`:''}
-            <div class="item-meta" style="margin-top:4px">
-              <span class="badge badge-${p.status}">${p.status}</span>
-              ${p.time?'<span>'+p.time+'</span>':''}
-              ${p.notes?'<span style="color:var(--muted)">has notes</span>':''}
-            </div>
-          </div>
-          <div class="item-actions" onclick="event.stopPropagation()">
-            <button class="icon-btn" onclick="editPost('${p.id}')" title="Edit">E</button>
-            <button class="icon-btn del" onclick="deletePost('${p.id}')" title="Delete">x</button>
-          </div>
-        </div>`).join('')}
-    </div>`).join('');
+  // Sync view toggle state
+  var mode=DB.calView||'list';
+  $('view-list-btn').classList.toggle('active',mode==='list');
+  $('view-cal-btn').classList.toggle('active',mode==='calendar');
+  document.querySelectorAll('.cal-list-only').forEach(function(el){el.style.display=mode==='calendar'?'none':''});
+
+  if(mode==='calendar'){renderCalendarGrid();return}
+  renderCalendarList();
+}
+
+function renderCalendarList(){
+  var posts=curPlatform==='all'?DB.posts.slice():DB.posts.filter(function(p){return p.platform===curPlatform});
+  posts.sort(function(a,b){return a.date>b.date?1:-1});
+  var el=document.getElementById('cal-list');
+  if(!posts.length){el.innerHTML='<div class="empty"><p>No posts planned'+(curPlatform!=='all'?' for '+platName(curPlatform):'')+'.</p></div>';return}
+  var grouped={};posts.forEach(function(p){if(!grouped[p.date])grouped[p.date]=[];grouped[p.date].push(p)});
+  el.innerHTML=Object.keys(grouped).sort().map(function(date){return '\
+    <div class="date-group">\
+      <div class="date-header">'+formatDate(date)+'</div>\
+      '+grouped[date].map(function(p){return '\
+        <div class="item-row '+(bulkSelected.has(p.id)?'selected':'')+'" onclick="'+(bulkMode?"toggleBulkItem('"+p.id+"')":"openDetail('"+p.id+"')")+'" style="cursor:pointer">\
+          '+(bulkMode?'<input type="checkbox" '+(bulkSelected.has(p.id)?'checked':'')+' onclick="event.stopPropagation();toggleBulkItem(\''+p.id+'\')" style="margin-top:2px">':'<input type="checkbox" '+(p.checked?'checked':'')+' onclick="event.stopPropagation();togglePost(\''+p.id+'\',this.checked)" style="margin-top:2px">')+'\
+          <div class="item-body">\
+            <div class="item-title" style="'+(!bulkMode&&p.checked?'text-decoration:line-through;color:var(--muted)':'')+'">'+esc(p.title)+'</div>\
+            '+(p.copy?'<div class="post-notes" style="margin-top:2px">'+esc(p.copy).substring(0,80)+(p.copy.length>80?'...':'')+'</div>':'')+'\
+            '+(p.caption?'<div style="font-size:11px;color:var(--accent-text);margin-top:2px;font-style:italic">'+esc(p.caption).substring(0,60)+(p.caption.length>60?'...':'')+'</div>':'')+'\
+            <div class="item-meta" style="margin-top:4px">\
+              '+platBadge(p.platform)+'\
+              <span class="badge badge-'+p.status+'">'+p.status+'</span>\
+              '+(p.time?'<span>'+p.time+'</span>':'')+'\
+              '+(p.notes?'<span style="color:var(--muted)">has notes</span>':'')+'\
+            </div>\
+          </div>\
+          <div class="item-actions" onclick="event.stopPropagation()">\
+            <button class="icon-btn" onclick="editPost(\''+p.id+'\')" title="Edit">E</button>\
+            <button class="icon-btn del" onclick="deletePost(\''+p.id+'\')" title="Delete">x</button>\
+          </div>\
+        </div>'}).join('')+'\
+    </div>'}).join('');
+}
+
+function renderCalendarGrid(){
+  var el=document.getElementById('cal-list');
+  var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var now=new Date(),todayStr=toDateStr(now);
+
+  // Build month/year boundaries
+  var firstDay=new Date(calViewYear,calViewMonth,1);
+  var lastDay=new Date(calViewYear,calViewMonth+1,0);
+  var startDow=firstDay.getDay(); // 0=Sun
+  var daysInMonth=lastDay.getDate();
+
+  // Previous month trailing days
+  var prevMonthLast=new Date(calViewYear,calViewMonth,0).getDate();
+
+  // Collect posts for this month range (including leading/trailing)
+  var allPosts=curPlatform==='all'?DB.posts.slice():DB.posts.filter(function(p){return p.platform===curPlatform});
+  var postsByDate={};allPosts.forEach(function(p){if(!postsByDate[p.date])postsByDate[p.date]=[];postsByDate[p.date].push(p)});
+
+  // Collect reminders for this month range
+  var remindersByDate={};(DB.reminders||[]).forEach(function(r){if(!remindersByDate[r.date])remindersByDate[r.date]=[];remindersByDate[r.date].push(r)});
+
+  // Navigation
+  var html='<div class="cal-grid-nav">';
+  html+='<div style="display:flex;align-items:center;gap:8px">';
+  html+='<button class="btn btn-ghost btn-sm" onclick="calPrevMonth()">&lt;</button>';
+  html+='<span class="cal-month-label">'+MONTHS[calViewMonth]+' '+calViewYear+'</span>';
+  html+='<button class="btn btn-ghost btn-sm" onclick="calNextMonth()">&gt;</button>';
+  html+='</div>';
+  html+='<button class="btn btn-ghost btn-sm" onclick="calToday()">Today</button>';
+  html+='</div>';
+
+  // Grid
+  html+='<div class="cal-grid">';
+
+  // Day headers
+  for(var d=0;d<7;d++){html+='<div class="cal-day-header">'+DAYS[d]+'</div>'}
+
+  // Calculate total cells needed (complete weeks)
+  var totalCells=startDow+daysInMonth;
+  var rows=Math.ceil(totalCells/7);
+  var totalSlots=rows*7;
+
+  for(var i=0;i<totalSlots;i++){
+    var dayNum,dateStr,isOtherMonth=false;
+
+    if(i<startDow){
+      // Previous month
+      dayNum=prevMonthLast-startDow+1+i;
+      var pm=calViewMonth-1,py=calViewYear;if(pm<0){pm=11;py--}
+      var pmStr=String(pm+1).length<2?'0'+String(pm+1):String(pm+1);
+      var pdStr=String(dayNum).length<2?'0'+String(dayNum):String(dayNum);
+      dateStr=py+'-'+pmStr+'-'+pdStr;
+      isOtherMonth=true;
+    }else if(i-startDow>=daysInMonth){
+      // Next month
+      dayNum=i-startDow-daysInMonth+1;
+      var nm=calViewMonth+1,ny=calViewYear;if(nm>11){nm=0;ny++}
+      var nmStr=String(nm+1).length<2?'0'+String(nm+1):String(nm+1);
+      var ndStr=String(dayNum).length<2?'0'+String(dayNum):String(dayNum);
+      dateStr=ny+'-'+nmStr+'-'+ndStr;
+      isOtherMonth=true;
+    }else{
+      dayNum=i-startDow+1;
+      var mStr=String(calViewMonth+1).length<2?'0'+String(calViewMonth+1):String(calViewMonth+1);
+      var dStr=String(dayNum).length<2?'0'+String(dayNum):String(dayNum);
+      dateStr=calViewYear+'-'+mStr+'-'+dStr;
+    }
+
+    var isToday=dateStr===todayStr;
+    var cls='cal-day';
+    if(isToday)cls+=' today';
+    if(isOtherMonth)cls+=' other-month';
+
+    html+='<div class="'+cls+'" onclick="calDayClick(event,\''+dateStr+'\')">';
+    html+='<div class="day-num">'+dayNum+'</div>';
+
+    // Items for this day
+    var dayPosts=(postsByDate[dateStr]||[]);
+    var dayReminders=(remindersByDate[dateStr]||[]);
+    var items=[];
+
+    dayPosts.forEach(function(p){
+      var pcls='cal-day-post post-'+(p.platform==='linkedin'?'li':p.platform==='reddit'?'reddit':'ig');
+      items.push('<div class="'+pcls+'" onclick="event.stopPropagation();openDetail(\''+p.id+'\')" title="'+esc(p.title)+'">'+esc(p.title)+'</div>');
+    });
+
+    dayReminders.forEach(function(r){
+      var scls='cal-day-special sd-'+r.priority;
+      items.push('<div class="'+scls+'" title="'+esc(r.title)+' ('+r.priority+')">'+esc(r.title)+'</div>');
+    });
+
+    var maxShow=3;
+    if(items.length<=maxShow){
+      html+=items.join('');
+    }else{
+      html+=items.slice(0,maxShow).join('');
+      html+='<div class="more-items" onclick="event.stopPropagation();calShowMore(this)">+'+(items.length-maxShow)+' more</div>';
+      html+='<div class="more-hidden" style="display:none">'+items.slice(maxShow).join('')+'</div>';
+    }
+
+    html+='</div>';
+  }
+
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+function calDayClick(e,dateStr){
+  if(e.target.classList.contains('cal-day-post')||e.target.classList.contains('cal-day-special')||e.target.classList.contains('more-items'))return;
+  $('post-id').value='';$('post-date').value=dateStr;$('post-platform').value=curPlatform==='all'?'linkedin':curPlatform;$('post-title').value='';$('post-copy').value='';$('post-caption').value='';$('post-notes').value='';$('post-status').value='draft';$('post-time').value='';$('post-modal-title').textContent='Add Post';openModal('post-modal');
+}
+
+function calShowMore(el){
+  var hidden=el.nextElementSibling;
+  if(hidden){hidden.style.display='block';el.style.display='none'}
 }
 
 // BULK MODE (context-aware: calendar or reminders)
@@ -1121,7 +1299,7 @@ function bulkSelectAll(){
   if(bulkCtx==='reminders'){
     let list=remFilter==='all'?DB.reminders:remFilter==='done'?DB.reminders.filter(r=>r.done):DB.reminders.filter(r=>!r.done);
     list.forEach(r=>bulkSelected.add(r.id));updateBulkBar();renderReminders();
-  }else{DB.posts.filter(p=>p.platform===curPlatform).forEach(p=>bulkSelected.add(p.id));updateBulkBar();renderCalendar()}
+  }else{var bp=curPlatform==='all'?DB.posts:DB.posts.filter(p=>p.platform===curPlatform);bp.forEach(p=>bulkSelected.add(p.id));updateBulkBar();renderCalendar()}
 }
 function bulkDeselectAll(){bulkSelected.clear();updateBulkBar();if(bulkCtx==='reminders')renderReminders();else renderCalendar()}
 function updateBulkBar(){$('bulk-count-num').textContent=bulkSelected.size}
@@ -1169,9 +1347,9 @@ function detailSave(){
 }
 $('detail-overlay').addEventListener('click',e=>{if(e.target===$('detail-overlay'))closeDetail()});
 
-function openPostModal(){$('post-id').value='';$('post-date').value=toDateStr(new Date());$('post-platform').value=curPlatform;$('post-title').value='';$('post-copy').value='';$('post-caption').value='';$('post-notes').value='';$('post-status').value='draft';$('post-time').value='';$('post-modal-title').textContent='Add Post';openModal('post-modal')}
+function openPostModal(){$('post-id').value='';$('post-date').value=toDateStr(new Date());$('post-platform').value=curPlatform==='all'?'linkedin':curPlatform;$('post-title').value='';$('post-copy').value='';$('post-caption').value='';$('post-notes').value='';$('post-status').value='draft';$('post-time').value='';$('post-modal-title').textContent='Add Post';openModal('post-modal')}
 function editPost(id){const p=DB.posts.find(x=>x.id===id);if(!p)return;$('post-id').value=p.id;$('post-date').value=p.date;$('post-platform').value=p.platform;$('post-title').value=p.title;$('post-copy').value=p.copy||'';$('post-caption').value=p.caption||'';$('post-notes').value=p.notes||'';$('post-status').value=p.status;$('post-time').value=p.time||'';$('post-modal-title').textContent='Edit Post';openModal('post-modal')}
-function savePost(){const title=$('post-title').value.trim(),date=$('post-date').value;if(!title||!date){alert('Title and date required');return}const id=$('post-id').value;const obj={id:id||uid(),date,platform:$('post-platform').value,title,copy:$('post-copy').value.trim(),caption:$('post-caption').value.trim(),notes:$('post-notes').value.trim(),status:$('post-status').value,time:$('post-time').value,checked:false};if(id){const i=DB.posts.findIndex(x=>x.id===id);obj.checked=DB.posts[i].checked;DB.posts[i]=obj;logActivity('edited','post',title)}else{DB.posts.push(obj);logActivity('added','post',title)}save();closeModal('post-modal');curPlatform=obj.platform;renderCalendar();renderOverview();toast('Post saved')}
+function savePost(){const title=$('post-title').value.trim(),date=$('post-date').value;if(!title||!date){alert('Title and date required');return}const id=$('post-id').value;const obj={id:id||uid(),date,platform:$('post-platform').value,title,copy:$('post-copy').value.trim(),caption:$('post-caption').value.trim(),notes:$('post-notes').value.trim(),status:$('post-status').value,time:$('post-time').value,checked:false};if(id){const i=DB.posts.findIndex(x=>x.id===id);obj.checked=DB.posts[i].checked;DB.posts[i]=obj;logActivity('edited','post',title)}else{DB.posts.push(obj);logActivity('added','post',title)}save();closeModal('post-modal');if(curPlatform!=='all')curPlatform=obj.platform;renderCalendar();renderOverview();toast('Post saved')}
 function deletePost(id){if(!confirm('Delete this post?'))return;const _p=DB.posts.find(x=>x.id===id);logActivity('deleted','post',_p?_p.title:'');DB.posts=DB.posts.filter(x=>x.id!==id);save();renderCalendar();renderOverview();toast('Deleted')}
 function togglePost(id,checked){const p=DB.posts.find(x=>x.id===id);if(p){p.checked=checked;save()}}
 
@@ -1329,7 +1507,7 @@ function $(id){return document.getElementById(id)}
 function toDateStr(d){return d.toISOString().split('T')[0]}
 function formatDate(s){const d=new Date(s+'T00:00:00');return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'})}
 function statusLabel(s){return s==='todo'?'To Do':s==='progress'?'In Progress':'Done'}
-function platName(p){return p==='linkedin'?'LinkedIn':p==='reddit'?'Reddit':'Instagram'}
+function platName(p){return p==='linkedin'?'LinkedIn':p==='reddit'?'Reddit':p==='all'?'All Platforms':'Instagram'}
 function platBadge(p){if(p==='linkedin')return'<span class="badge badge-li">LinkedIn</span>';if(p==='reddit')return'<span class="badge badge-reddit">Reddit</span>';if(p==='instagram')return'<span class="badge badge-ig">Instagram</span>';return'<span class="badge badge-todo">All</span>'}
 function esc(s){if(!s)return'';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
