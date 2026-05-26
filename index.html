@@ -92,6 +92,7 @@
   .badge-li { background:var(--blue-dim); color:var(--blue); }
   .badge-reddit { background:var(--orange-dim); color:var(--orange); }
   .badge-ig { background:var(--pink-dim); color:var(--pink); }
+  .badge-twitter { background:#e0f4f4; color:#1a9ba0; }
 
   /* ─── BUTTONS ─── */
   .btn { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border-radius:6px; border:none; cursor:pointer; font-size:12.5px; font-weight:600; transition:all .15s; font-family:inherit; }
@@ -143,6 +144,7 @@
   .tab-li.active { border-color:#2a5090; color:var(--blue); background:var(--blue-dim); }
   .tab-reddit.active { border-color:#7a3010; color:var(--orange); background:var(--orange-dim); }
   .tab-ig.active { border-color:#6e2050; color:var(--pink); background:var(--pink-dim); }
+  .tab-twitter.active { border-color:#0d7a7e; color:#1a9ba0; background:#e0f4f4; }
 
   /* ─── PROGRESS BAR ─── */
   .prog-bar { background:var(--border); border-radius:99px; height:5px; overflow:hidden; }
@@ -357,6 +359,7 @@
   .cal-day-post.post-li { background:var(--blue-dim); color:var(--blue); }
   .cal-day-post.post-reddit { background:var(--orange-dim); color:var(--orange); }
   .cal-day-post.post-ig { background:var(--pink-dim); color:var(--pink); }
+  .cal-day-post.post-twitter { background:#e0f4f4; color:#1a9ba0; }
   .cal-day-special { font-size:10px; padding:2px 5px; border-radius:3px; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:500; cursor:default; }
   .cal-day-special.sd-high { background:var(--red-dim); color:var(--red); }
   .cal-day-special.sd-medium { background:var(--yellow-dim); color:var(--yellow); }
@@ -504,6 +507,7 @@
         <div class="tabs">
           <button class="tab active" onclick="switchPlatform(this,'all')">All</button>
           <button class="tab tab-li" onclick="switchPlatform(this,'linkedin')">LinkedIn</button>
+          <button class="tab tab-twitter" onclick="switchPlatform(this,'twitter')">Twitter / X</button>
           <button class="tab tab-reddit" onclick="switchPlatform(this,'reddit')">Reddit</button>
           <button class="tab tab-ig" onclick="switchPlatform(this,'instagram')">Instagram</button>
         </div>
@@ -608,6 +612,7 @@
       <div class="tabs">
         <button class="tab active" onclick="filterAnalytics(this,'all')">All</button>
         <button class="tab tab-li" onclick="filterAnalytics(this,'linkedin')">LinkedIn</button>
+        <button class="tab tab-twitter" onclick="filterAnalytics(this,'twitter')">Twitter / X</button>
         <button class="tab tab-reddit" onclick="filterAnalytics(this,'reddit')">Reddit</button>
         <button class="tab tab-ig" onclick="filterAnalytics(this,'instagram')">Instagram</button>
       </div>
@@ -678,7 +683,7 @@
       <div class="form-group"><label>Status</label><select id="strat-status"><option value="todo">To Do</option><option value="progress">In Progress</option><option value="done">Done</option></select></div>
       <div class="form-group"><label>Due Date</label><input type="date" id="strat-due" /></div>
     </div>
-    <div class="form-group"><label>Platform</label><select id="strat-platform"><option value="all">All Platforms</option><option value="linkedin">LinkedIn</option><option value="reddit">Reddit</option><option value="instagram">Instagram</option></select></div>
+    <div class="form-group"><label>Platform</label><select id="strat-platform"><option value="all">All Platforms</option><option value="linkedin">LinkedIn</option><option value="twitter">Twitter / X</option><option value="reddit">Reddit</option><option value="instagram">Instagram</option></select></div>
     <div class="form-group">
       <label>Attached Files <span style="font-weight:400;color:var(--muted)">(PDF, Excel, Markdown — max 2MB each)</span></label>
       <div id="strat-files-list" style="margin-bottom:8px"><span style="font-size:11.5px;color:var(--muted)">No files attached</span></div>
@@ -696,7 +701,7 @@
     <input type="hidden" id="post-id" />
     <div class="grid-2">
       <div class="form-group"><label>Date *</label><input type="date" id="post-date" /></div>
-      <div class="form-group"><label>Platform</label><select id="post-platform"><option value="linkedin">LinkedIn</option><option value="reddit">Reddit</option><option value="instagram">Instagram</option></select></div>
+      <div class="form-group"><label>Platform</label><select id="post-platform"><option value="linkedin">LinkedIn</option><option value="twitter">Twitter / X</option><option value="reddit">Reddit</option><option value="instagram">Instagram</option></select></div>
     </div>
     <div class="form-group"><label>Post Title / Topic *</label><input id="post-title" placeholder="e.g. 5 Ways Recognition Boosts Retention" /></div>
     <div class="form-group"><label>Copy (Post body text)</label><textarea id="post-copy" placeholder="Write the full post copy here..." style="min-height:100px"></textarea></div>
@@ -814,7 +819,7 @@
     <div class="form-group"><label>Title *</label><input id="goal-title" placeholder="e.g. Reach 10K LinkedIn followers by Q3" /></div>
     <div class="grid-2">
       <div class="form-group"><label>Category</label><select id="goal-category"><option value="Followers">Followers</option><option value="Engagement">Engagement</option><option value="Leads">Leads</option><option value="Content">Content</option><option value="Reach">Reach</option><option value="Custom">Custom</option></select></div>
-      <div class="form-group"><label>Platform</label><select id="goal-platform"><option value="all">All Platforms</option><option value="linkedin">LinkedIn</option><option value="reddit">Reddit</option><option value="instagram">Instagram</option></select></div>
+      <div class="form-group"><label>Platform</label><select id="goal-platform"><option value="all">All Platforms</option><option value="linkedin">LinkedIn</option><option value="twitter">Twitter / X</option><option value="reddit">Reddit</option><option value="instagram">Instagram</option></select></div>
     </div>
     <div class="grid-2">
       <div class="form-group"><label>Target</label><input type="number" id="goal-target" placeholder="e.g. 10000" /></div>
@@ -872,7 +877,7 @@
     <input type="hidden" id="evtp-idx" />
     <div class="grid-2">
       <div class="form-group"><label>Date *</label><input type="date" id="evtp-date" /></div>
-      <div class="form-group"><label>Platform</label><select id="evtp-platform"><option value="linkedin">LinkedIn</option><option value="reddit">Reddit</option><option value="instagram">Instagram</option></select></div>
+      <div class="form-group"><label>Platform</label><select id="evtp-platform"><option value="linkedin">LinkedIn</option><option value="twitter">Twitter / X</option><option value="reddit">Reddit</option><option value="instagram">Instagram</option></select></div>
     </div>
     <div class="form-group"><label>Post Title *</label><input id="evtp-title" placeholder="e.g. Pre-event teaser for SHRMTech" /></div>
     <div class="form-group"><label>Notes</label><textarea id="evtp-notes" placeholder="Post angle, key message..." style="min-height:50px"></textarea></div>
@@ -887,7 +892,7 @@
     <input type="hidden" id="an-id" />
     <div class="grid-2">
       <div class="form-group"><label>Week Of *</label><input type="date" id="an-week" /></div>
-      <div class="form-group"><label>Platform *</label><select id="an-platform"><option value="linkedin">LinkedIn</option><option value="reddit">Reddit</option><option value="instagram">Instagram</option></select></div>
+      <div class="form-group"><label>Platform *</label><select id="an-platform"><option value="linkedin">LinkedIn</option><option value="twitter">Twitter / X</option><option value="reddit">Reddit</option><option value="instagram">Instagram</option></select></div>
     </div>
     <div class="grid-2">
       <div class="form-group"><label>Followers</label><input type="number" id="an-followers" placeholder="0" /></div>
@@ -926,7 +931,7 @@
       <div class="detail-meta">
         <div class="dm-item"><strong>Date</strong><input type="date" id="detail-date" onchange="detailSave()" style="width:auto;padding:3px 8px;font-size:12px" /></div>
         <div class="dm-item"><strong>Time</strong><input type="time" id="detail-time" onchange="detailSave()" style="width:auto;padding:3px 8px;font-size:12px" /></div>
-        <div class="dm-item"><strong>Platform</strong><select id="detail-platform" onchange="detailSave()" style="width:auto;padding:3px 8px;font-size:12px"><option value="linkedin">LinkedIn</option><option value="reddit">Reddit</option><option value="instagram">Instagram</option></select></div>
+        <div class="dm-item"><strong>Platform</strong><select id="detail-platform" onchange="detailSave()" style="width:auto;padding:3px 8px;font-size:12px"><option value="linkedin">LinkedIn</option><option value="twitter">Twitter / X</option><option value="reddit">Reddit</option><option value="instagram">Instagram</option></select></div>
       </div>
       <hr class="detail-divider" />
       <div class="detail-section">
@@ -1391,7 +1396,7 @@ function renderCalendarGrid(){
     var items=[];
 
     dayPosts.forEach(function(p){
-      var pcls='cal-day-post post-'+(p.platform==='linkedin'?'li':p.platform==='reddit'?'reddit':'ig');
+      var pcls='cal-day-post post-'+(p.platform==='linkedin'?'li':p.platform==='twitter'?'twitter':p.platform==='reddit'?'reddit':'ig');
       items.push('<div class="'+pcls+'" onclick="event.stopPropagation();openDetail(\''+p.id+'\')" title="'+esc(p.title)+'">'+esc(p.title)+'</div>');
     });
 
@@ -1652,8 +1657,8 @@ function $(id){return document.getElementById(id)}
 function toDateStr(d){return d.toISOString().split('T')[0]}
 function formatDate(s){const d=new Date(s+'T00:00:00');return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'})}
 function statusLabel(s){return s==='todo'?'To Do':s==='progress'?'In Progress':'Done'}
-function platName(p){return p==='linkedin'?'LinkedIn':p==='reddit'?'Reddit':p==='all'?'All Platforms':'Instagram'}
-function platBadge(p){if(p==='linkedin')return'<span class="badge badge-li">LinkedIn</span>';if(p==='reddit')return'<span class="badge badge-reddit">Reddit</span>';if(p==='instagram')return'<span class="badge badge-ig">Instagram</span>';return'<span class="badge badge-todo">All</span>'}
+function platName(p){return p==='linkedin'?'LinkedIn':p==='twitter'?'Twitter / X':p==='reddit'?'Reddit':p==='all'?'All Platforms':'Instagram'}
+function platBadge(p){if(p==='linkedin')return'<span class="badge badge-li">LinkedIn</span>';if(p==='twitter')return'<span class="badge badge-twitter">Twitter / X</span>';if(p==='reddit')return'<span class="badge badge-reddit">Reddit</span>';if(p==='instagram')return'<span class="badge badge-ig">Instagram</span>';return'<span class="badge badge-todo">All</span>'}
 function esc(s){if(!s)return'';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
 // ═══ SMART IMPORT ═══
@@ -1747,9 +1752,9 @@ function renderImportTable(){
 function gv(row,idx){return idx>=0&&idx<row.length?String(row[idx]).trim():''}
 function toggleAllImport(c){if(c)importState.rows.forEach((_,i)=>importState.selected.add(i));else importState.selected.clear();renderImportTable()}
 function toggleImportRow(i,c){if(c)importState.selected.add(i);else importState.selected.delete(i);renderImportTable()}
-function normPlatform(v){const s=v.toLowerCase().replace(/[^a-z]/g,'');if(s.includes('linkedin')||s==='li')return'li';if(s.includes('reddit'))return'reddit';if(s.includes('instagram')||s.includes('insta')||s==='ig')return'ig';return'li'}
-function normPlatformVal(v){const s=v.toLowerCase().replace(/[^a-z]/g,'');if(s.includes('linkedin')||s==='li')return'linkedin';if(s.includes('reddit'))return'reddit';if(s.includes('instagram')||s.includes('insta')||s==='ig')return'instagram';return'linkedin'}
-function normPlatformLabel(v){const p=normPlatformVal(v);return p==='linkedin'?'LinkedIn':p==='reddit'?'Reddit':'Instagram'}
+function normPlatform(v){const s=v.toLowerCase().replace(/[^a-z]/g,'');if(s.includes('linkedin')||s==='li')return'li';if(s.includes('twitter')||s==='x'||s==='tweet')return'twitter';if(s.includes('reddit'))return'reddit';if(s.includes('instagram')||s.includes('insta')||s==='ig')return'ig';return'li'}
+function normPlatformVal(v){const s=v.toLowerCase().replace(/[^a-z]/g,'');if(s.includes('linkedin')||s==='li')return'linkedin';if(s.includes('twitter')||s==='x'||s==='tweet')return'twitter';if(s.includes('reddit'))return'reddit';if(s.includes('instagram')||s.includes('insta')||s==='ig')return'instagram';return'linkedin'}
+function normPlatformLabel(v){const p=normPlatformVal(v);return p==='linkedin'?'LinkedIn':p==='twitter'?'Twitter / X':p==='reddit'?'Reddit':'Instagram'}
 function normStatus(v){const s=v.toLowerCase().replace(/[^a-z]/g,'');if(s.includes('publish')||s==='live'||s==='posted')return'published';if(s.includes('schedul')||s==='planned'||s==='ready')return'scheduled';return'draft'}
 function normStatusLabel(v){const s=normStatus(v);return s==='published'?'published':s==='scheduled'?'scheduled':'draft'}
 function normDate(v){if(!v)return'';let d=new Date(v);if(!isNaN(d)&&d.getFullYear()>2000)return toDateStr(d);const parts=v.split(/[\/\-\.]/);if(parts.length===3){const[a,b,c]=parts.map(Number);if(c>100)d=new Date(c,b-1,a);else if(a>100)d=new Date(a,b-1,c);else d=new Date(2000+c,b-1,a);if(!isNaN(d))return toDateStr(d)}return v}
@@ -1892,7 +1897,7 @@ function renderAnalytics(){
     if(followersChart){followersChart.destroy();followersChart=null}
     var labels=last12.map(function(e){return e.weekOf});
     var fData=last12.map(function(e){return Number(e.followers)||0});
-    var bgColors=last12.map(function(e){return e.platform==='linkedin'?'rgba(107,159,216,0.7)':e.platform==='reddit'?'rgba(212,144,96,0.7)':'rgba(200,120,168,0.7)'});
+    var bgColors=last12.map(function(e){return e.platform==='linkedin'?'rgba(107,159,216,0.7)':e.platform==='twitter'?'rgba(26,155,160,0.7)':e.platform==='reddit'?'rgba(212,144,96,0.7)':'rgba(200,120,168,0.7)'});
     followersChart=new Chart(fCanvas,{type:'bar',data:{labels:labels,datasets:[{label:'Followers',data:fData,backgroundColor:analyticsFilter==='all'?bgColors:bgColors,borderRadius:4}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:false,grid:{color:'rgba(224,218,232,0.5)'}},x:{grid:{display:false}}}}});
   }
   // Engagement line chart
@@ -1969,7 +1974,7 @@ function renderEvents(){
       +(e.gtm?'<div style="margin-top:8px"><div class="event-section-label">GTM Plan</div><div style="font-size:12px;color:var(--text2);white-space:pre-wrap;line-height:1.5;background:var(--card2);padding:10px 12px;border-radius:6px;border:1px solid var(--border)">'+esc(e.gtm)+'</div></div>':'')
       +(e.socialPlan?'<div style="margin-top:8px"><div class="event-section-label">Social Plan</div><div style="font-size:12px;color:var(--text2);white-space:pre-wrap;line-height:1.5;background:var(--card2);padding:10px 12px;border-radius:6px;border:1px solid var(--border)">'+esc(e.socialPlan)+'</div></div>':'')
       +((e.files&&e.files.length)?'<div style="margin-top:8px"><div class="event-section-label">Attached Files</div>'+e.files.map(function(f,fi){return '<span class="file-chip file-chip-'+fileChipType(f.type)+'" onclick="openEventFileViewer(\''+e.id+'\','+fi+')"><b>'+fileChipIcon(f.type)+'</b> '+esc(f.name)+'</span>'}).join('')+'</div>':'')
-      +(linkedPosts.length?'<div class="event-posts"><div class="event-section-label">Linked Posts ('+linkedPosts.length+')</div>'+linkedPosts.map(function(p){var pcls=p.platform==='linkedin'?'post-li':p.platform==='reddit'?'post-reddit':'post-ig';return '<span class="event-post-chip cal-day-post '+pcls+'" onclick="openDetail(\''+p.id+'\')">'+esc(p.title)+' &middot; '+p.date+'</span>'}).join('')+'</div>':'')
+      +(linkedPosts.length?'<div class="event-posts"><div class="event-section-label">Linked Posts ('+linkedPosts.length+')</div>'+linkedPosts.map(function(p){var pcls=p.platform==='linkedin'?'post-li':p.platform==='twitter'?'post-twitter':p.platform==='reddit'?'post-reddit':'post-ig';return '<span class="event-post-chip cal-day-post '+pcls+'" onclick="openDetail(\''+p.id+'\')">'+esc(p.title)+' &middot; '+p.date+'</span>'}).join('')+'</div>':'')
       +'</div>';
   }).join('');
 }
@@ -2124,19 +2129,19 @@ function generateCampaignSuggestions(){
     high:{
       label:'Major Campaign',
       desc:'This is a high-priority day. Plan a multi-platform campaign with pre-event teasers, day-of posts, and follow-up content.',
-      platforms:['linkedin','reddit','instagram'],
-      postIdeas:['Teaser post (3 days before)','Main campaign post','Story/Reel with quick stat','Employee spotlight tied to theme','Follow-up engagement post']
+      platforms:['linkedin','twitter','reddit','instagram'],
+      postIdeas:['Teaser post (3 days before)','Main campaign post','Twitter/X thread with key stats','Story/Reel with quick stat','Employee spotlight tied to theme','Follow-up engagement post']
     },
     medium:{
       label:'Standard Campaign',
-      desc:'A good opportunity for planned content. Focus on 1-2 platforms with purpose-driven posts.',
-      platforms:['linkedin','instagram'],
-      postIdeas:['Informational carousel or infographic','Team celebration or shoutout post','Quick tips or stats post']
+      desc:'A good opportunity for planned content. Focus on 2-3 platforms with purpose-driven posts.',
+      platforms:['linkedin','twitter','instagram'],
+      postIdeas:['Informational carousel or infographic','Twitter/X quick take or stat','Team celebration or shoutout post','Quick tips or stats post']
     },
     low:{
       label:'Light Touch',
-      desc:'A lighter opportunity — consider a single themed post or Story acknowledgment.',
-      platforms:['linkedin'],
+      desc:'A lighter opportunity — consider a single themed post or quick tweet.',
+      platforms:['linkedin','twitter'],
       postIdeas:['Simple awareness post','Story poll or quick engagement post']
     }
   };
