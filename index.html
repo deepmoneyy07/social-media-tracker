@@ -989,9 +989,12 @@ function migrateDB(d){
   if(!d.analytics)d.analytics=[];
   if(!d.activity)d.activity=[];
   if(!d.events)d.events=[];
-  if(!d.exec)d.exec={partha:{posts:[],topics:[],schedule:'Mon / Thu',bio:'Co-Founder & President, Vantage Circle'},john:{posts:[],topics:[],schedule:'Tue / Fri',bio:'Chief Business Officer, Vantage Circle'}};
-  if(d.exec.partha&&!d.exec.partha.brandNotes)d.exec.partha.brandNotes='';
-  if(d.exec.john&&!d.exec.john.brandNotes)d.exec.john.brandNotes='';
+  if(!d.exec)d.exec={};
+  if(!d.exec.partha)d.exec.partha={};
+  if(!d.exec.john)d.exec.john={};
+  var ep=d.exec.partha,ej=d.exec.john;
+  if(!ep.posts)ep.posts=[];if(!ep.topics)ep.topics=[];if(!ep.schedule)ep.schedule='Mon / Thu';if(!ep.bio)ep.bio='Co-Founder & President, Vantage Circle';if(!ep.brandNotes)ep.brandNotes='';
+  if(!ej.posts)ej.posts=[];if(!ej.topics)ej.topics=[];if(!ej.schedule)ej.schedule='Tue / Fri';if(!ej.bio)ej.bio='Chief Business Officer, Vantage Circle';if(!ej.brandNotes)ej.brandNotes='';
   if(!d.calView)d.calView='list';
   return d;
 }
