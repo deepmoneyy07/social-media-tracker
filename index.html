@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>VC Social Media Dashboard</title>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script src="seed-data.js"></script>
 <style>
   :root {
@@ -48,6 +50,12 @@
   .nav-item.active .ni { color:var(--accent-text); }
   .nav-section { font-size:10px; color:var(--muted); padding:14px 12px 4px; letter-spacing:1.2px; text-transform:uppercase; font-weight:600; }
   .sidebar-footer { padding:14px 18px; border-top:1px solid var(--border); font-size:11px; color:var(--muted); }
+  .sync-dot { width:7px; height:7px; border-radius:50%; display:inline-block; margin-right:4px; }
+  .sync-synced { background:var(--green); }
+  .sync-saving { background:var(--yellow); animation:pulse 1s infinite; }
+  .sync-offline { background:var(--muted); }
+  .sync-error { background:var(--red); }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
   /* ─── MAIN ─── */
   #main { margin-left:220px; flex:1; padding:24px 28px; min-height:100vh; }
@@ -317,7 +325,10 @@
     <div class="nav-item" data-page="partha"><span class="ni">P</span> Partha's Brand</div>
     <div class="nav-item" data-page="john"><span class="ni">J</span> John's Brand</div>
   </nav>
-  <div class="sidebar-footer">Deepmoni Barman &middot; Marketing</div>
+  <div class="sidebar-footer">
+    <div style="margin-bottom:4px">Deepmoni Barman &middot; Marketing</div>
+    <div id="sync-status"><span class="sync-dot sync-offline"></span><span style="font-size:10px">Local only</span></div>
+  </div>
 </div>
 
 <!-- MAIN -->
@@ -633,30 +644,116 @@
 <div id="toast"></div>
 
 <script>
+// ═══ FIREBASE CONFIG ═══
+// ────────────────────────────────────────────────────────────────────────────
+// To enable real-time sync across all browsers:
+//   1. Go to https://console.firebase.google.com → Create project
+//   2. Realtime Database → Create Database → choose region → Start in test mode
+//   3. Project Settings (gear icon) → General → "Your apps" → Add Web App
+//   4. Copy the firebaseConfig values below
+//   5. (Optional) Set Database Rules to: {"rules":{".read":true,".write":true}}
+//      for permanent open access, or add authentication later for security
+// ────────────────────────────────────────────────────────────────────────────
+const FIREBASE_CONFIG = {
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
+};
+
 // ═══ DATA ═══
 const KEY='vc_dash_v3';
 let DB={strategies:[],posts:[],reminders:[],contentBank:[],exec:{partha:{posts:[],topics:[],schedule:'Mon / Thu',bio:'Co-Founder & President, Vantage Circle'},john:{posts:[],topics:[],schedule:'Tue / Fri',bio:'Chief Business Officer, Vantage Circle'}}};
 
-// Load: localStorage > v2 migration > seed data
+let fbRef=null, fbReady=false, _lastLocalSave=0;
+
+function migrateDB(d){
+  if(!d.posts)d.posts=[];if(!d.strategies)d.strategies=[];if(!d.reminders)d.reminders=[];
+  d.posts.forEach(p=>{if(!p.copy)p.copy='';if(!p.caption)p.caption=''});
+  d.strategies.forEach(s=>{if(!s.files)s.files=[]});
+  if(!d.contentBank)d.contentBank=[];
+  if(!d.exec)d.exec={partha:{posts:[],topics:[],schedule:'Mon / Thu',bio:'Co-Founder & President, Vantage Circle'},john:{posts:[],topics:[],schedule:'Tue / Fri',bio:'Chief Business Officer, Vantage Circle'}};
+  if(d.exec.partha&&!d.exec.partha.brandNotes)d.exec.partha.brandNotes='';
+  if(d.exec.john&&!d.exec.john.brandNotes)d.exec.john.brandNotes='';
+  return d;
+}
+
+// Load locally first (instant), then Firebase takes over
 function load(){
   try{
     let d=localStorage.getItem(KEY);
-    if(!d){d=localStorage.getItem('vc_dash_v2')} // migrate from v2
-    if(d){
-      DB=JSON.parse(d);
-      DB.posts.forEach(p=>{if(!p.copy)p.copy='';if(!p.caption)p.caption=''});
-      DB.strategies.forEach(s=>{if(!s.files)s.files=[]});
-      if(!DB.contentBank)DB.contentBank=[];
-      if(DB.exec){if(!DB.exec.partha.brandNotes)DB.exec.partha.brandNotes='';if(!DB.exec.john.brandNotes)DB.exec.john.brandNotes=''}
-    } else if(typeof SEED_DATA!=='undefined'){
-      DB=JSON.parse(JSON.stringify(SEED_DATA)); // deep clone seed
-      save(); // persist so user changes are tracked from here
-    }
+    if(!d)d=localStorage.getItem('vc_dash_v2');
+    if(d){DB=migrateDB(JSON.parse(d))}
+    else if(typeof SEED_DATA!=='undefined'){DB=migrateDB(JSON.parse(JSON.stringify(SEED_DATA)));localStorage.setItem(KEY,JSON.stringify(DB))}
   }catch(e){}
 }
-function save(){localStorage.setItem(KEY,JSON.stringify(DB))}
+
+function save(){
+  _lastLocalSave=Date.now();
+  localStorage.setItem(KEY,JSON.stringify(DB));
+  if(fbRef&&fbReady){
+    syncStatus('saving');
+    fbRef.set(DB).then(()=>syncStatus('synced')).catch(()=>syncStatus('error'));
+  }
+}
+
+function initFirebase(){
+  if(!FIREBASE_CONFIG.apiKey||!FIREBASE_CONFIG.databaseURL)return; // Not configured
+  try{
+    firebase.initializeApp(FIREBASE_CONFIG);
+    fbRef=firebase.database().ref('dashboard');
+
+    // Connection state monitor
+    firebase.database().ref('.info/connected').on('value',snap=>{
+      if(snap.val()){fbReady=true;syncStatus('synced')}else{fbReady=false;syncStatus('offline')}
+    });
+
+    // Real-time listener — fires on ANY change (including our own writes)
+    fbRef.on('value',snapshot=>{
+      // Skip if this is our own save echoing back (within 800ms)
+      if(Date.now()-_lastLocalSave<800)return;
+      const data=snapshot.val();
+      if(data){
+        DB=migrateDB(data);
+        localStorage.setItem(KEY,JSON.stringify(DB));
+        render();
+        syncStatus('synced');
+      }
+    });
+
+    // First-time sync: if Firebase is empty, push local data up
+    fbRef.once('value',snapshot=>{
+      if(!snapshot.val()&&DB.reminders.length>0){
+        fbRef.set(DB);
+      }
+    });
+
+    syncStatus('synced');
+  }catch(e){
+    console.warn('Firebase init failed:',e);
+    syncStatus('error');
+  }
+}
+
+function syncStatus(state){
+  const el=document.getElementById('sync-status');if(!el)return;
+  const map={
+    synced:'<span class="sync-dot sync-synced"></span><span style="font-size:10px">Synced live</span>',
+    saving:'<span class="sync-dot sync-saving"></span><span style="font-size:10px">Saving...</span>',
+    offline:'<span class="sync-dot sync-offline"></span><span style="font-size:10px">Offline</span>',
+    error:'<span class="sync-dot sync-error"></span><span style="font-size:10px">Sync error</span>',
+    local:'<span class="sync-dot sync-offline"></span><span style="font-size:10px">Local only</span>'
+  };
+  el.innerHTML=map[state]||map.local;
+}
+
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+
 load();
+initFirebase();
 
 // ═══ NAV ═══
 let curPage='overview',curPlatform='linkedin',stratFilter='all',remFilter='all';
