@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Media Calendar 2026 — Vantage Circle</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0e0e12;
+    --card: #18181f;
+    --border: #2a2a35;
+    --accent: #6d5cff;
+    --accent-light: #8b7dff;
+    --high: #ff4d6a;
+    --medium: #ffb84d;
+    --low: #4dd4ac;
+    --text: #e8e8ec;
+    --text-muted: #8a8a9a;
+    --white: #ffffff;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 40px;
+    line-height: 1.5;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 2px solid var(--accent);
+  }
+  .header h1 {
+    font-size: 36px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .header p {
+    color: var(--text-muted);
+    font-size: 16px;
+  }
+  .header .brand {
+    font-size: 14px;
+    color: var(--accent-light);
+    margin-top: 4px;
+    font-weight: 600;
+  }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  .legend-dot.high { background: var(--high); }
+  .legend-dot.medium { background: var(--medium); }
+  .legend-dot.low { background: var(--low); }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    text-align: center;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 28px;
+    min-width: 140px;
+  }
+  .stat-num {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--accent-light);
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+  }
+
+  /* MONTH SECTION */
+  .month-section {
+    margin-bottom: 40px;
+    page-break-inside: avoid;
+  }
+  .month-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .month-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent-light);
+  }
+  .month-count {
+    font-size: 13px;
+    color: var(--text-muted);
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 2px 10px;
+    border-radius: 12px;
+  }
+
+  /* CALENDAR GRID */
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .day-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    transition: border-color 0.2s;
+  }
+  .day-card:hover {
+    border-color: var(--accent);
+  }
+  .day-date {
+    min-width: 44px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .day-num {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+  }
+  .day-weekday {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .day-info {
+    flex: 1;
+  }
+  .day-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .day-priority {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-top: 6px;
+  }
+  .day-priority.high { background: rgba(255,77,106,0.15); color: var(--high); }
+  .day-priority.medium { background: rgba(255,184,77,0.15); color: var(--medium); }
+  .day-priority.low { background: rgba(77,212,172,0.15); color: var(--low); }
+
+  /* DOWNLOAD BTN */
+  .download-bar {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 100;
+  }
+  .download-btn {
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    color: var(--white);
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(109,92,255,0.4);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .download-btn:hover { opacity: 0.9; }
+
+  /* PRINT STYLES */
+  @media print {
+    body {
+      background: #fff !important;
+      color: #1a1a1a !important;
+      padding: 20px;
+      font-size: 11px;
+    }
+    .download-bar { display: none !important; }
+    .header h1 {
+      background: none !important;
+      -webkit-text-fill-color: #6d5cff !important;
+      font-size: 28px;
+    }
+    .header p, .header .brand { color: #666 !important; }
+    .legend-item { color: #666 !important; }
+    .stat { background: #f5f5f5 !important; border-color: #ddd !important; }
+    .stat-num { color: #6d5cff !important; }
+    .stat-label { color: #666 !important; }
+    .month-name { color: #6d5cff !important; }
+    .month-count { background: #f5f5f5 !important; border-color: #ddd !important; color: #666 !important; }
+    .month-header { border-color: #ddd !important; }
+    .day-card {
+      background: #fafafa !important;
+      border-color: #ddd !important;
+      padding: 10px 12px;
+    }
+    .day-num { color: #1a1a1a !important; }
+    .day-weekday { color: #888 !important; }
+    .day-title { color: #1a1a1a !important; font-size: 12px; }
+    .month-section { page-break-inside: avoid; }
+    .cal-grid { gap: 8px; }
+    .stats-bar { margin-bottom: 32px; }
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Social Media Calendar 2026</h1>
+  <p>Special Days & Content Opportunities — Full Year Reference</p>
+  <div class="brand">Vantage Circle Marketing Team</div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot high"></div> High Priority — Must-post days</div>
+  <div class="legend-item"><div class="legend-dot medium"></div> Medium Priority — Recommended</div>
+  <div class="legend-item"><div class="legend-dot low"></div> Low Priority — Optional / Fun</div>
+</div>
+
+<div class="stats-bar" id="statsBar"></div>
+
+<div id="calendarBody"></div>
+
+<div class="footer">
+  Social Media Calendar 2026 — Vantage Circle &bull; Generated for content planning &bull; 103 special days across 12 months
+</div>
+
+<div class="download-bar">
+  <button class="download-btn" onclick="window.print()">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    Download as PDF
+  </button>
+</div>
+
+<script>
+const SPECIAL_DAYS = [
+  {date:"2026-01-01",title:"New Year's Day / Global Family Day",priority:"high"},
+  {date:"2026-01-02",title:"World Introvert Day",priority:"low"},
+  {date:"2026-01-04",title:"World Braille Day",priority:"low"},
+  {date:"2026-01-05",title:"National Bird Day",priority:"low"},
+  {date:"2026-01-10",title:"World Hindi Day",priority:"medium"},
+  {date:"2026-01-12",title:"National Youth Day",priority:"medium"},
+  {date:"2026-01-13",title:"Lohri",priority:"high"},
+  {date:"2026-01-14",title:"Pongal / Makar Sankranti",priority:"high"},
+  {date:"2026-01-15",title:"Indian Army Day",priority:"medium"},
+  {date:"2026-01-21",title:"National Hugging Day",priority:"low"},
+  {date:"2026-01-23",title:"Netaji Subhash Chandra Bose Jayanti",priority:"medium"},
+  {date:"2026-01-24",title:"National Girl Child Day / Intl Education Day",priority:"medium"},
+  {date:"2026-01-25",title:"National Voters Day / National Tourism Day",priority:"medium"},
+  {date:"2026-01-26",title:"Republic Day",priority:"high"},
+  {date:"2026-01-28",title:"Data Privacy Day",priority:"medium"},
+  {date:"2026-01-30",title:"Martyrs' Day",priority:"medium"},
+  {date:"2026-02-04",title:"World Cancer Day",priority:"medium"},
+  {date:"2026-02-07",title:"Rose Day",priority:"low"},
+  {date:"2026-02-14",title:"Valentine's Day / World Radio Day",priority:"high"},
+  {date:"2026-02-19",title:"Shivaji Maharaj Jayanti",priority:"medium"},
+  {date:"2026-02-20",title:"World Day of Social Justice",priority:"medium"},
+  {date:"2026-02-26",title:"Maha Shivratri",priority:"high"},
+  {date:"2026-02-28",title:"National Science Day",priority:"medium"},
+  {date:"2026-03-01",title:"Zero Discrimination Day",priority:"medium"},
+  {date:"2026-03-07",title:"Employee Appreciation Day",priority:"high"},
+  {date:"2026-03-08",title:"International Women's Day",priority:"high"},
+  {date:"2026-03-14",title:"Holi",priority:"high"},
+  {date:"2026-03-15",title:"National Consumer Rights Day",priority:"medium"},
+  {date:"2026-03-20",title:"International Day of Happiness",priority:"medium"},
+  {date:"2026-03-22",title:"World Water Day",priority:"medium"},
+  {date:"2026-03-30",title:"Gudi Padwa / Doctors' Day",priority:"medium"},
+  {date:"2026-04-01",title:"April Fool's Day / Fun At Work Day",priority:"medium"},
+  {date:"2026-04-02",title:"World Autism Awareness Day",priority:"medium"},
+  {date:"2026-04-07",title:"World Health Day",priority:"high"},
+  {date:"2026-04-13",title:"Ambedkar Jayanti / Bihu",priority:"high"},
+  {date:"2026-04-22",title:"Earth Day",priority:"high"},
+  {date:"2026-04-23",title:"World Book Day / English Language Day",priority:"medium"},
+  {date:"2026-04-28",title:"National Superhero Day / World Safety Day",priority:"medium"},
+  {date:"2026-05-01",title:"International Workers' Day / Maharashtra Day",priority:"high"},
+  {date:"2026-05-04",title:"Star Wars Day / World Laughter Day",priority:"medium"},
+  {date:"2026-05-08",title:"World Red Cross Day",priority:"medium"},
+  {date:"2026-05-11",title:"Mother's Day / National Technology Day",priority:"high"},
+  {date:"2026-05-12",title:"Buddha Purnima",priority:"medium"},
+  {date:"2026-05-15",title:"International Day of Families",priority:"medium"},
+  {date:"2026-05-21",title:"International Tea Day",priority:"low"},
+  {date:"2026-05-28",title:"Menstrual Hygiene Day",priority:"medium"},
+  {date:"2026-05-31",title:"World No Tobacco Day",priority:"medium"},
+  {date:"2026-06-01",title:"World Milk Day / Global Day of Parents",priority:"medium"},
+  {date:"2026-06-05",title:"World Environment Day",priority:"high"},
+  {date:"2026-06-08",title:"World Oceans Day / Best Friends Day",priority:"medium"},
+  {date:"2026-06-12",title:"World Day Against Child Labor",priority:"medium"},
+  {date:"2026-06-14",title:"World Blood Donor Day",priority:"medium"},
+  {date:"2026-06-15",title:"Father's Day",priority:"high"},
+  {date:"2026-06-21",title:"International Yoga Day / World Music Day",priority:"high"},
+  {date:"2026-06-30",title:"World Social Media Day",priority:"high"},
+  {date:"2026-07-07",title:"World Chocolate Day",priority:"low"},
+  {date:"2026-07-11",title:"World Population Day",priority:"medium"},
+  {date:"2026-07-17",title:"World Emoji Day",priority:"medium"},
+  {date:"2026-07-26",title:"Kargil Vijay Diwas",priority:"high"},
+  {date:"2026-07-27",title:"Parents' Day",priority:"medium"},
+  {date:"2026-07-29",title:"International Tiger Day",priority:"medium"},
+  {date:"2026-07-30",title:"International Friendship Day",priority:"medium"},
+  {date:"2026-08-09",title:"Raksha Bandhan",priority:"high"},
+  {date:"2026-08-12",title:"International Youth Day",priority:"medium"},
+  {date:"2026-08-15",title:"Independence Day",priority:"high"},
+  {date:"2026-08-16",title:"Janmashtami",priority:"high"},
+  {date:"2026-08-19",title:"World Photography Day",priority:"medium"},
+  {date:"2026-08-21",title:"Senior Citizens Day",priority:"medium"},
+  {date:"2026-08-26",title:"Women's Equality Day",priority:"medium"},
+  {date:"2026-08-27",title:"Ganesh Chaturthi",priority:"high"},
+  {date:"2026-09-05",title:"Teachers' Day / Onam",priority:"high"},
+  {date:"2026-09-08",title:"International Literacy Day",priority:"medium"},
+  {date:"2026-09-10",title:"World Suicide Prevention Day",priority:"medium"},
+  {date:"2026-09-14",title:"Hindi Diwas",priority:"medium"},
+  {date:"2026-09-15",title:"Engineer's Day",priority:"medium"},
+  {date:"2026-09-21",title:"International Day of Peace",priority:"medium"},
+  {date:"2026-09-22",title:"Navratri",priority:"high"},
+  {date:"2026-09-27",title:"World Tourism Day",priority:"medium"},
+  {date:"2026-09-28",title:"Durga Puja",priority:"high"},
+  {date:"2026-09-30",title:"International Podcast Day",priority:"medium"},
+  {date:"2026-10-01",title:"International Coffee Day",priority:"medium"},
+  {date:"2026-10-02",title:"Gandhi Jayanti / Dussehra",priority:"high"},
+  {date:"2026-10-05",title:"World Teachers' Day",priority:"medium"},
+  {date:"2026-10-08",title:"Indian Air Force Day",priority:"medium"},
+  {date:"2026-10-10",title:"World Mental Health Day",priority:"high"},
+  {date:"2026-10-16",title:"World Food Day",priority:"medium"},
+  {date:"2026-10-19",title:"Dhanteras",priority:"high"},
+  {date:"2026-10-21",title:"Diwali",priority:"high"},
+  {date:"2026-10-23",title:"Bhai Dooj",priority:"medium"},
+  {date:"2026-10-27",title:"Chhath Puja",priority:"medium"},
+  {date:"2026-10-31",title:"Halloween",priority:"medium"},
+  {date:"2026-11-01",title:"World Vegan Day / No Shave November",priority:"medium"},
+  {date:"2026-11-05",title:"Guru Nanak Jayanti",priority:"high"},
+  {date:"2026-11-13",title:"World Kindness Day",priority:"medium"},
+  {date:"2026-11-14",title:"Children's Day",priority:"high"},
+  {date:"2026-11-18",title:"National Entrepreneurs' Day",priority:"medium"},
+  {date:"2026-11-19",title:"International Men's Day",priority:"medium"},
+  {date:"2026-11-27",title:"Thanksgiving Day",priority:"high"},
+  {date:"2026-12-01",title:"World AIDS Day",priority:"medium"},
+  {date:"2026-12-03",title:"Intl Day of Persons with Disabilities",priority:"medium"},
+  {date:"2026-12-10",title:"Human Rights Day",priority:"medium"},
+  {date:"2026-12-25",title:"Christmas",priority:"high"},
+  {date:"2026-12-31",title:"New Year's Eve",priority:"high"}
+];
+
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const WEEKDAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+// Stats
+const total = SPECIAL_DAYS.length;
+const highCount = SPECIAL_DAYS.filter(d => d.priority === 'high').length;
+const medCount = SPECIAL_DAYS.filter(d => d.priority === 'medium').length;
+const lowCount = SPECIAL_DAYS.filter(d => d.priority === 'low').length;
+
+document.getElementById('statsBar').innerHTML = `
+  <div class="stat"><div class="stat-num">${total}</div><div class="stat-label">Total Days</div></div>
+  <div class="stat"><div class="stat-num">${highCount}</div><div class="stat-label">High Priority</div></div>
+  <div class="stat"><div class="stat-num">${medCount}</div><div class="stat-label">Medium Priority</div></div>
+  <div class="stat"><div class="stat-num">${lowCount}</div><div class="stat-label">Low Priority</div></div>
+  <div class="stat"><div class="stat-num">12</div><div class="stat-label">Months Covered</div></div>
+`;
+
+// Group by month
+const byMonth = {};
+SPECIAL_DAYS.forEach(d => {
+  const m = parseInt(d.date.split('-')[1]) - 1;
+  if (!byMonth[m]) byMonth[m] = [];
+  byMonth[m].push(d);
+});
+
+const body = document.getElementById('calendarBody');
+
+for (let m = 0; m < 12; m++) {
+  if (!byMonth[m]) continue;
+  const sec = document.createElement('div');
+  sec.className = 'month-section';
+
+  const days = byMonth[m];
+
+  sec.innerHTML = `
+    <div class="month-header">
+      <div class="month-name">${MONTHS[m]} 2026</div>
+      <div class="month-count">${days.length} days</div>
+    </div>
+    <div class="cal-grid">
+      ${days.map(d => {
+        const dt = new Date(d.date + 'T00:00:00');
+        const dayNum = dt.getDate();
+        const weekday = WEEKDAYS[dt.getDay()];
+        return `<div class="day-card">
+          <div class="day-date">
+            <div class="day-num">${dayNum}</div>
+            <div class="day-weekday">${weekday}</div>
+          </div>
+          <div class="day-info">
+            <div class="day-title">${d.title}</div>
+            <span class="day-priority ${d.priority}">${d.priority}</span>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+  body.appendChild(sec);
+}
+</script>
+</body>
+</html>
