@@ -433,6 +433,8 @@
   .ov-event-item .ov-evt-date { font-size:11px; color:var(--muted); }
 
   /* ─── AI ELEMENTS ─── */
+  /* AI features disabled — uncomment to re-enable */
+  .btn-ai, .ai-output, .ai-loading, #ai-post-output, #ai-detail-output, #ai-analytics-output, .ai-settings-link { display:none !important; }
   .btn-ai { background:linear-gradient(135deg,#8b7ce8,#e84393); color:#fff; border:none; box-shadow:0 2px 8px rgba(139,124,232,.3); }
   .btn-ai:hover { opacity:0.9; box-shadow:0 3px 12px rgba(139,124,232,.4); }
   .btn-ai:disabled { opacity:0.5; cursor:not-allowed; }
@@ -458,6 +460,7 @@
   .ai-repurpose-card .rp-text { color:var(--text2); line-height:1.5; white-space:pre-wrap; max-height:120px; overflow-y:auto; }
   .ai-repurpose-card .rp-action { margin-top:8px; text-align:right; }
   /* ── APP WRAPPER ── */
+  #app-wrapper { display:contents; }
 
   /* ── LOGIN SCREEN ── */
   #login-overlay {
@@ -550,7 +553,7 @@
     <div style="margin-bottom:4px">Deepmoni Barman &middot; Marketing</div>
     <div id="sync-status"><span class="sync-dot sync-offline"></span><span style="font-size:10px">Local only</span></div>
     <div style="margin-top:6px;display:flex;gap:10px;align-items:center">
-      <a href="#" onclick="event.preventDefault();setGeminiKey()" style="font-size:10px;color:var(--accent-text);text-decoration:none">✨ AI Settings</a>
+      <a href="#" onclick="event.preventDefault();setGeminiKey()" class="ai-settings-link" style="font-size:10px;color:var(--accent-text);text-decoration:none">✨ AI Settings</a>
       <a href="#" onclick="event.preventDefault();changePassword()" style="font-size:10px;color:var(--accent-text);text-decoration:none">🔒 Password</a>
       <a href="#" onclick="event.preventDefault();logout()" style="font-size:10px;color:#e84393;text-decoration:none;margin-left:auto">↪ Logout</a>
     </div>
